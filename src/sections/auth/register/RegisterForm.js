@@ -7,8 +7,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 // @mui
 import { Stack, IconButton, InputAdornment } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import { useToast } from 'src/hooks/useToast';
-import { register } from 'src/service/api';
+import { useToast } from '../../../hooks/useToast';
+import { register } from '../../../service/api';
 // components
 import Iconify from '../../../components/Iconify';
 import { FormProvider, RHFTextField } from '../../../components/hook-form';
@@ -16,7 +16,7 @@ import { FormProvider, RHFTextField } from '../../../components/hook-form';
 // ----------------------------------------------------------------------
 
 export default function RegisterForm() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
 

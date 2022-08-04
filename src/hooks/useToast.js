@@ -19,6 +19,4 @@ export const ToastProvider = ({ children }) => {
   return <ToastContext.Provider value={value}>{children}</ToastContext.Provider>;
 };
 
-export const useToast = () => {
-  return useContext(ToastContext);
-};
+export const useToast = () => useContext(ToastContext);
