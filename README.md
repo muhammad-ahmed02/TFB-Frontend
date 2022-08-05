@@ -1,4 +1,4 @@
-## Minimal [(Free version)](https://minimal-kit-react.vercel.app/)
+## TFB [(Free version)](https://tfb-kit-react.vercel.app/)
 
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 
@@ -6,25 +6,25 @@
 
 ![preview](public/static/preview.jpg)
 
-| [Minimal Free](https://minimal-kit-react.vercel.app/) | [Minimal](https://material-ui.com/store/items/minimal-dashboard/) |
-| ----------------------------------------------------- | :---------------------------------------------------------------- |
-| **7** Demo pages                                      | **50+** demo pages                                                |
-| -                                                     | ✓ Multi-language                                                  |
-| -                                                     | ✓ Dark/Light Mode 🌓                                              |
-| -                                                     | ✓ [More components](https://minimals.cc/components)               |
-| -                                                     | ✓ Next.js version                                                 |
-| -                                                     | ✓ TypeScript version                                              |
-| -                                                     | ✓ Design files (Figma & Sketch)                                   |
+| [TFB Free](https://tfb-kit-react.vercel.app/) | [TFB](https://material-ui.com/store/items/tfb-dashboard/) |
+| --------------------------------------------- | :-------------------------------------------------------- |
+| **7** Demo pages                              | **50+** demo pages                                        |
+| -                                             | ✓ Multi-language                                          |
+| -                                             | ✓ Dark/Light Mode 🌓                                      |
+| -                                             | ✓ [More components](https://tfbs.cc/components)           |
+| -                                             | ✓ Next.js version                                         |
+| -                                             | ✓ TypeScript version                                      |
+| -                                             | ✓ Design files (Figma & Sketch)                           |
 
 ## Page demo
 
-- [Dashboard](https://minimal-kit-react.vercel.app/dashboard/app)
-- [Users](https://minimal-kit-react.vercel.app/dashboard/user)
-- [Product](https://minimal-kit-react.vercel.app/dashboard/products)
-- [Blog](https://minimal-kit-react.vercel.app/dashboard/blog)
-- [Login](https://minimal-kit-react.vercel.app/login)
-- [Register](https://minimal-kit-react.vercel.app/register)
-- [Not Found](https://minimal-kit-react.vercel.app/404)
+- [Dashboard](https://tfb-kit-react.vercel.app/dashboard/app)
+- [Users](https://tfb-kit-react.vercel.app/dashboard/user)
+- [Product](https://tfb-kit-react.vercel.app/dashboard/products)
+- [Blog](https://tfb-kit-react.vercel.app/dashboard/blog)
+- [Login](https://tfb-kit-react.vercel.app/login)
+- [Register](https://tfb-kit-react.vercel.app/register)
+- [Not Found](https://tfb-kit-react.vercel.app/404)
 
 ## Getting started
 
@@ -34,8 +34,8 @@
 
 ## License
 
-Distributed under the MIT License. See [LICENSE](https://github.com/minimal-ui-kit/minimal.free/blob/main/LICENSE.md) for more information.
+Distributed under the MIT License. See [LICENSE](https://github.com/tfb-ui-kit/tfb.free/blob/main/LICENSE.md) for more information.
 
 ## Contact us
 
-Email Us: support@minimals.cc
+Email Us: support@tfbs.cc

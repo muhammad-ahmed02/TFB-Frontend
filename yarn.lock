@@ -6493,9 +6493,9 @@
   dependencies:
     "schema-utils" "^4.0.0"
 
-"minimalistic-assert@^1.0.0":
+"tfbistic-assert@^1.0.0":
   "integrity" "sha512-UtJcAD4yEaGtjPezWuO9wC4nwUnVH/8/Im3yEHQP4b67cXlD/Qr9hdITCU1xDbSEXg2XKNaP8jsReV7vQd00/A=="
-  "resolved" "https://registry.npmjs.org/minimalistic-assert/-/minimalistic-assert-1.0.1.tgz"
+  "resolved" "https://registry.npmjs.org/tfbistic-assert/-/tfbistic-assert-1.0.1.tgz"
   "version" "1.0.1"
 
 "minimatch@^3.0.4", "minimatch@^3.1.1", "minimatch@^3.1.2":
@@ -9222,7 +9222,7 @@
   "resolved" "https://registry.npmjs.org/wbuf/-/wbuf-1.7.3.tgz"
   "version" "1.7.3"
   dependencies:
-    "minimalistic-assert" "^1.0.0"
+    "tfbistic-assert" "^1.0.0"
 
 "web-vitals@^2.1.4":
   "integrity" "sha512-sVWcwhU5mX6crfI5Vd2dC4qchyTqxV8URinzt25XqVh+bHEPGH4C3NPrNionCP7Obx59wrYEbNlw4Z8sjALzZg=="
