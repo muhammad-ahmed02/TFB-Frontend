@@ -3,17 +3,11 @@ import _, { first, values } from 'lodash';
 
 const TokenKey = 'Token';
 
-const getToken = () => {
-  return Cookies.get(TokenKey);
-};
+const getToken = () => Cookies.get(TokenKey);
 
-const setToken = (token) => {
-  return Cookies.set(TokenKey, token);
-};
+const setToken = (token) => Cookies.set(TokenKey, token);
 
-const removeToken = () => {
-  return Cookies.remove(TokenKey);
-};
+const removeToken = () => Cookies.remove(TokenKey);
 
 const createMarkup = (encodedHtml) => ({
   __html: _.unescape(encodedHtml),
