@@ -17,6 +17,7 @@ import { FormProvider, RHFTextField } from '../../../components/hook-form';
 
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const LoginSchema = Yup.object().shape({
     username: Yup.string().required('Username is required'),
@@ -43,9 +44,9 @@ export default function LoginForm() {
   const onSubmit = async () => {
     console.log('onSubmit');
     login(methods.getValues()).then(
-      (res) => {
-        console.log(res);
+      () => {
         showToast('Login success');
+        navigate('/');
       },
       () => showToast('Login failed')
     );

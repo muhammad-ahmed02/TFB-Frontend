@@ -16,8 +16,7 @@ import { FormProvider, RHFTextField } from '../../../components/hook-form';
 // ----------------------------------------------------------------------
 
 export default function RegisterForm() {
-  // const navigate = useNavigate();
-
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
   const RegisterSchema = Yup.object().shape({
@@ -49,9 +48,9 @@ export default function RegisterForm() {
   const onSubmit = async () => {
     console.log('onSubmit');
     register(methods.getValues()).then(
-      (res) => {
-        console.log(res);
+      () => {
         showToast('Sugnup success');
+        navigate('/login');
       },
       () => showToast('Login failed')
     );
