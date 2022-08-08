@@ -12,7 +12,7 @@ const navConfig = [
     icon: getIcon('eva:pie-chart-2-fill'),
   },
   {
-    title: 'user',
+    title: 'seller',
     path: '/dashboard/user',
     icon: getIcon('eva:people-fill'),
   },
@@ -20,6 +20,16 @@ const navConfig = [
     title: 'product',
     path: '/dashboard/products',
     icon: getIcon('eva:shopping-bag-fill'),
+  },
+  {
+    title: 'cash order',
+    path: '/dashboard/cashorder',
+    icon: getIcon('mdi:account-cash'),
+  },
+  {
+    title: 'return cash order',
+    path: '/dashboard/return-cashorder',
+    icon: getIcon('mdi:cash-remove'),
   },
   // {
   //   title: 'blog',

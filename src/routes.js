@@ -30,7 +30,8 @@ export default function Router() {
             { path: 'edit/:id', element: <Products /> },
           ],
         },
-        { path: 'blog', element: <Blog /> },
+        { path: 'cashorder', element: <Blog /> },
+        { path: 'return-cashorder', element: <Blog /> },
       ],
     },
     {
