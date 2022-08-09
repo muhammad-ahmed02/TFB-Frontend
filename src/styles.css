@@ -1,0 +1,54 @@
+.entity-form {
+    padding: 4rem;
+}
+
+.entity-form-card {
+    padding: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.form-img-continer {
+    display: table-row;
+    position: relative;
+    
+}
+
+.form-img-continer p {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-56%, -50%);
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+}
+
+.form-img {
+    max-height: 12rem;
+    border-radius: 8px;
+    opacity: .85;
+    margin-bottom: 1rem;
+}
+
+.form-img:hover {
+    cursor: pointer;
+    opacity: .7;
+}
+
+
+@media (max-width: 768px) {
+    .entity-form {
+        padding: 2rem;
+    }
+
+    .form-img-continer {
+        display: unset;
+    }
+
+    .form-img {
+        width: 100%;
+        height: auto;
+        max-height: 20rem;
+    }
+}

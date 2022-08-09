@@ -8,9 +8,11 @@ import User from './pages/User';
 import Login from './pages/Login';
 import NotFound from './pages/Page404';
 import Register from './pages/Register';
-import Products from './pages/Products';
+import Products from './pages/products/Products';
 import DashboardApp from './pages/DashboardApp';
 import withAuthenticationRequired from './utils/withAuthenticationRequired';
+import ProductAdd from './pages/products/ProductAdd';
+import ProductEdit from './pages/products/ProductEdit';
 
 // ----------------------------------------------------------------------
 
@@ -24,10 +26,10 @@ export default function Router() {
         { path: 'user', element: <User /> },
         {
           path: 'products',
-          element: <Products />,
           children: [
-            { path: 'add', element: <Products /> },
-            { path: 'edit/:id', element: <Products /> },
+            { path: '/dashboard/products', element: <Products /> },
+            { path: 'add', element: <ProductAdd /> },
+            { path: 'edit/:id', element: <ProductEdit /> },
           ],
         },
         { path: 'cashorder', element: <Blog /> },
