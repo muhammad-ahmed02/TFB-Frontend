@@ -1,5 +1,5 @@
 import { LoadingButton } from '@mui/lab';
-import { Box, Card, Grid, InputAdornment, Stack, TextField } from '@mui/material';
+import { Card, Grid, InputAdornment, Stack, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import React from 'react';
 import { productSchema } from './productScema';
@@ -28,7 +28,7 @@ function ProductForm({
       <Card className="entity-form-card">
         <Stack spacing={3}>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <div className="form-img-continer">
+            {/* <div className="form-img-continer">
               <input
                 type="file"
                 id="image"
@@ -38,7 +38,7 @@ function ProductForm({
                 onChange={(e) => {
                   const fileReader = new FileReader();
                   fileReader.onload = () => {
-                    if (fileReader.readyState === 2) {
+                    if (typeof fileReader.result === 'string') {
                       formik.setFieldValue('image', fileReader.result);
                     }
                   };
@@ -60,7 +60,7 @@ function ProductForm({
                 }}
               />
               <p>Uplod Image</p>
-            </div>
+            </div> */}
             <Grid container rowSpacing={2}>
               <Grid item xs={6} md={4}>
                 <TextField

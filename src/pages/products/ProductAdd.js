@@ -1,3 +1,4 @@
+import { Container } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -10,7 +11,7 @@ function ProductAdd() {
   const navigate = useNavigate();
   const { mutate } = useMutation((values) => createProduct(values), {
     onSuccess: (data) => {
-      showToast(`Product ${data.name} created`);
+      showToast(`Product ${data.name} added`);
       navigate('/dashboard/products/');
     },
     onError: (error) => {
@@ -18,10 +19,10 @@ function ProductAdd() {
     },
   });
   return (
-    <>
+    <Container>
       <h1>Add product</h1>
       <ProductForm onSubmit={mutate} />
-    </>
+    </Container>
   );
 }
 

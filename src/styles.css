@@ -1,5 +1,5 @@
 .entity-form {
-    padding: 4rem;
+    padding: 4rem 0;
 }
 
 .entity-form-card {
@@ -39,7 +39,7 @@
 
 @media (max-width: 768px) {
     .entity-form {
-        padding: 2rem;
+        padding: 2rem 0;
     }
 
     .form-img-continer {
