@@ -27,7 +27,7 @@ import Label from '../../components/Label';
 import Scrollbar from '../../components/Scrollbar';
 import Iconify from '../../components/Iconify';
 import SearchNotFound from '../../components/SearchNotFound';
-import { UserListHead, UserListToolbar, UserMoreMenu } from '../../sections/@dashboard/user';
+import { ListHead, MoreMenu, ListToolbar } from '../../sections/@dashboard/table-components';
 // mock
 import PRODUCTLIST from '../../_mock/products';
 
@@ -38,7 +38,7 @@ const TABLE_HEAD = [
   { id: 'purchasing_price', label: 'Purchasing Price', alignRight: false },
   { id: 'available_stock', label: 'Available', alignRight: false },
   { id: 'number_of_items_saled', label: 'Sold', alignRight: false },
-  //   { id: 'status', label: 'Status', alignRight: false },
+  { id: 'update_at', label: 'Date', alignRight: false },
   { id: '' },
 ];
 
@@ -151,7 +151,7 @@ export default function Product() {
   const isUserNotFound = filteredProducts.length === 0;
 
   return (
-    <Page title="User">
+    <Page title="Products">
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
@@ -168,7 +168,7 @@ export default function Product() {
         </Stack>
 
         <Card>
-          <UserListToolbar
+          <ListToolbar
             text="product"
             numSelected={selected.length}
             filterName={filterName}
@@ -179,10 +179,12 @@ export default function Product() {
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
                 {isLoading ? (
-                  <CircularProgress />
+                  <Container>
+                    <CircularProgress />
+                  </Container>
                 ) : (
                   <>
-                    <UserListHead
+                    <ListHead
                       order={order}
                       orderBy={orderBy}
                       headLabel={TABLE_HEAD}
@@ -193,7 +195,15 @@ export default function Product() {
                     />
                     <TableBody>
                       {filteredProducts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                        const { id, name, purchasing_price, available_stock, image, number_of_items_saled } = row;
+                        const {
+                          id,
+                          name,
+                          purchasing_price,
+                          available_stock,
+                          image,
+                          number_of_items_saled,
+                          updated_at,
+                        } = row;
                         const isItemSelected = selected.indexOf(name) !== -1;
 
                         return (
@@ -216,16 +226,17 @@ export default function Product() {
                                 </Typography>
                               </Stack>
                             </TableCell>
-                            <TableCell align="left">{purchasing_price}</TableCell>
+                            <TableCell align="left">Rs. {purchasing_price}</TableCell>
                             <TableCell align="left">
                               <Label variant="ghost" color={((available_stock ?? 0) <= 0 && 'error') || 'success'}>
                                 {available_stock ?? 0}
                               </Label>
                             </TableCell>
                             <TableCell align="left">{number_of_items_saled ?? 0}</TableCell>
+                            <TableCell align="left">{new Date(updated_at).toDateString()}</TableCell>
 
                             <TableCell align="right">
-                              <UserMoreMenu
+                              <MoreMenu
                                 onDelete={() => deleteProductFn(id)}
                                 pathWithId={`/dashboard/products/edit/${id}`}
                               />

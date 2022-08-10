@@ -24,7 +24,7 @@ import Label from '../components/Label';
 import Scrollbar from '../components/Scrollbar';
 import Iconify from '../components/Iconify';
 import SearchNotFound from '../components/SearchNotFound';
-import { UserListHead, UserListToolbar, UserMoreMenu } from '../sections/@dashboard/user';
+import { ListHead, ListToolbar, MoreMenu } from '../sections/@dashboard/table-components';
 // mock
 import USERLIST from '../_mock/user';
 
@@ -145,12 +145,12 @@ export default function User() {
         </Stack>
 
         <Card>
-          <UserListToolbar text="seller" numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+          <ListToolbar text="seller" numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <UserListHead
+                <ListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
@@ -194,7 +194,7 @@ export default function User() {
                         </TableCell>
 
                         <TableCell align="right">
-                          <UserMoreMenu />
+                          <MoreMenu />
                         </TableCell>
                       </TableRow>
                     );

@@ -7,7 +7,7 @@ import Iconify from '../../../components/Iconify';
 
 // ----------------------------------------------------------------------
 
-export default function UserMoreMenu({ pathWithId, onDelete }) {
+export default function MoreMenu({ pathWithId, onDelete }) {
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
 
