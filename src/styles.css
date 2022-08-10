@@ -36,6 +36,10 @@
     opacity: .7;
 }
 
+.MuiList-root a {
+    text-decoration: none;
+}
+
 
 @media (max-width: 768px) {
     .entity-form {

@@ -16,7 +16,11 @@ import {
   Typography,
   TableContainer,
   TablePagination,
+  CircularProgress,
 } from '@mui/material';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { deleteProduct, getProducts } from '../../service/api';
+import { useToast } from '../../hooks/useToast';
 // components
 import Page from '../../components/Page';
 import Label from '../../components/Label';
@@ -31,9 +35,9 @@ import PRODUCTLIST from '../../_mock/products';
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
-  { id: 'purchasingPrice', label: 'Purchasing Price', alignRight: false },
-  { id: 'availableStock', label: 'Available', alignRight: false },
-  { id: 'numberOfItemsSaled', label: 'Sold', alignRight: false },
+  { id: 'purchasing_price', label: 'Purchasing Price', alignRight: false },
+  { id: 'available_stock', label: 'Available', alignRight: false },
+  { id: 'number_of_items_saled', label: 'Sold', alignRight: false },
   //   { id: 'status', label: 'Status', alignRight: false },
   { id: '' },
 ];
@@ -70,6 +74,21 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function Product() {
+  const { showToast } = useToast();
+  const { data, isLoading } = useQuery({
+    queryKey: 'getProducts',
+    queryFn: getProducts,
+  });
+
+  const { mutate: deleteProductFn } = useMutation((id) => deleteProduct(id), {
+    onSuccess: () => {
+      showToast(`Product deleted successfully`);
+    },
+    onError: (error) => {
+      showToast(error.message);
+    },
+  });
+
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState('asc');
@@ -127,7 +146,7 @@ export default function Product() {
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - PRODUCTLIST.length) : 0;
 
-  const filteredProducts = applySortFilter(PRODUCTLIST, getComparator(order, orderBy), filterName);
+  const filteredProducts = applySortFilter(data?.results ?? [], getComparator(order, orderBy), filterName);
 
   const isUserNotFound = filteredProducts.length === 0;
 
@@ -149,74 +168,88 @@ export default function Product() {
         </Stack>
 
         <Card>
-          <UserListToolbar text="product" numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+          <UserListToolbar
+            text="product"
+            numSelected={selected.length}
+            filterName={filterName}
+            onFilterName={handleFilterByName}
+          />
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <UserListHead
-                  order={order}
-                  orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={PRODUCTLIST.length}
-                  numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
-                />
-                <TableBody>
-                  {filteredProducts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, purchasingPrice, availableStock, image, numberOfItemsSaled } = row;
-                    const isItemSelected = selected.indexOf(name) !== -1;
+                {isLoading ? (
+                  <CircularProgress />
+                ) : (
+                  <>
+                    <UserListHead
+                      order={order}
+                      orderBy={orderBy}
+                      headLabel={TABLE_HEAD}
+                      rowCount={PRODUCTLIST.length}
+                      numSelected={selected.length}
+                      onRequestSort={handleRequestSort}
+                      onSelectAllClick={handleSelectAllClick}
+                    />
+                    <TableBody>
+                      {filteredProducts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                        const { id, name, purchasing_price, available_stock, image, number_of_items_saled } = row;
+                        const isItemSelected = selected.indexOf(name) !== -1;
 
-                    return (
-                      <TableRow
-                        hover
-                        key={id}
-                        tabIndex={-1}
-                        purchasingPrice="checkbox"
-                        selected={isItemSelected}
-                        aria-checked={isItemSelected}
-                      >
-                        <TableCell padding="checkbox">
-                          <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, name)} />
-                        </TableCell>
-                        <TableCell component="th" scope="row" padding="none">
-                          <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={name} src={image} />
-                            <Typography variant="subtitle2" noWrap>
-                              {name}
-                            </Typography>
-                          </Stack>
-                        </TableCell>
-                        <TableCell align="left">{purchasingPrice}</TableCell>
-                        <TableCell align="left">
-                          <Label variant="ghost" color={((availableStock ?? 0) <= 0 && 'error') || 'success'}>
-                            {availableStock ?? 0}
-                          </Label>
-                        </TableCell>
-                        <TableCell align="left">{numberOfItemsSaled ?? 0}</TableCell>
+                        return (
+                          <TableRow
+                            hover
+                            key={id}
+                            tabIndex={-1}
+                            id="checkbox"
+                            selected={isItemSelected}
+                            aria-checked={isItemSelected}
+                          >
+                            <TableCell padding="checkbox">
+                              <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, name)} />
+                            </TableCell>
+                            <TableCell component="th" scope="row" padding="none">
+                              <Stack direction="row" alignItems="center" spacing={2}>
+                                <Avatar alt={name} src={image} />
+                                <Typography variant="subtitle2" noWrap>
+                                  {name}
+                                </Typography>
+                              </Stack>
+                            </TableCell>
+                            <TableCell align="left">{purchasing_price}</TableCell>
+                            <TableCell align="left">
+                              <Label variant="ghost" color={((available_stock ?? 0) <= 0 && 'error') || 'success'}>
+                                {available_stock ?? 0}
+                              </Label>
+                            </TableCell>
+                            <TableCell align="left">{number_of_items_saled ?? 0}</TableCell>
 
-                        <TableCell align="right">
-                          <UserMoreMenu />
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )}
-                </TableBody>
+                            <TableCell align="right">
+                              <UserMoreMenu
+                                onDelete={() => deleteProductFn(id)}
+                                pathWithId={`/dashboard/products/edit/${id}`}
+                              />
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
+                      {emptyRows > 0 && (
+                        <TableRow style={{ height: 53 * emptyRows }}>
+                          <TableCell colSpan={6} />
+                        </TableRow>
+                      )}
+                    </TableBody>
 
-                {isUserNotFound && (
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        <SearchNotFound searchQuery={filterName} />
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
+                    {isUserNotFound && (
+                      <TableBody>
+                        <TableRow>
+                          <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                            <SearchNotFound searchQuery={filterName} />
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    )}
+                  </>
                 )}
               </Table>
             </TableContainer>
@@ -225,7 +258,7 @@ export default function Product() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={PRODUCTLIST.length}
+            count={PRODUCTLIST?.length ?? 0}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
