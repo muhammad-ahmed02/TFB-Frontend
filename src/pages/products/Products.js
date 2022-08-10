@@ -109,7 +109,7 @@ export default function Product() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = PRODUCTLIST.map((n) => n.name);
+      const newSelecteds = data.map((n) => n.id);
       setSelected(newSelecteds);
       return;
     }
@@ -148,7 +148,7 @@ export default function Product() {
 
   const filteredProducts = applySortFilter(data?.results ?? [], getComparator(order, orderBy), filterName);
 
-  const isUserNotFound = filteredProducts.length === 0;
+  const isProductsNotFound = filteredProducts.length === 0;
 
   return (
     <Page title="Products">
@@ -251,7 +251,7 @@ export default function Product() {
                       )}
                     </TableBody>
 
-                    {isUserNotFound && (
+                    {isProductsNotFound && (
                       <TableBody>
                         <TableRow>
                           <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
