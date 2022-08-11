@@ -14,21 +14,27 @@ import './styles.css';
 
 export default function App() {
   const queryClient = new QueryClient();
-  const { open, message, handleClose } = useToast();
 
   return (
     <ThemeProvider>
+      <Toast />
       <ScrollToTop />
       <BaseOptionChartStyle />
       <QueryClientProvider client={queryClient}>
-        <Snackbar
-          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-          open={open}
-          onClose={handleClose}
-          message={message}
-        />
         <Router />
       </QueryClientProvider>
     </ThemeProvider>
+  );
+}
+
+function Toast() {
+  const { open, message, handleClose } = useToast();
+  return (
+    <Snackbar
+      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+      open={open}
+      onClose={handleClose}
+      message={message}
+    />
   );
 }
