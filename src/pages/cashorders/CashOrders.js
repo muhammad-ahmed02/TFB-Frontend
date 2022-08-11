@@ -6,7 +6,6 @@ import {
   Card,
   Table,
   Stack,
-  Avatar,
   Button,
   Checkbox,
   TableRow,
@@ -20,7 +19,7 @@ import {
 } from '@mui/material';
 // components
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { deleteSeller, getSellers } from '../../service/api';
+import { deleteCashOrder, getCashOrders } from '../../service/api';
 import { useToast } from '../../hooks/useToast';
 import Page from '../../components/Page';
 import Scrollbar from '../../components/Scrollbar';
@@ -33,11 +32,15 @@ import USERLIST from '../../_mock/user';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
+  { id: 'unique_id', label: 'Unique id', alignRight: false },
+  { id: 'customer_name', label: 'Customer', alignRight: false },
+  { id: 'product', label: 'Product', alignRight: false },
+  { id: 'sale_by', label: 'Seller', alignRight: false },
+  { id: 'sale_price', label: 'Sale price', alignRight: false },
+  { id: 'cost_price', label: 'Cost price', alignRight: false },
   { id: 'profit', label: 'Profit', alignRight: false },
-  { id: 'updated_at', label: 'Updated date', alignRight: false },
-  { id: 'created_at', label: 'Created date', alignRight: false },
-  // { id: 'status', label: 'Status', alignRight: false },
+  { id: 'warranty', label: 'Warranty', alignRight: false },
+  { id: 'updated_by', label: 'Date', alignRight: false },
   { id: '' },
 ];
 
@@ -67,21 +70,21 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.username.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(array, (_user) => _user.unique_id.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function Sellers() {
+export default function CashOrders() {
   const { showToast } = useToast();
   const { data, isLoading } = useQuery({
-    queryKey: 'getSellers',
-    queryFn: getSellers,
+    queryKey: 'getCashOrders',
+    queryFn: getCashOrders,
   });
 
-  const { mutate: deleteSellerFn } = useMutation((id) => deleteSeller(id), {
+  const { mutate: deleteCashOrderFn } = useMutation((id) => deleteCashOrder(id), {
     onSuccess: () => {
-      showToast(`Seller deleted successfully`);
+      showToast(`Cash order deleted successfully`);
     },
     onError: (error) => {
       showToast(error.message);
@@ -143,7 +146,7 @@ export default function Sellers() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.results.length) : 0;
 
   const filteredUsers = applySortFilter(data?.results ?? [], getComparator(order, orderBy), filterName);
 
@@ -163,25 +166,25 @@ export default function Sellers() {
   };
 
   return (
-    <Page title="Seller">
+    <Page title="Cash Order">
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Seller
+            Cash Order
           </Typography>
           <Button
             variant="contained"
             component={RouterLink}
-            to="/dashboard/sellers/add"
+            to="/dashboard/cashorder/add"
             startIcon={<Iconify icon="eva:plus-fill" />}
           >
-            New seller
+            New cash order
           </Button>
         </Stack>
 
         <Card>
           <ListToolbar
-            text="seller"
+            text="cash order"
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
@@ -200,15 +203,25 @@ export default function Sellers() {
                       order={order}
                       orderBy={orderBy}
                       headLabel={TABLE_HEAD}
-                      rowCount={USERLIST.length}
+                      rowCount={data.results.length}
                       numSelected={selected.length}
                       onRequestSort={handleRequestSort}
                       onSelectAllClick={handleSelectAllClick}
                     />
                     <TableBody>
                       {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                        const { id, username, profit, created_at, updated_at } = row;
-                        const isItemSelected = selected.indexOf(username) !== -1;
+                        const {
+                          id,
+                          unique_id,
+                          customer_name,
+                          product_detail,
+                          seller_name,
+                          sale_price,
+                          profit,
+                          warranty,
+                          updated_at,
+                        } = row;
+                        const isItemSelected = selected.indexOf(id) !== -1;
 
                         return (
                           <TableRow
@@ -220,24 +233,27 @@ export default function Sellers() {
                             aria-checked={isItemSelected}
                           >
                             <TableCell padding="checkbox">
-                              <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, username)} />
+                              <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, id)} />
                             </TableCell>
-                            <TableCell component="th" scope="row" padding="none">
-                              <Stack direction="row" alignItems="center" spacing={2}>
-                                <Avatar alt={username} />
-                                <Typography variant="subtitle2" noWrap>
-                                  {username}
-                                </Typography>
-                              </Stack>
+                            <TableCell component="th" scope="row" padding="none" align="center" noWrap>
+                              <Typography variant="subtitle2" noWrap>
+                                {unique_id}
+                              </Typography>
                             </TableCell>
+
+                            <TableCell align="left">{customer_name}</TableCell>
+                            <TableCell align="left">{product_detail[0].name}</TableCell>
+                            <TableCell align="left">{seller_name}</TableCell>
+                            <TableCell align="left">Rs. {sale_price}</TableCell>
+                            <TableCell align="left">Rs. {product_detail[0].purchasing_price}</TableCell>
                             <TableCell align="left">Rs. {profit}</TableCell>
+                            <TableCell align="left">{warranty} Days</TableCell>
                             <TableCell align="left">{convertDateTimeObject(updated_at)}</TableCell>
-                            <TableCell align="left">{convertDateTimeObject(created_at)}</TableCell>
 
                             <TableCell align="right">
                               <MoreMenu
-                                onDelete={() => deleteSellerFn(id)}
-                                pathWithId={`/dashboard/sellers/edit/${id}`}
+                                onDelete={() => deleteCashOrderFn(id)}
+                                pathWithId={`/dashboard/cashorder/edit/${id}`}
                               />
                             </TableCell>
                           </TableRow>
@@ -267,7 +283,7 @@ export default function Sellers() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={USERLIST?.length ?? 0}
+            count={data?.results?.length ?? 0}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

@@ -114,7 +114,7 @@ function ProductForm({
           </Stack>
 
           <LoadingButton fullWidth={false} size="large" type="submit" variant="contained" loading={false}>
-            Add Product
+            Save Product
           </LoadingButton>
         </Stack>
       </Card>
