@@ -20,15 +20,15 @@ import {
 } from '@mui/material';
 // components
 import { useMutation, useQuery } from '@tanstack/react-query';
-import { deleteSeller, getSellers } from '../service/api';
-import { useToast } from '../hooks/useToast';
-import Page from '../components/Page';
-import Scrollbar from '../components/Scrollbar';
-import Iconify from '../components/Iconify';
-import SearchNotFound from '../components/SearchNotFound';
-import { ListHead, ListToolbar, MoreMenu } from '../sections/@dashboard/table-components';
+import { deleteSeller, getSellers } from '../../service/api';
+import { useToast } from '../../hooks/useToast';
+import Page from '../../components/Page';
+import Scrollbar from '../../components/Scrollbar';
+import Iconify from '../../components/Iconify';
+import SearchNotFound from '../../components/SearchNotFound';
+import { ListHead, ListToolbar, MoreMenu } from '../../sections/@dashboard/table-components';
 // mock
-import USERLIST from '../_mock/user';
+import USERLIST from '../../_mock/user';
 
 // ----------------------------------------------------------------------
 
@@ -72,7 +72,7 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function Seller() {
+export default function Sellers() {
   const { showToast } = useToast();
   const { data, isLoading } = useQuery({
     queryKey: 'getSellers',
@@ -169,7 +169,12 @@ export default function Seller() {
           <Typography variant="h4" gutterBottom>
             Seller
           </Typography>
-          <Button variant="contained" component={RouterLink} to="#" startIcon={<Iconify icon="eva:plus-fill" />}>
+          <Button
+            variant="contained"
+            component={RouterLink}
+            to="/dashboard/sellers/add"
+            startIcon={<Iconify icon="eva:plus-fill" />}
+          >
             New seller
           </Button>
         </Stack>
