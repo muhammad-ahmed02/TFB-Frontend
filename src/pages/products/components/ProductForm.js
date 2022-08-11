@@ -2,7 +2,7 @@ import { LoadingButton } from '@mui/lab';
 import { Card, Grid, InputAdornment, Stack, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import React from 'react';
-import { productSchema } from './productScema';
+import { productSchema } from './productSchema';
 
 function ProductForm({
   initialValues = {
