@@ -11,7 +11,7 @@ function Settings() {
   const { data, isLoading } = useQuery(['settings', 1], () => getSettings(1));
 
   const { mutate } = useMutation((values) => updateSettings(1, values), {
-    onSuccess: (data) => {
+    onSuccess: () => {
       showToast(`Settings updated`);
     },
     onError: (error) => {

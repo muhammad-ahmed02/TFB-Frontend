@@ -2,8 +2,7 @@ import { Navigate, useRoutes } from 'react-router-dom';
 // layouts
 import DashboardLayout from './layouts/dashboard';
 import LogoOnlyLayout from './layouts/LogoOnlyLayout';
-//
-import Blog from './pages/Blog';
+// pages
 import Sellers from './pages/sellers/Sellers';
 import Login from './pages/Login';
 import NotFound from './pages/Page404';
@@ -19,6 +18,9 @@ import CashOrders from './pages/cashorders/CashOrders';
 import CashOrderAdd from './pages/cashorders/CashOrderAdd';
 import CashOrderEdit from './pages/cashorders/CashOrderEdit';
 import Settings from './pages/settings/Settings';
+import ReturnCashOrders from './pages/returncashorders/ReturnCashOrders';
+import ReturnCashOrderAdd from './pages/returncashorders/ReturnCashOrderAdd';
+import ReturnCashOrderEdit from './pages/returncashorders/ReturnCashOrderEdit';
 
 // ----------------------------------------------------------------------
 
@@ -53,7 +55,14 @@ export default function Router() {
             { path: 'edit/:id', element: <CashOrderEdit /> },
           ],
         },
-        { path: 'return-cashorder', element: <Blog /> },
+        {
+          path: 'return-cashorder',
+          children: [
+            { path: '/dashboard/return-cashorder', element: <ReturnCashOrders /> },
+            { path: 'add', element: <ReturnCashOrderAdd /> },
+            { path: 'edit/:id', element: <ReturnCashOrderEdit /> },
+          ],
+        },
         { path: 'settings', element: <Settings /> },
       ],
     },

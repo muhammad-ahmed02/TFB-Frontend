@@ -35,7 +35,7 @@ function SettingForm({
                 InputProps={{
                   startAdornment: <InputAdornment position="start">%</InputAdornment>,
                 }}
-                value={formik.values.owner_share === 0 ? '' : formik.values.owner_share}
+                value={formik.values.owner_share}
                 onChange={formik.handleChange}
                 error={formik.errors.owner_share}
                 helperText={formik.errors.owner_share}
@@ -50,7 +50,7 @@ function SettingForm({
                 InputProps={{
                   startAdornment: <InputAdornment position="start">%</InputAdornment>,
                 }}
-                value={formik.values.business_share === 0 ? '' : formik.values.business_share}
+                value={formik.values.business_share}
                 onChange={formik.handleChange}
                 error={formik.errors.business_share}
                 helperText={formik.errors.business_share}
@@ -65,7 +65,7 @@ function SettingForm({
                 InputProps={{
                   startAdornment: <InputAdornment position="start">%</InputAdornment>,
                 }}
-                value={formik.values.seller_share === 0 ? '' : formik.values.seller_share}
+                value={formik.values.seller_share}
                 onChange={formik.handleChange}
                 error={formik.errors.seller_share}
                 helperText={formik.errors.seller_share}
@@ -80,7 +80,7 @@ function SettingForm({
                 InputProps={{
                   startAdornment: <InputAdornment position="start">%</InputAdornment>,
                 }}
-                value={formik.values.expense_share === 0 ? '' : formik.values.expense_share}
+                value={formik.values.expense_share}
                 onChange={formik.handleChange}
                 error={formik.errors.expense_share}
                 helperText={formik.errors.expense_share}
