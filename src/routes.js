@@ -18,6 +18,7 @@ import SellerEdit from './pages/sellers/SellerEdit';
 import CashOrders from './pages/cashorders/CashOrders';
 import CashOrderAdd from './pages/cashorders/CashOrderAdd';
 import CashOrderEdit from './pages/cashorders/CashOrderEdit';
+import Settings from './pages/settings/Settings';
 
 // ----------------------------------------------------------------------
 
@@ -53,6 +54,7 @@ export default function Router() {
           ],
         },
         { path: 'return-cashorder', element: <Blog /> },
+        { path: 'settings', element: <Settings /> },
       ],
     },
     {
