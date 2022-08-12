@@ -58,4 +58,5 @@ export const updateReturnCashOrder = (id, returncashorder) =>
   api.put(`/return-cashorder/${id}/`, returncashorder).then((res) => res.data);
 export const deleteReturnCashOrder = (id) => api.delete(`/return-cashorder/${id}/`).then((res) => res.data);
 
-export const getUser = () => api.get(`/auth/user/`);
+// Profile
+export const getUser = () => api.get(`/accounts/user/`);

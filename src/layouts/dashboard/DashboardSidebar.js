@@ -5,6 +5,7 @@ import { Link as RouterLink, useLocation } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import { Box, Link, Drawer, Typography, Avatar } from '@mui/material';
 // mock
+import { useUser } from '../../hooks/useUser';
 import account from '../../_mock/account';
 // hooks
 import useResponsive from '../../hooks/useResponsive';
@@ -43,6 +44,7 @@ DashboardSidebar.propTypes = {
 
 export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
   const { pathname } = useLocation();
+  const { first_name, last_name, username } = useUser();
 
   const isDesktop = useResponsive('up', 'lg');
 
@@ -73,7 +75,7 @@ export default function DashboardSidebar({ isOpenSidebar, onCloseSidebar }) {
             <Avatar src={account.photoURL} alt="photoURL" />
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>
-                {account.displayName}
+                {`${first_name} ${last_name}` === ' ' ? username : `${first_name} ${last_name}`}
               </Typography>
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                 {account.role}
