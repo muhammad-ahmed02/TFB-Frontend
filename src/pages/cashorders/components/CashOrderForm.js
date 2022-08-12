@@ -1,8 +1,10 @@
 import { LoadingButton } from '@mui/lab';
-import { Autocomplete, Card, Grid, InputAdornment, Stack, TextField } from '@mui/material';
+import { Card, Grid, InputAdornment, Stack, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import React from 'react';
-import { CashOrderSchema } from './CashOrderSchema';
+import { CashOrderSchema } from './cashOrderSchema';
+import ProductSelect from './ProductSelect';
+import SellerSelect from './SellerSelect';
 
 function CashOrderForm({
   initialValues = {
@@ -10,21 +12,11 @@ function CashOrderForm({
     product: '',
     sale_by: '',
     sale_price: '',
-    warranty: '',
+    warranty: 0,
   },
   onSubmit,
   validationSchema,
-  products,
 }) {
-  const productOptions = products.map((product) => {
-    const newPropsObj = {
-      ...product,
-      label: product.name,
-    };
-
-    return Object.assign(product, newPropsObj);
-  });
-
   // useFormik
   const formik = useFormik({
     initialValues,
@@ -37,58 +29,64 @@ function CashOrderForm({
     <form className="entity-form" onSubmit={formik.handleSubmit}>
       <Card className="entity-form-card">
         <Stack spacing={3}>
-          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
-            <Grid container rowSpacing={2}>
-              <Grid item xs={6} md={4}>
-                <TextField
-                  label="Customer name"
-                  name="customer_name"
-                  variant="outlined"
-                  value={formik.values.customer_name}
-                  onChange={formik.handleChange}
-                  error={!!formik.errors.name}
-                  helperText={formik.errors.customer_name}
-                />
-              </Grid>
-              <Grid item xs={6} md={4}>
-                <Autocomplete
-                  disablePortal
-                  id="products"
-                  options={productOptions}
-                  sx={{ width: 300 }}
-                  renderInput={(params) => <TextField {...params} label="Products" />}
-                />
-              </Grid>
-              <Grid item xs={6} md={4}>
-                <TextField
-                  label="Sale price"
-                  name="sale_price"
-                  type="number"
-                  InputProps={{
-                    startAdornment: <InputAdornment position="start">RS</InputAdornment>,
-                  }}
-                  value={formik.values.sale_price}
-                  onChange={formik.handleChange}
-                  error={formik.errors.sale_price}
-                  helperText={formik.errors.sale_price}
-                />
-              </Grid>
-              <Grid item xs={6} md={4}>
-                <TextField
-                  label="Warranty"
-                  name="warranty"
-                  type="number"
-                  InputProps={{
-                    startAdornment: <InputAdornment position="start">Days</InputAdornment>,
-                  }}
-                  value={formik.values.warranty}
-                  onChange={formik.handleChange}
-                  error={formik.errors.warranty}
-                  helperText={formik.errors.warranty}
-                />
-              </Grid>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={3}>
+              <TextField
+                fullWidth
+                label="Customer name"
+                name="customer_name"
+                variant="outlined"
+                value={formik.values.customer_name}
+                onChange={formik.handleChange}
+                error={!!formik.errors.name}
+                helperText={formik.errors.customer_name}
+              />
             </Grid>
-          </Stack>
+            <Grid item xs={12} md={3}>
+              <ProductSelect
+                value={formik.values.product}
+                onSelect={(e, { id }) => formik.setFieldValue('product', id)}
+                error={!!formik.errors.product}
+                helperText={formik.errors.product}
+              />
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <SellerSelect
+                value={formik.values.sale_by}
+                onSelect={(e, { id }) => formik.setFieldValue('sale_by', id)}
+                error={!!formik.errors.sale_by}
+                helperText={formik.errors.sale_by}
+              />
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <TextField
+                fullWidth
+                label="Sale price"
+                name="sale_price"
+                type="number"
+                InputProps={{
+                  startAdornment: <InputAdornment position="start">RS</InputAdornment>,
+                }}
+                value={formik.values.sale_price}
+                onChange={formik.handleChange}
+                error={formik.errors.sale_price}
+                helperText={formik.errors.sale_price}
+              />
+            </Grid>
+          </Grid>
+
+          <TextField
+            label="Warranty"
+            name="warranty"
+            type="number"
+            InputProps={{
+              startAdornment: <InputAdornment position="start">Days</InputAdornment>,
+            }}
+            value={formik.values.warranty === 0 ? '' : formik.values.warranty}
+            onChange={formik.handleChange}
+            error={formik.errors.warranty}
+            helperText={formik.errors.warranty}
+          />
 
           <LoadingButton fullWidth={false} size="large" type="submit" variant="contained" loading={false}>
             Save Cash Order
