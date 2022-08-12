@@ -2,7 +2,7 @@ import { LoadingButton } from '@mui/lab';
 import { Card, Grid, InputAdornment, Stack, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import React from 'react';
-import { CashOrderSchema } from './cashOrderSchema';
+import { CashOrderSchema } from './CashOrderSchema';
 import ProductSelect from './ProductSelect';
 import SellerSelect from './SellerSelect';
 
