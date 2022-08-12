@@ -2,7 +2,7 @@ import { LoadingButton } from '@mui/lab';
 import { Card, Grid, InputAdornment, Stack, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import React from 'react';
-import { CashOrderSchema } from './cashOrderSchema';
+import { cashOrderSchema } from './cashOrderSchema';
 import ProductSelect from './ProductSelect';
 import SellerSelect from './SellerSelect';
 
@@ -21,7 +21,7 @@ function CashOrderForm({
   const formik = useFormik({
     initialValues,
     validateOnChange: false,
-    validationSchema: validationSchema ?? CashOrderSchema,
+    validationSchema: validationSchema ?? cashOrderSchema,
     onSubmit: (values) => onSubmit(values),
   });
 
