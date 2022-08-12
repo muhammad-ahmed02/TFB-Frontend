@@ -19,7 +19,7 @@ import {
   CircularProgress,
 } from '@mui/material';
 // components
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { deleteSeller, getSellers } from '../../service/api';
 import { useToast } from '../../hooks/useToast';
 import Page from '../../components/Page';
@@ -74,6 +74,8 @@ function applySortFilter(array, comparator, query) {
 
 export default function Sellers() {
   const { showToast } = useToast();
+  const queryClient = useQueryClient();
+
   const { data, isLoading } = useQuery({
     queryKey: 'getSellers',
     queryFn: getSellers,
@@ -83,6 +85,7 @@ export default function Sellers() {
     onSuccess: () => {
       showToast(`Seller deleted successfully`);
     },
+    onSettled: () => queryClient.invalidateQueries('getSellers'),
     onError: (error) => {
       showToast(error.message);
     },
