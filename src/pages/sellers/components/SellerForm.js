@@ -49,7 +49,7 @@ function SellerForm({
           />
 
           <LoadingButton fullWidth size="large" type="submit" variant="contained">
-            Add Seller
+            Save Seller
           </LoadingButton>
         </Stack>
       </Card>

@@ -15,6 +15,9 @@ import ProductAdd from './pages/products/ProductAdd';
 import ProductEdit from './pages/products/ProductEdit';
 import SellerAdd from './pages/sellers/SellerAdd';
 import SellerEdit from './pages/sellers/SellerEdit';
+import CashOrders from './pages/cashorders/CashOrders';
+import CashOrderAdd from './pages/cashorders/CashOrderAdd';
+import CashOrderEdit from './pages/cashorders/CashOrderEdit';
 
 // ----------------------------------------------------------------------
 
@@ -41,7 +44,14 @@ export default function Router() {
             { path: 'edit/:id', element: <SellerEdit /> },
           ],
         },
-        { path: 'cashorder', element: <Blog /> },
+        {
+          path: 'cashorder',
+          children: [
+            { path: '/dashboard/cashorder', element: <CashOrders /> },
+            { path: 'add', element: <CashOrderAdd /> },
+            { path: 'edit/:id', element: <CashOrderEdit /> },
+          ],
+        },
         { path: 'return-cashorder', element: <Blog /> },
       ],
     },
