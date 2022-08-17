@@ -28,18 +28,19 @@ import SearchNotFound from '../../components/SearchNotFound';
 import { ListHead, ListToolbar, MoreMenu } from '../../sections/@dashboard/table-components';
 // mock
 import USERLIST from '../../_mock/user';
+import { REACT_APP_BACKEND_URL } from '../../config';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'unique_id', label: 'Unique id', alignRight: false },
+  { id: 'unique_id', label: 'UniqueID', alignRight: false },
   { id: 'customer_name', label: 'Customer', alignRight: false },
   { id: 'product', label: 'Product', alignRight: false },
   { id: 'sale_by', label: 'Seller', alignRight: false },
   { id: 'sale_price', label: 'Sale price', alignRight: false },
   { id: 'cost_price', label: 'Cost price', alignRight: false },
   { id: 'profit', label: 'Profit', alignRight: false },
-  { id: 'warranty', label: 'Warranty', alignRight: false },
+  { id: 'imei_number', label: 'IMEI', alignRight: false },
   { id: 'updated_by', label: 'Date', alignRight: false },
   { id: '' },
 ];
@@ -221,7 +222,7 @@ export default function CashOrders() {
                           seller_name,
                           sale_price,
                           profit,
-                          warranty,
+                          imei_number,
                           updated_at,
                         } = row;
                         const isItemSelected = selected.indexOf(id) !== -1;
@@ -250,13 +251,14 @@ export default function CashOrders() {
                             <TableCell align="left">Rs. {sale_price}</TableCell>
                             <TableCell align="left">Rs. {product_detail[0].purchasing_price}</TableCell>
                             <TableCell align="left">Rs. {profit}</TableCell>
-                            <TableCell align="left">{warranty} Days</TableCell>
+                            <TableCell align="left">{imei_number}</TableCell>
                             <TableCell align="left">{convertDateTimeObject(updated_at)}</TableCell>
 
                             <TableCell align="right">
                               <MoreMenu
                                 onDelete={() => deleteCashOrderFn(id)}
                                 pathWithId={`/dashboard/cashorder/edit/${id}`}
+                                invoicePath={`${REACT_APP_BACKEND_URL}/api/v1/export/cashorder/invoice/${unique_id}`}
                               />
                             </TableCell>
                           </TableRow>

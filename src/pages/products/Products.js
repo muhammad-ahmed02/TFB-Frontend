@@ -228,7 +228,7 @@ export default function Product() {
                       order={order}
                       orderBy={orderBy}
                       headLabel={TABLE_HEAD}
-                      rowCount={PRODUCTLIST.length}
+                      rowCount={products.length}
                       numSelected={selected.length}
                       onRequestSort={handleRequestSort}
                       onSelectAllClick={handleSelectAllClick}
@@ -320,7 +320,7 @@ export default function Product() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={PRODUCTLIST?.length ?? 0}
+            count={products?.length ?? 0}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

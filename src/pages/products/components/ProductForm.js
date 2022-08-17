@@ -9,7 +9,7 @@ function ProductForm({
     name: '',
     purchasing_price: '',
     available_stock: '',
-    imei_or_serial_number: '',
+    imei_or_serial_number: [],
     image: null,
   },
   onSubmit,
@@ -98,18 +98,20 @@ function ProductForm({
                   helperText={formik.errors.available_stock}
                 />
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  label="IMEI OR Serial Number"
-                  name="imei_or_serial_number"
-                  type="number"
-                  fullWidth
-                  value={formik.values.imei_or_serial_number}
-                  onChange={formik.handleChange}
-                  error={formik.errors.imei_or_serial_number}
-                  helperText={formik.errors.imei_or_serial_number}
-                />
-              </Grid>
+              {Array.from(Array(formik.values.available_stock), (e, i) => (
+                <Grid item xs={12} key={i}>
+                  <TextField
+                    label={`IMEI OR Serial Number ${i+1}`}
+                    name={`imei_or_serial_number[${i}]`}
+                    type="text"
+                    fullWidth
+                    value={formik.values.imei_or_serial_number[i]}
+                    onChange={formik.handleChange}
+                    error={formik.errors.imei_or_serial_number}
+                    helperText={formik.errors.imei_or_serial_number}
+                  />
+                </Grid>
+              ))}
             </Grid>
           </Stack>
 

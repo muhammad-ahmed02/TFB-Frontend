@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { CircularProgress, Container } from '@mui/material';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useToast } from '../../hooks/useToast';
+import Page from '../../components/Page';
 import CashOrderForm from './components/CashOrderForm';
 import { getCashOrder, updateCashOrder } from '../../service/api';
 
@@ -26,10 +27,12 @@ function CashOrderEdit() {
   return isLoading ? (
     <CircularProgress />
   ) : (
-    <Container>
-      <h1>Update Cash Order</h1>
-      <CashOrderForm initialValues={data} onSubmit={mutate} />
-    </Container>
+    <Page title="Update Cash Order">
+      <Container>
+        <h1>Update Cash Order</h1>
+        <CashOrderForm initialValues={data} onSubmit={mutate} />
+      </Container>
+    </Page>
   );
 }
 

@@ -7,7 +7,7 @@ import Iconify from '../../../components/Iconify';
 
 // ----------------------------------------------------------------------
 
-export default function MoreMenu({ pathWithId, onDelete }) {
+export default function MoreMenu({ pathWithId, onDelete, invoicePath }) {
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -42,6 +42,16 @@ export default function MoreMenu({ pathWithId, onDelete }) {
             <ListItemText primary="Edit" primaryTypographyProps={{ variant: 'body2' }} />
           </MenuItem>
         </RouterLink>
+        {invoicePath && (
+          <a href={invoicePath} target="_blank" rel="noreferrer">
+            <MenuItem sx={{ color: 'text.secondary' }}>
+              <ListItemIcon>
+                <Iconify icon="foundation:page-export-pdf" width={24} height={24} />
+              </ListItemIcon>
+              <ListItemText primary="Export" primaryTypographyProps={{ variant: 'body2' }} />
+            </MenuItem>
+          </a>
+        )}
       </Menu>
     </>
   );

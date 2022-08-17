@@ -3,6 +3,7 @@ import { Card, Grid, InputAdornment, Stack, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import React from 'react';
 import { cashOrderSchema } from './cashOrderSchema';
+import IMEISelect from './ImeiSelect';
 import ProductSelect from './ProductSelect';
 import SellerSelect from './SellerSelect';
 
@@ -13,6 +14,7 @@ function CashOrderForm({
     sale_by: '',
     sale_price: '',
     warranty: 0,
+    imei_number: '',
   },
   onSubmit,
   validationSchema,
@@ -58,9 +60,19 @@ function CashOrderForm({
                 helperText={formik.errors.sale_by}
               />
             </Grid>
+
             <Grid item xs={12} md={3}>
+              <IMEISelect
+                value={formik.values.imei_number}
+                onSelect={(e, { label }) => formik.setFieldValue('imei_number', label)}
+                error={!!formik.errors.imei_number}
+                helperText={formik.errors.imei_number}
+              />
+            </Grid>
+          </Grid>
+          <Grid container spacing={0}>
+            <Grid item xs={12} md={5} lg={6}>
               <TextField
-                fullWidth
                 label="Sale price"
                 name="sale_price"
                 type="number"
@@ -73,20 +85,21 @@ function CashOrderForm({
                 helperText={formik.errors.sale_price}
               />
             </Grid>
+            <Grid item xs={12} md={6} lg={6}>
+              <TextField
+                label="Warranty"
+                name="warranty"
+                type="number"
+                InputProps={{
+                  endAdornment: <InputAdornment position="start">Days</InputAdornment>,
+                }}
+                value={formik.values.warranty}
+                onChange={formik.handleChange}
+                error={formik.errors.warranty}
+                helperText={formik.errors.warranty}
+              />
+            </Grid>
           </Grid>
-
-          <TextField
-            label="Warranty"
-            name="warranty"
-            type="number"
-            InputProps={{
-              startAdornment: <InputAdornment position="start">Days</InputAdornment>,
-            }}
-            value={formik.values.warranty === 0 ? '' : formik.values.warranty}
-            onChange={formik.handleChange}
-            error={formik.errors.warranty}
-            helperText={formik.errors.warranty}
-          />
 
           <LoadingButton fullWidth={false} size="large" type="submit" variant="contained" loading={false}>
             Save Cash Order

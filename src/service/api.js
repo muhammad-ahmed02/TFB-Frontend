@@ -61,3 +61,10 @@ export const deleteReturnCashOrder = (id) => api.delete(`/return-cashorder/${id}
 
 // Profile
 export const getUser = () => api.get(`/accounts/user/`);
+
+// IMEI
+export const getIMEIs = () => api.get('/imei-numbers/').then((res) => res.data);
+export const getIMEI = (id) => api.get(`/imei-numbers/${id}`).then((res) => res.data);
+export const createIMEI = (values) => api.post('/imei-numbers/', values).then((res) => res.data);
+export const deleteIMEI = (id) => api.delete(`/imei-numbers/${id}`).then((res) => res.data);
+export const updateIMEI = (id, values) => api.patch(`/imei-numbers/${id}`, values).then((res) => res.data);

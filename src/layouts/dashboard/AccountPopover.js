@@ -19,7 +19,7 @@ const MENU_OPTIONS = [
     linkTo: '/',
   },
   {
-    label: 'Profile',
+    label: 'Business Stats',
     icon: 'eva:person-fill',
     linkTo: '#',
   },
