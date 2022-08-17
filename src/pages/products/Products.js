@@ -1,5 +1,5 @@
 import { filter } from 'lodash';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 // material
 import {
@@ -19,11 +19,11 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { deleteProduct, getProducts } from '../../service/api';
+import TableInput from '../../sections/@dashboard/table-components/TableInput';
+import { buklUpdteProducts, deleteProduct, getProducts } from '../../service/api';
 import { useToast } from '../../hooks/useToast';
 // components
 import Page from '../../components/Page';
-import Label from '../../components/Label';
 import Scrollbar from '../../components/Scrollbar';
 import Iconify from '../../components/Iconify';
 import SearchNotFound from '../../components/SearchNotFound';
@@ -77,9 +77,23 @@ export default function Product() {
   const { showToast } = useToast();
   const queryClient = useQueryClient();
 
-  const { data, isLoading } = useQuery({
+  const [products, setProducts] = useState([]);
+  const [areEditable, setAreEditable] = useState(false);
+
+  const { isLoading } = useQuery({
     queryKey: 'getProducts',
     queryFn: getProducts,
+    onSuccess: (data) => setProducts(data?.results),
+  });
+
+  const { mutate: bulkUpdateFn } = useMutation((products) => buklUpdteProducts(products), {
+    onSuccess: () => {
+      setAreEditable(false);
+      showToast(`Products updated successfully`);
+    },
+    onError: (error) => {
+      showToast(error.message);
+    },
   });
 
   const { mutate: deleteProductFn } = useMutation((id) => deleteProduct(id), {
@@ -112,7 +126,7 @@ export default function Product() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = data.map((n) => n.id);
+      const newSelecteds = products.map((n) => n.id);
       setSelected(newSelecteds);
       return;
     }
@@ -147,9 +161,22 @@ export default function Product() {
     setFilterName(event.target.value);
   };
 
+  const handleChange = (event, id) =>
+    setProducts(
+      products.map((product) => {
+        if (product.id === id) {
+          return {
+            ...product,
+            [event.target.name]: event.target.value,
+          };
+        }
+        return product;
+      })
+    );
+
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - PRODUCTLIST.length) : 0;
 
-  const filteredProducts = applySortFilter(data?.results ?? [], getComparator(order, orderBy), filterName);
+  const filteredProducts = applySortFilter(products ?? [], getComparator(order, orderBy), filterName);
 
   const isProductsNotFound = filteredProducts.length === 0;
 
@@ -160,14 +187,24 @@ export default function Product() {
           <Typography variant="h4" gutterBottom>
             Products
           </Typography>
-          <Button
-            variant="contained"
-            component={RouterLink}
-            to="/dashboard/products/add"
-            startIcon={<Iconify icon="eva:plus-fill" />}
-          >
-            New Product
-          </Button>
+          <div>
+            <Button
+              className="bulk-edit-btn"
+              variant="contained"
+              onClick={() => (areEditable ? bulkUpdateFn(products) : setAreEditable(!areEditable))}
+              startIcon={<Iconify icon={areEditable ? 'eva:save-fill' : 'eva:edit-fill'} />}
+            >
+              {areEditable ? 'Save' : 'Bulk Edit'}
+            </Button>
+            <Button
+              variant="contained"
+              component={RouterLink}
+              to="/dashboard/products/add"
+              startIcon={<Iconify icon="eva:plus-fill" />}
+            >
+              New Product
+            </Button>
+          </div>
         </Stack>
 
         <Card>
@@ -197,56 +234,69 @@ export default function Product() {
                       onSelectAllClick={handleSelectAllClick}
                     />
                     <TableBody>
-                      {filteredProducts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                        const {
-                          id,
-                          name,
-                          purchasing_price,
-                          available_stock,
-                          image,
-                          number_of_items_saled,
-                          updated_at,
-                        } = row;
-                        const isItemSelected = selected.indexOf(name) !== -1;
+                      {filteredProducts
+                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        .map((row, index) => {
+                          const {
+                            id,
+                            name,
+                            purchasing_price,
+                            available_stock,
+                            image,
+                            number_of_items_saled,
+                            updated_at,
+                          } = row;
+                          const isItemSelected = selected.indexOf(name) !== -1;
 
-                        return (
-                          <TableRow
-                            hover
-                            key={id}
-                            tabIndex={-1}
-                            id="checkbox"
-                            selected={isItemSelected}
-                            aria-checked={isItemSelected}
-                          >
-                            <TableCell padding="checkbox">
-                              <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, name)} />
-                            </TableCell>
-                            <TableCell component="th" scope="row" padding="none">
-                              <Stack direction="row" alignItems="center" spacing={2}>
-                                <Avatar alt={name} src={image} />
-                                <Typography variant="subtitle2" noWrap>
-                                  {name}
-                                </Typography>
-                              </Stack>
-                            </TableCell>
-                            <TableCell align="left">Rs. {purchasing_price}</TableCell>
-                            <TableCell align="left">
-                              <Label variant="ghost" color={((available_stock ?? 0) <= 0 && 'error') || 'success'}>
-                                {available_stock ?? 0}
-                              </Label>
-                            </TableCell>
-                            <TableCell align="left">{number_of_items_saled ?? 0}</TableCell>
-                            <TableCell align="left">{new Date(updated_at).toDateString()}</TableCell>
+                          return (
+                            <TableRow
+                              hover
+                              key={id}
+                              tabIndex={-1}
+                              id="checkbox"
+                              selected={isItemSelected}
+                              aria-checked={isItemSelected}
+                            >
+                              <TableCell padding="checkbox">
+                                <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, name)} />
+                              </TableCell>
+                              <TableCell component="th" scope="row" padding="none">
+                                <Stack direction="row" alignItems="center" spacing={2}>
+                                  <Avatar alt={name} src={image} />
+                                  <Typography variant="subtitle2" noWrap>
+                                    {name}
+                                  </Typography>
+                                </Stack>
+                              </TableCell>
 
-                            <TableCell align="right">
-                              <MoreMenu
-                                onDelete={() => deleteProductFn(id)}
-                                pathWithId={`/dashboard/products/edit/${id}`}
+                              <TableInput
+                                disabled={!areEditable}
+                                name="purchasing_price"
+                                lebel="Rs."
+                                value={purchasing_price}
+                                onChange={(event) => handleChange(event, id)}
                               />
-                            </TableCell>
-                          </TableRow>
-                        );
-                      })}
+
+                              <TableInput
+                                disabled={!areEditable}
+                                name="available_stock"
+                                className={`indicator ${((available_stock ?? 0) <= 0 && 'error') || 'success'}`}
+                                value={available_stock ?? 0}
+                                onChange={(event) => handleChange(event, id)}
+                              />
+
+                              <TableCell align="left">{number_of_items_saled ?? 0}</TableCell>
+                              <TableCell align="left">{new Date(updated_at).toDateString()}</TableCell>
+
+                              <TableCell align="right">
+                                <MoreMenu
+                                  onDelete={() => deleteProductFn(id)}
+                                  pathWithId={`/dashboard/products/edit/${id}`}
+                                />
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
                       {emptyRows > 0 && (
                         <TableRow style={{ height: 53 * emptyRows }}>
                           <TableCell colSpan={6} />

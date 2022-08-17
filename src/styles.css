@@ -40,6 +40,42 @@
     text-decoration: none;
 }
 
+.bulk-edit-btn {
+    margin-right: 1rem;
+}
+
+.table-input {
+    border: none;
+    padding-left: 8.5px;
+    line-height: 1.5714285714285714;
+    font-size: 0.875rem;
+    font-family: Public Sans,sans-serif;
+    font-weight: 400;
+    color: #212B36;
+    border-radius: 6px;
+    max-width: 90px;
+}
+
+.table-input:focus-visible {
+    outline-color: rgba(241, 243, 244, 1);
+}
+
+.table-input.indicator {
+font-size: 0.75rem;
+font-family: Public Sans,sans-serif;
+font-weight:700;
+}
+
+.table-input.success {
+    color: #229A16;
+    background-color: rgba(84, 214, 44, 0.16);
+}
+
+.table-input.error {
+    color: #B72136;
+    background-color: rgba(255, 72, 66, 0.16)
+}
+
 
 @media (max-width: 768px) {
     .entity-form {

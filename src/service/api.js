@@ -34,6 +34,7 @@ export const getProduct = (id) => api.get(`/products/${id}/`).then((res) => res.
 export const createProduct = (product) => api.post('/products/', product).then((res) => res.data);
 export const updateProduct = (id, product) => api.put(`/products/${id}/`, product).then((res) => res.data);
 export const deleteProduct = (id) => api.delete(`/products/${id}/`).then((res) => res.data);
+export const buklUpdteProducts = (products) => api.post(`/products/bulk_update/`, products).then((res) => res.data);
 
 // Sellers
 export const getSellers = () => api.get('/seller-profile/').then((res) => res.data);
