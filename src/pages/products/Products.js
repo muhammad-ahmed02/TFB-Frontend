@@ -1,5 +1,5 @@
 import { filter } from 'lodash';
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 // material
 import {
@@ -234,69 +234,67 @@ export default function Product() {
                       onSelectAllClick={handleSelectAllClick}
                     />
                     <TableBody>
-                      {filteredProducts
-                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        .map((row, index) => {
-                          const {
-                            id,
-                            name,
-                            purchasing_price,
-                            available_stock,
-                            image,
-                            number_of_items_saled,
-                            updated_at,
-                          } = row;
-                          const isItemSelected = selected.indexOf(name) !== -1;
+                      {filteredProducts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                        const {
+                          id,
+                          name,
+                          purchasing_price,
+                          available_stock,
+                          image,
+                          number_of_items_saled,
+                          updated_at,
+                        } = row;
+                        const isItemSelected = selected.indexOf(name) !== -1;
 
-                          return (
-                            <TableRow
-                              hover
-                              key={id}
-                              tabIndex={-1}
-                              id="checkbox"
-                              selected={isItemSelected}
-                              aria-checked={isItemSelected}
-                            >
-                              <TableCell padding="checkbox">
-                                <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, name)} />
-                              </TableCell>
-                              <TableCell component="th" scope="row" padding="none">
-                                <Stack direction="row" alignItems="center" spacing={2}>
-                                  <Avatar alt={name} src={image} />
-                                  <Typography variant="subtitle2" noWrap>
-                                    {name}
-                                  </Typography>
-                                </Stack>
-                              </TableCell>
+                        return (
+                          <TableRow
+                            hover
+                            key={id}
+                            tabIndex={-1}
+                            id="checkbox"
+                            selected={isItemSelected}
+                            aria-checked={isItemSelected}
+                          >
+                            <TableCell padding="checkbox">
+                              <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, name)} />
+                            </TableCell>
+                            <TableCell component="th" scope="row" padding="none">
+                              <Stack direction="row" alignItems="center" spacing={2}>
+                                <Avatar alt={name} src={image} />
+                                <Typography variant="subtitle2" noWrap>
+                                  {name}
+                                </Typography>
+                              </Stack>
+                            </TableCell>
 
-                              <TableInput
-                                disabled={!areEditable}
-                                name="purchasing_price"
-                                lebel="Rs."
-                                value={purchasing_price}
-                                onChange={(event) => handleChange(event, id)}
+                            <TableInput
+                              disabled={!areEditable}
+                              name="purchasing_price"
+                              lebel="Rs."
+                              value={purchasing_price}
+                              onChange={(event) => handleChange(event, id)}
+                            />
+
+                            <TableInput
+                              disabled={!areEditable}
+                              name="available_stock"
+                              className={`indicator ${((available_stock ?? 0) <= 0 && 'error') || 'success'}`}
+                              value={available_stock ?? 0}
+                              onChange={(event) => handleChange(event, id)}
+                            />
+
+                            <TableCell align="left">{number_of_items_saled ?? 0}</TableCell>
+                            <TableCell align="left">{new Date(updated_at).toDateString()}</TableCell>
+
+                            <TableCell align="right">
+                              <MoreMenu
+                                onDelete={() => deleteProductFn(id)}
+                                pathWithId={`/dashboard/products/edit/${id}`}
                               />
-
-                              <TableInput
-                                disabled={!areEditable}
-                                name="available_stock"
-                                className={`indicator ${((available_stock ?? 0) <= 0 && 'error') || 'success'}`}
-                                value={available_stock ?? 0}
-                                onChange={(event) => handleChange(event, id)}
-                              />
-
-                              <TableCell align="left">{number_of_items_saled ?? 0}</TableCell>
-                              <TableCell align="left">{new Date(updated_at).toDateString()}</TableCell>
-
-                              <TableCell align="right">
-                                <MoreMenu
-                                  onDelete={() => deleteProductFn(id)}
-                                  pathWithId={`/dashboard/products/edit/${id}`}
-                                />
-                              </TableCell>
-                            </TableRow>
-                          );
-                        })}
+                            </TableCell>
+                          </TableRow>
+                        );
+                      })}
                       {emptyRows > 0 && (
                         <TableRow style={{ height: 53 * emptyRows }}>
                           <TableCell colSpan={6} />
