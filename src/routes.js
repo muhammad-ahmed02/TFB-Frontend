@@ -21,6 +21,7 @@ import Settings from './pages/settings/Settings';
 import ReturnCashOrders from './pages/returncashorders/ReturnCashOrders';
 import ReturnCashOrderAdd from './pages/returncashorders/ReturnCashOrderAdd';
 import ReturnCashOrderEdit from './pages/returncashorders/ReturnCashOrderEdit';
+import BusinessStats from './pages/businessstats/BusinessStats';
 
 // ----------------------------------------------------------------------
 
@@ -64,6 +65,7 @@ export default function Router() {
           ],
         },
         { path: 'settings', element: <Settings /> },
+        { path: 'business-stats', element: <BusinessStats /> },
       ],
     },
     {

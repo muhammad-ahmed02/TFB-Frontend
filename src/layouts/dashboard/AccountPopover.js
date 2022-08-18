@@ -21,7 +21,7 @@ const MENU_OPTIONS = [
   {
     label: 'Business Stats',
     icon: 'eva:person-fill',
-    linkTo: '#',
+    linkTo: 'business-stats',
   },
   {
     label: 'Settings',

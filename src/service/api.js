@@ -68,3 +68,7 @@ export const getIMEI = (id) => api.get(`/imei-numbers/${id}`).then((res) => res.
 export const createIMEI = (values) => api.post('/imei-numbers/', values).then((res) => res.data);
 export const deleteIMEI = (id) => api.delete(`/imei-numbers/${id}`).then((res) => res.data);
 export const updateIMEI = (id, values) => api.patch(`/imei-numbers/${id}`, values).then((res) => res.data);
+
+// Company Profile
+export const getCompanyProfile = (id) => api.get(`/company-profile/${id}/`).then((res) => res.data);
+export const updateCompanyProfile = (id, values) => api.put(`/company-profile/${id}/`, values).then((res) => res.data);

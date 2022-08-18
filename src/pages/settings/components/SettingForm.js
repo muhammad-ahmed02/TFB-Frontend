@@ -58,19 +58,6 @@ function SettingForm({
           <LoadingButton fullWidth={false} size="large" type="submit" variant="contained">
               Save Settings
             </LoadingButton>
-          {/* {formik.values.owner_share +
-            formik.values.business_share +
-            formik.values.seller_share +
-            formik.values.expense_share ===
-          100 ? (
-            <LoadingButton fullWidth={false} size="large" type="submit" variant="contained">
-              Save Settings
-            </LoadingButton>
-          ) : (
-            <FormHelperText error>
-              <b>Note:</b> The sum of all should be equal to 100.
-            </FormHelperText>
-          )} */}
         </Stack>
       </Card>
     </form>
