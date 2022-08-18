@@ -24,7 +24,8 @@ function ProductSelect({ value, onSelect, error, helperText, ...props }) {
       disablePortal
       disabled={isLoading}
       options={productOptions}
-      value={productOptions.find((product) => product.id === value)?.label}
+      value={!isLoading ? productOptions.find((product) => product.id === value)?.label : ''}
+      isOptionEqualToValue={(product, value) => product.label === value}
       renderInput={(params) => <TextField label="Product" {...params} error={error} helperText={helperText} />}
       onChange={onSelect}
       {...props}

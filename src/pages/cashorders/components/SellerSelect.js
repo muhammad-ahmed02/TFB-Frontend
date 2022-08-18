@@ -22,9 +22,9 @@ function SellerSelect({ value, onSelect, error, helperText, ...props }) {
   return (
     <Autocomplete
       disablePortal
-      disabled={isLoading}
       options={sellerOptions}
-      value={sellerOptions.find((seller) => seller.id === value)?.label}
+      value={!isLoading ? sellerOptions.find((seller) => seller.id === value)?.label : ''}
+      isOptionEqualToValue={(seller, value) => seller.label === value}
       renderInput={(params) => <TextField label="Seller" {...params} error={error} helperText={helperText} />}
       onChange={onSelect}
       {...props}
