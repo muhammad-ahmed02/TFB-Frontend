@@ -35,7 +35,7 @@ ListToolbar.propTypes = {
   onFilterName: PropTypes.func,
 };
 
-export default function ListToolbar({ numSelected, filterName, onFilterName, text }) {
+export default function ListToolbar({ onDelete, numSelected, filterName, onFilterName, text }) {
   return (
     <RootStyle
       sx={{
@@ -63,17 +63,19 @@ export default function ListToolbar({ numSelected, filterName, onFilterName, tex
       )}
 
       {numSelected > 0 ? (
-        <Tooltip title="Delete">
+        <Tooltip title="Delete" onClick={onDelete}>
           <IconButton>
             <Iconify icon="eva:trash-2-fill" />
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <Iconify icon="ic:round-filter-list" />
-          </IconButton>
-        </Tooltip>
+        // <Tooltip title="Filter list">
+        //   <IconButton>
+        //     <Iconify icon="ic:round-filter-list" />
+        //   </IconButton>
+        // </Tooltip>
+        <></>
+        // place to put export button
       )}
     </RootStyle>
   );

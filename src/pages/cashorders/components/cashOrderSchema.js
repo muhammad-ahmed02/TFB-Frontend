@@ -6,5 +6,5 @@ export const cashOrderSchema = Yup.object().shape({
   sale_by: Yup.number().required('Sale by is required'),
   imei_number: Yup.string().required('IMEI number is required'),
   sale_price: Yup.number().required('Sale price is required'),
-  warranty: Yup.number().nullable(),
+  warranty: Yup.number().min(0, "Warranty can't be negative").nullable(),
 });

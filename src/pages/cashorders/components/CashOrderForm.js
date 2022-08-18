@@ -60,22 +60,21 @@ function CashOrderForm({
                 helperText={formik.errors.sale_by}
               />
             </Grid>
-
             <Grid item xs={12} md={3}>
               <IMEISelect
+                product={formik.values.product !== '' && formik.values.product}
                 value={formik.values.imei_number}
                 onSelect={(e, { label }) => formik.setFieldValue('imei_number', label)}
                 error={!!formik.errors.imei_number}
                 helperText={formik.errors.imei_number}
               />
             </Grid>
-          </Grid>
-          <Grid container spacing={0}>
-            <Grid item xs={12} md={5} lg={6}>
+            <Grid item xs={12} md={3}>
               <TextField
                 label="Sale price"
                 name="sale_price"
                 type="number"
+                fullWidth
                 InputProps={{
                   startAdornment: <InputAdornment position="start">RS</InputAdornment>,
                 }}
@@ -85,11 +84,12 @@ function CashOrderForm({
                 helperText={formik.errors.sale_price}
               />
             </Grid>
-            <Grid item xs={12} md={6} lg={6}>
+            <Grid item xs={12} md={3}>
               <TextField
                 label="Warranty"
                 name="warranty"
                 type="number"
+                fullWidth
                 InputProps={{
                   endAdornment: <InputAdornment position="start">Days</InputAdornment>,
                 }}

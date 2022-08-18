@@ -27,7 +27,6 @@ import Iconify from '../../components/Iconify';
 import SearchNotFound from '../../components/SearchNotFound';
 import { ListHead, ListToolbar, MoreMenu } from '../../sections/@dashboard/table-components';
 // mock
-import USERLIST from '../../_mock/user';
 import { REACT_APP_BACKEND_URL } from '../../config';
 
 // ----------------------------------------------------------------------
@@ -95,13 +94,18 @@ export default function CashOrders() {
     },
   });
 
+  const bulkDelete = (ids) => {
+    ids.map((id) => deleteCashOrderFn(id));
+    setSelected([]);
+  };
+
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState('asc');
 
   const [selected, setSelected] = useState([]);
 
-  const [orderBy, setOrderBy] = useState('name');
+  const [orderBy, setOrderBy] = useState('unique_id');
 
   const [filterName, setFilterName] = useState('');
 
@@ -115,7 +119,7 @@ export default function CashOrders() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
+      const newSelecteds = data.results.map((n) => n.id);
       setSelected(newSelecteds);
       return;
     }
@@ -189,6 +193,7 @@ export default function CashOrders() {
         <Card>
           <ListToolbar
             text="cash order"
+            onDelete={() => bulkDelete(selected)}
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
