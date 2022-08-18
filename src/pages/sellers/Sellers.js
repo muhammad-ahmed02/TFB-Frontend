@@ -35,9 +35,10 @@ import USERLIST from '../../_mock/user';
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
   { id: 'profit', label: 'Profit', alignRight: false },
+  { id: 'seller_share', label: 'Seller Share', alignRight: false },
+  { id: 'business_share', label: 'Business Share', alignRight: false },
   { id: 'updated_at', label: 'Updated date', alignRight: false },
   { id: 'created_at', label: 'Created date', alignRight: false },
-  // { id: 'status', label: 'Status', alignRight: false },
   { id: '' },
 ];
 
@@ -210,7 +211,7 @@ export default function Sellers() {
                     />
                     <TableBody>
                       {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                        const { id, username, profit, created_at, updated_at } = row;
+                        const { id, username, profit, seller_share, business_share, created_at, updated_at } = row;
                         const isItemSelected = selected.indexOf(username) !== -1;
 
                         return (
@@ -234,6 +235,8 @@ export default function Sellers() {
                               </Stack>
                             </TableCell>
                             <TableCell align="left">Rs. {profit}</TableCell>
+                            <TableCell align="right">{seller_share}%</TableCell>
+                            <TableCell align="right">{business_share}%</TableCell>
                             <TableCell align="left">{convertDateTimeObject(updated_at)}</TableCell>
                             <TableCell align="left">{convertDateTimeObject(created_at)}</TableCell>
 
