@@ -28,6 +28,7 @@ import SearchNotFound from '../../components/SearchNotFound';
 import { ListHead, ListToolbar, MoreMenu } from '../../sections/@dashboard/table-components';
 // mock
 import USERLIST from '../../_mock/user';
+import ReturnCashOrderExportButton from './components/ReturnCashOrderExportButton';
 
 // ----------------------------------------------------------------------
 
@@ -41,8 +42,8 @@ const TABLE_HEAD = [
   { id: 'profit', label: 'Profit', alignRight: false },
   { id: 'return_amount', label: 'Return amount', alignRight: false },
   { id: 'warranty', label: 'Warranty', alignRight: false },
-  { id: 'created_at', label: 'Buying Date', alignRight: false },
-  { id: 'created_at', label: 'Returning Date', alignRight: false },
+  { id: 'buy_date', label: 'Buying Date', alignRight: false },
+  { id: 'return_date', label: 'Returning Date', alignRight: false },
   { id: '' },
 ];
 
@@ -180,14 +181,17 @@ export default function ReturnCashOrders() {
           <Typography variant="h4" gutterBottom>
             Return Cash Order
           </Typography>
-          <Button
-            variant="contained"
-            component={RouterLink}
-            to="/dashboard/return-cashorder/add"
-            startIcon={<Iconify icon="eva:plus-fill" />}
-          >
-            New return cash order
-          </Button>
+          <div>
+            <ReturnCashOrderExportButton TABLE_HEAD={TABLE_HEAD} data={filteredOrders} />
+            <Button
+              variant="contained"
+              component={RouterLink}
+              to="/dashboard/return-cashorder/add"
+              startIcon={<Iconify icon="eva:plus-fill" />}
+            >
+              New return cash order
+            </Button>
+          </div>
         </Stack>
 
         <Card>
