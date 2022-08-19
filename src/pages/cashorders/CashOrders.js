@@ -28,6 +28,7 @@ import SearchNotFound from '../../components/SearchNotFound';
 import { ListHead, ListToolbar, MoreMenu } from '../../sections/@dashboard/table-components';
 // mock
 import { REACT_APP_BACKEND_URL } from '../../config';
+import CashOrderExportButton from './components/CashOrderExportButton';
 
 // ----------------------------------------------------------------------
 
@@ -35,7 +36,7 @@ const TABLE_HEAD = [
   { id: 'unique_id', label: 'UniqueID', alignRight: false },
   { id: 'customer_name', label: 'Customer', alignRight: false },
   { id: 'product', label: 'Product', alignRight: false },
-  { id: 'sale_by', label: 'Seller', alignRight: false },
+  { id: 'seller_name', label: 'Seller', alignRight: false },
   { id: 'sale_price', label: 'Sale price', alignRight: false },
   { id: 'cost_price', label: 'Cost price', alignRight: false },
   { id: 'profit', label: 'Profit', alignRight: false },
@@ -180,14 +181,17 @@ export default function CashOrders() {
           <Typography variant="h4" gutterBottom>
             Cash Order
           </Typography>
-          <Button
-            variant="contained"
-            component={RouterLink}
-            to="/dashboard/cashorder/add"
-            startIcon={<Iconify icon="eva:plus-fill" />}
-          >
-            New cash order
-          </Button>
+          <div>
+            <CashOrderExportButton TABLE_HEAD={TABLE_HEAD} data={filteredUsers} />
+            <Button
+              variant="contained"
+              component={RouterLink}
+              to="/dashboard/cashorder/add"
+              startIcon={<Iconify icon="eva:plus-fill" />}
+            >
+              New cash order
+            </Button>
+          </div>
         </Stack>
 
         <Card>
