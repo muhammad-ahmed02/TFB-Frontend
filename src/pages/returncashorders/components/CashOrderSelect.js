@@ -24,7 +24,8 @@ function CashOrderSelect({ value, onSelect, error, helperText, ...props }) {
       disablePortal
       disabled={isLoading}
       options={cashOrderOptions}
-      value={cashOrderOptions.find((cashOrder) => cashOrder.id === value)?.label}
+      value={!isLoading ? cashOrderOptions.find((cashOrder) => cashOrder.id === value)?.label : ''}
+      isOptionEqualToValue={(cashOrder, value) => cashOrder.label === value}
       renderInput={(params) => <TextField label="Cash Order" {...params} error={error} helperText={helperText} />}
       onChange={onSelect}
       {...props}
