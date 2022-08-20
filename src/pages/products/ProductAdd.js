@@ -11,7 +11,7 @@ function ProductAdd() {
   const navigate = useNavigate();
   const { mutate } = useMutation((values) => createProduct(values), {
     onSuccess: (data) => {
-      showToast(`Product ${data.name} added`);
+      showToast(`${data.name} added`);
       navigate('/dashboard/products/');
     },
     onError: (error) => {
@@ -20,7 +20,7 @@ function ProductAdd() {
   });
   return (
     <Container>
-      <h1>Add product</h1>
+      <h1>Add Product</h1>
       <ProductForm onSubmit={mutate} />
     </Container>
   );

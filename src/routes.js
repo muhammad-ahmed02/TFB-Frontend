@@ -7,11 +7,11 @@ import Sellers from './pages/sellers/Sellers';
 import Login from './pages/Login';
 import NotFound from './pages/Page404';
 import Register from './pages/Register';
-import Products from './pages/products/Products';
+import ProductStock from './pages/productstock/ProductsStock';
 import DashboardApp from './pages/DashboardApp';
 import withAuthenticationRequired from './utils/withAuthenticationRequired';
-import ProductAdd from './pages/products/ProductAdd';
-import ProductEdit from './pages/products/ProductEdit';
+import ProductStockAdd from './pages/productstock/ProductStockAdd';
+import ProductStockEdit from './pages/productstock/ProductStockEdit';
 import SellerAdd from './pages/sellers/SellerAdd';
 import SellerEdit from './pages/sellers/SellerEdit';
 import CashOrders from './pages/cashorders/CashOrders';
@@ -22,6 +22,9 @@ import ReturnCashOrders from './pages/returncashorders/ReturnCashOrders';
 import ReturnCashOrderAdd from './pages/returncashorders/ReturnCashOrderAdd';
 import ReturnCashOrderEdit from './pages/returncashorders/ReturnCashOrderEdit';
 import BusinessStats from './pages/businessstats/BusinessStats';
+import Products from './pages/products/Products';
+import ProductAdd from './pages/products/ProductAdd';
+import ProductEdit from './pages/products/ProductEdit';
 
 // ----------------------------------------------------------------------
 
@@ -35,9 +38,17 @@ export default function Router() {
         {
           path: 'products',
           children: [
-            { path: '/dashboard/products', element: <Products /> },
+            { path: '/dashboard/products', element: <Products />},
             { path: 'add', element: <ProductAdd /> },
             { path: 'edit/:id', element: <ProductEdit /> },
+          ]
+        },
+        {
+          path: 'product-stock',
+          children: [
+            { path: '/dashboard/product-stock', element: <ProductStock /> },
+            { path: 'add', element: <ProductStockAdd /> },
+            { path: 'edit/:id', element: <ProductStockEdit /> },
           ],
         },
         {

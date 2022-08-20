@@ -10,11 +10,12 @@ import SellerSelect from './SellerSelect';
 function CashOrderForm({
   initialValues = {
     customer_name: '',
-    product: '',
+    product_stock: '',
     sale_by: '',
     sale_price: '',
     warranty: 0,
-    imei_number: '',
+    imei_or_serial_number: '',
+    quantity: 1,
   },
   onSubmit,
   validationSchema,
@@ -44,14 +45,14 @@ function CashOrderForm({
                 helperText={formik.errors.customer_name}
               />
             </Grid>
-            <Grid item xs={12} md={3}>
+            {/* <Grid item xs={12} md={3}>
               <ProductSelect
                 value={formik.values.product}
                 onSelect={(e, { id }) => formik.setFieldValue('product', id)}
                 error={!!formik.errors.product}
                 helperText={formik.errors.product}
               />
-            </Grid>
+            </Grid> */}
             <Grid item xs={12} md={3}>
               <SellerSelect
                 value={formik.values.sale_by}
@@ -64,7 +65,7 @@ function CashOrderForm({
               <IMEISelect
                 product={formik.values.product !== '' && formik.values.product}
                 value={formik.values.imei_number}
-                onSelect={(e, { label }) => formik.setFieldValue('imei_number', label)}
+                onSelect={(e, { label }) => formik.setFieldValue('imei_or_serial_number', label)}
                 error={!!formik.errors.imei_number}
                 helperText={formik.errors.imei_number}
               />

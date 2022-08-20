@@ -27,6 +27,7 @@ import Scrollbar from '../../components/Scrollbar';
 import Iconify from '../../components/Iconify';
 import SearchNotFound from '../../components/SearchNotFound';
 import { ListHead, ListToolbar, MoreMenu } from '../../sections/@dashboard/table-components';
+import { convertDateTimeObject } from '../../utils/formatDate';
 // mock
 import USERLIST from '../../_mock/user';
 
@@ -152,19 +153,6 @@ export default function Sellers() {
   const filteredUsers = applySortFilter(data?.results ?? [], getComparator(order, orderBy), filterName);
 
   const isUserNotFound = filteredUsers.length === 0;
-
-  // eslint-disable-next-line
-  const addZeroBeforeNum = (num) => {
-    // eslint-disable-next-line
-    return `${parseInt(num) < 10 ? '0' + num : num}`;
-  };
-
-  const convertDateTimeObject = (date) => {
-    const datetime = `${new Date(date).toDateString()} ${addZeroBeforeNum(
-      new Date(date).getHours()
-    )}:${addZeroBeforeNum(new Date(date).getMinutes())}:${addZeroBeforeNum(new Date(date).getSeconds())}`;
-    return datetime;
-  };
 
   return (
     <Page title="Seller">

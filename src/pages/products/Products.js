@@ -6,7 +6,6 @@ import {
   Card,
   Table,
   Stack,
-  Avatar,
   Button,
   Checkbox,
   TableRow,
@@ -19,8 +18,7 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import TableInput from '../../sections/@dashboard/table-components/TableInput';
-import { buklUpdteProducts, deleteProduct, getProducts } from '../../service/api';
+import { deleteProduct, getProducts } from '../../service/api';
 import { useToast } from '../../hooks/useToast';
 // components
 import Page from '../../components/Page';
@@ -28,17 +26,13 @@ import Scrollbar from '../../components/Scrollbar';
 import Iconify from '../../components/Iconify';
 import SearchNotFound from '../../components/SearchNotFound';
 import { ListHead, MoreMenu, ListToolbar } from '../../sections/@dashboard/table-components';
-// mock
-import PRODUCTLIST from '../../_mock/products';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
-  { id: 'purchasing_price', label: 'Purchasing Price', alignRight: false },
-  { id: 'available_stock', label: 'Available', alignRight: false },
-  { id: 'number_of_items_saled', label: 'Sold', alignRight: false },
-  { id: 'update_at', label: 'Date', alignRight: false },
+  { id: 'updated_at', label: 'Updated Date', alignRight: false },
+  { id: 'created_at', label: 'Created Date', alignRight: false },
   { id: '' },
 ];
 
@@ -73,12 +67,11 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function Product() {
+export default function Products() {
   const { showToast } = useToast();
   const queryClient = useQueryClient();
 
   const [products, setProducts] = useState([]);
-  const [areEditable, setAreEditable] = useState(false);
 
   const { isLoading } = useQuery({
     queryKey: 'getProducts',
@@ -86,21 +79,11 @@ export default function Product() {
     onSuccess: (data) => setProducts(data?.results),
   });
 
-  const { mutate: bulkUpdateFn } = useMutation((products) => buklUpdteProducts(products), {
-    onSuccess: () => {
-      setAreEditable(false);
-      showToast(`Products updated successfully`);
-    },
-    onError: (error) => {
-      showToast(error.message);
-    },
-  });
-
   const { mutate: deleteProductFn } = useMutation((id) => deleteProduct(id), {
     onSuccess: () => {
       showToast(`Product deleted successfully`);
     },
-    onSettled: () => queryClient.invalidateQueries('getProducts'),
+    onSettled: () => queryClient.invalidateQueries('getProduct'),
     onError: (error) => {
       showToast(error.message);
     },
@@ -161,20 +144,7 @@ export default function Product() {
     setFilterName(event.target.value);
   };
 
-  const handleChange = (event, id) =>
-    setProducts(
-      products.map((product) => {
-        if (product.id === id) {
-          return {
-            ...product,
-            [event.target.name]: event.target.value,
-          };
-        }
-        return product;
-      })
-    );
-
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - PRODUCTLIST.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - products.results.length) : 0;
 
   const filteredProducts = applySortFilter(products ?? [], getComparator(order, orderBy), filterName);
 
@@ -189,14 +159,6 @@ export default function Product() {
           </Typography>
           <div>
             <Button
-              className="bulk-edit-btn"
-              variant="contained"
-              onClick={() => (areEditable ? bulkUpdateFn(products) : setAreEditable(!areEditable))}
-              startIcon={<Iconify icon={areEditable ? 'eva:save-fill' : 'eva:edit-fill'} />}
-            >
-              {areEditable ? 'Save' : 'Bulk Edit'}
-            </Button>
-            <Button
               variant="contained"
               component={RouterLink}
               to="/dashboard/products/add"
@@ -209,7 +171,7 @@ export default function Product() {
 
         <Card>
           <ListToolbar
-            text="product"
+            text="stock"
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
@@ -238,11 +200,8 @@ export default function Product() {
                         const {
                           id,
                           name,
-                          purchasing_price,
-                          available_stock,
-                          image,
-                          number_of_items_saled,
                           updated_at,
+                          created_at,
                         } = row;
                         const isItemSelected = selected.indexOf(name) !== -1;
 
@@ -258,33 +217,15 @@ export default function Product() {
                             <TableCell padding="checkbox">
                               <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, name)} />
                             </TableCell>
-                            <TableCell component="th" scope="row" padding="none">
-                              <Stack direction="row" alignItems="center" spacing={2}>
-                                <Avatar alt={name} src={image} />
+                            <TableCell component="th" scope="row" padding="none" align='center'>
+                              <Stack direction="row" alignItems="center" spacing={3}>
                                 <Typography variant="subtitle2" noWrap>
                                   {name}
                                 </Typography>
                               </Stack>
                             </TableCell>
-
-                            <TableInput
-                              disabled={!areEditable}
-                              name="purchasing_price"
-                              lebel="Rs."
-                              value={purchasing_price}
-                              onChange={(event) => handleChange(event, id)}
-                            />
-
-                            <TableInput
-                              disabled={!areEditable}
-                              name="available_stock"
-                              className={`indicator ${((available_stock ?? 0) <= 0 && 'error') || 'success'}`}
-                              value={available_stock ?? 0}
-                              onChange={(event) => handleChange(event, id)}
-                            />
-
-                            <TableCell align="left">{number_of_items_saled ?? 0}</TableCell>
                             <TableCell align="left">{new Date(updated_at).toDateString()}</TableCell>
+                            <TableCell align="left">{new Date(created_at).toDateString()}</TableCell>
 
                             <TableCell align="right">
                               <MoreMenu

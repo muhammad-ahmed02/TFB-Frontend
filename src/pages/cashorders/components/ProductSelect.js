@@ -1,19 +1,19 @@
 import React, { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Autocomplete, TextField } from '@mui/material';
-import { getProducts } from '../../../service/api';
+import { getProductStocks } from '../../../service/api';
 
 function ProductSelect({ value, onSelect, error, helperText, ...props }) {
   const { data, isLoading } = useQuery({
-    queryKey: 'getProducts',
-    queryFn: getProducts,
+    queryKey: 'getProductStocks',
+    queryFn: getProductStocks,
   });
 
   const productOptions = useMemo(() => {
     if (data?.results) {
-      return data.results.map(({ id, name }) => ({
+      return data.results.map(({ id, product }) => ({
         id,
-        label: name,
+        label: product.name,
       }));
     }
     return [];

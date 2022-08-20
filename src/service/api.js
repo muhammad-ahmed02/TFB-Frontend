@@ -34,7 +34,21 @@ export const getProduct = (id) => api.get(`/products/${id}/`).then((res) => res.
 export const createProduct = (product) => api.post('/products/', product).then((res) => res.data);
 export const updateProduct = (id, product) => api.put(`/products/${id}/`, product).then((res) => res.data);
 export const deleteProduct = (id) => api.delete(`/products/${id}/`).then((res) => res.data);
-export const buklUpdteProducts = (products) => api.post(`/products/bulk_update/`, products).then((res) => res.data);
+
+// Vendors
+export const getVendors = () => api.get('/vendor/').then((res) => res.data);
+export const getVendor = (id) => api.get(`/vendor/${id}/`).then((res) => res.data);
+export const createVendor = (vendor) => api.post('/vendor/', vendor).then((res) => res.data);
+export const updateVendor = (id, vendor) => api.put(`/vendor/${id}/`, vendor).then((res) => res.data);
+export const deleteVendor = (id) => api.delete(`/vendor/${id}/`).then((res) => res.data);
+
+// Product Stock
+export const getProductStocks = () => api.get('/products-stock/').then((res) => res.data);
+export const getProductStock = (id) => api.get(`/products-stock/${id}/`).then((res) => res.data);
+export const createProductStock = (product) => api.post('/products-stock/', product).then((res) => res.data);
+export const updateProductStock = (id, product) => api.put(`/products-stock/${id}/`, product).then((res) => res.data);
+export const deleteProductStock = (id) => api.delete(`/products-stock/${id}/`).then((res) => res.data);
+export const buklUpdateProductStocks = (products) => api.post(`/products-stock/bulk_update/`, products).then((res) => res.data);
 
 // Sellers
 export const getSellers = () => api.get('/seller-profile/').then((res) => res.data);
