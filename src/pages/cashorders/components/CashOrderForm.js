@@ -33,7 +33,7 @@ function CashOrderForm({
       <Card className="entity-form-card">
         <Stack spacing={3}>
           <Grid container spacing={3}>
-            <Grid item xs={12} md={3}>
+            <Grid item xs={12} md={4}>
               <TextField
                 fullWidth
                 label="Customer name"
@@ -45,15 +45,8 @@ function CashOrderForm({
                 helperText={formik.errors.customer_name}
               />
             </Grid>
-            {/* <Grid item xs={12} md={3}>
-              <ProductSelect
-                value={formik.values.product}
-                onSelect={(e, { id }) => formik.setFieldValue('product', id)}
-                error={!!formik.errors.product}
-                helperText={formik.errors.product}
-              />
-            </Grid> */}
-            <Grid item xs={12} md={3}>
+
+            <Grid item xs={12} md={4}>
               <SellerSelect
                 value={formik.values.sale_by}
                 onSelect={(e, { id }) => formik.setFieldValue('sale_by', id)}
@@ -61,16 +54,8 @@ function CashOrderForm({
                 helperText={formik.errors.sale_by}
               />
             </Grid>
-            <Grid item xs={12} md={3}>
-              <IMEISelect
-                product={formik.values.product !== '' && formik.values.product}
-                value={formik.values.imei_number}
-                onSelect={(e, { label }) => formik.setFieldValue('imei_or_serial_number', label)}
-                error={!!formik.errors.imei_number}
-                helperText={formik.errors.imei_number}
-              />
-            </Grid>
-            <Grid item xs={12} md={3}>
+
+            {/* <Grid item xs={12} md={3}>
               <TextField
                 label="Sale price"
                 name="sale_price"
@@ -84,8 +69,8 @@ function CashOrderForm({
                 error={formik.errors.sale_price}
                 helperText={formik.errors.sale_price}
               />
-            </Grid>
-            <Grid item xs={12} md={3}>
+            </Grid> */}
+            <Grid item xs={12} md={4}>
               <TextField
                 label="Warranty"
                 name="warranty"
@@ -101,11 +86,56 @@ function CashOrderForm({
               />
             </Grid>
           </Grid>
-
-          <LoadingButton fullWidth={false} size="large" type="submit" variant="contained" loading={false}>
-            Save Cash Order
-          </LoadingButton>
         </Stack>
+      </Card>
+
+      <Card className="entity-form-card mt-1">
+        <Stack spacing={3}>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={3}>
+              <ProductSelect
+                value={formik.values.product}
+                onSelect={(e, { id }) => formik.setFieldValue('product', id)}
+                error={!!formik.errors.product}
+                helperText={formik.errors.product}
+              />
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <IMEISelect
+                product={formik.values.product !== '' && formik.values.product}
+                value={formik.values.imei_number}
+                onSelect={(e, { label }) => formik.setFieldValue('imei_or_serial_number', label)}
+                error={!!formik.errors.imei_number}
+                helperText={formik.errors.imei_number}
+              />
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <TextField
+                label="Price"
+                name="price"
+                type="number"
+                fullWidth
+                InputProps={{
+                  startAdornment: <InputAdornment position="start">PKR</InputAdornment>,
+                }}
+                value={formik.values.price}
+                onChange={formik.handleChange}
+                error={formik.errors.price}
+                helperText={formik.errors.price}
+              />
+            </Grid>
+            <Grid item xs={12} md={3}>
+              <LoadingButton fullWidth size="large" type="button" variant="contained" loading={false}>
+                Add Product
+              </LoadingButton>
+            </Grid>
+          </Grid>
+        </Stack>
+      </Card>
+      <Card className="mt-3">
+        <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={false}>
+          Save Cash Order
+        </LoadingButton>
       </Card>
     </form>
   );

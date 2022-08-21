@@ -216,7 +216,7 @@ export default function CashOrders() {
                           id,
                           unique_id,
                           customer_name,
-                          product_detail,
+                          // product_detail,
                           seller_name,
                           sale_price,
                           profit_per_device,
@@ -245,10 +245,10 @@ export default function CashOrders() {
                             </TableCell>
 
                             <TableCell align="left">{customer_name}</TableCell>
-                            <TableCell align="left">{product_detail[0]?.name}</TableCell>
+                            {/* <TableCell align="left">{product_detail[0]?.name}</TableCell> */}
                             <TableCell align="left">{seller_name}</TableCell>
                             <TableCell align="left">Rs. {sale_price}</TableCell>
-                            <TableCell align="left">Rs. {product_detail[0]?.purchasing_price}</TableCell>
+                            {/* <TableCell align="left">Rs. {product_detail[0]?.purchasing_price}</TableCell> */}
                             <TableCell align="left">Rs. {profit_per_device}</TableCell>
                             <TableCell align="left">Rs. {total_profit}</TableCell>
                             <TableCell align="left">{quantity}</TableCell>

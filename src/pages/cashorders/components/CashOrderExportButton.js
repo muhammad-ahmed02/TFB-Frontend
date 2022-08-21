@@ -16,10 +16,10 @@ function CashOrderExportButton({ TABLE_HEAD = [], data = [] }) {
       datas={data.map((row) => ({
         unique_id: row.unique_id,
         customer_name: row.customer_name,
-        product: row.product_detail[0]?.name,
+        // product: row.product_detail[0]?.name,
         seller_name: row.seller_name,
         sale_price: row.sale_price,
-        cost_price: row.product_detail[0]?.purchasing_price,
+        // cost_price: row.product_detail[0]?.purchasing_price,
         profit: row.profit,
         imei_number: row.imei_number,
         updated_by: new Date(row.updated_at).toDateString(),
