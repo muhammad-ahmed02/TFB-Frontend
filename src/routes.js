@@ -25,6 +25,9 @@ import BusinessStats from './pages/businessstats/BusinessStats';
 import Products from './pages/products/Products';
 import ProductAdd from './pages/products/ProductAdd';
 import ProductEdit from './pages/products/ProductEdit';
+import Vendors from './pages/vendors/Vendors';
+import VendorAdd from './pages/vendors/VendorAdd';
+import VendorEdit from './pages/vendors/VendorEdit';
 
 // ----------------------------------------------------------------------
 
@@ -38,10 +41,10 @@ export default function Router() {
         {
           path: 'products',
           children: [
-            { path: '/dashboard/products', element: <Products />},
+            { path: '/dashboard/products', element: <Products /> },
             { path: 'add', element: <ProductAdd /> },
             { path: 'edit/:id', element: <ProductEdit /> },
-          ]
+          ],
         },
         {
           path: 'product-stock',
@@ -49,6 +52,14 @@ export default function Router() {
             { path: '/dashboard/product-stock', element: <ProductStock /> },
             { path: 'add', element: <ProductStockAdd /> },
             { path: 'edit/:id', element: <ProductStockEdit /> },
+          ],
+        },
+        {
+          path: 'vendors',
+          children: [
+            { path: '/dashboard/vendors', element: <Vendors /> },
+            { path: 'add', element: <VendorAdd /> },
+            { path: 'edit/:id', element: <VendorEdit /> },
           ],
         },
         {
