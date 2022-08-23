@@ -7,11 +7,11 @@ import Sellers from './pages/sellers/Sellers';
 import Login from './pages/Login';
 import NotFound from './pages/Page404';
 import Register from './pages/Register';
-import Products from './pages/products/Products';
+import ProductStock from './pages/productstock/ProductsStock';
 import DashboardApp from './pages/DashboardApp';
 import withAuthenticationRequired from './utils/withAuthenticationRequired';
-import ProductAdd from './pages/products/ProductAdd';
-import ProductEdit from './pages/products/ProductEdit';
+import ProductStockAdd from './pages/productstock/ProductStockAdd';
+import ProductStockEdit from './pages/productstock/ProductStockEdit';
 import SellerAdd from './pages/sellers/SellerAdd';
 import SellerEdit from './pages/sellers/SellerEdit';
 import CashOrders from './pages/cashorders/CashOrders';
@@ -22,6 +22,12 @@ import ReturnCashOrders from './pages/returncashorders/ReturnCashOrders';
 import ReturnCashOrderAdd from './pages/returncashorders/ReturnCashOrderAdd';
 import ReturnCashOrderEdit from './pages/returncashorders/ReturnCashOrderEdit';
 import BusinessStats from './pages/businessstats/BusinessStats';
+import Products from './pages/products/Products';
+import ProductAdd from './pages/products/ProductAdd';
+import ProductEdit from './pages/products/ProductEdit';
+import Vendors from './pages/vendors/Vendors';
+import VendorAdd from './pages/vendors/VendorAdd';
+import VendorEdit from './pages/vendors/VendorEdit';
 
 // ----------------------------------------------------------------------
 
@@ -38,6 +44,22 @@ export default function Router() {
             { path: '/dashboard/products', element: <Products /> },
             { path: 'add', element: <ProductAdd /> },
             { path: 'edit/:id', element: <ProductEdit /> },
+          ],
+        },
+        {
+          path: 'product-stock',
+          children: [
+            { path: '/dashboard/product-stock', element: <ProductStock /> },
+            { path: 'add', element: <ProductStockAdd /> },
+            { path: 'edit/:id', element: <ProductStockEdit /> },
+          ],
+        },
+        {
+          path: 'vendors',
+          children: [
+            { path: '/dashboard/vendors', element: <Vendors /> },
+            { path: 'add', element: <VendorAdd /> },
+            { path: 'edit/:id', element: <VendorEdit /> },
           ],
         },
         {
