@@ -1,7 +1,6 @@
 import { LoadingButton } from '@mui/lab';
 import { Card, Grid, InputAdornment, Stack, TextField } from '@mui/material';
 import { useFormik } from 'formik';
-import { number } from 'prop-types';
 import React from 'react';
 import ProductSelect from './ProductSelect';
 import { productStockSchema } from './productStockSchema';
