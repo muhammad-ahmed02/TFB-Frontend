@@ -5,5 +5,5 @@ export const productStockSchema = Yup.object().shape({
   vendor: Yup.number().required('Vendor is required'),
   purchasing_price: Yup.number().required('Purchase price is required'),
   available_stock: Yup.number().required('Available stock is required'),
-  imei_or_serial_number: Yup.array().nullable(),
+  imei_or_serial_number: Yup.array().of(Yup.string().required('IMEI or serial number is required')),
 });

@@ -269,7 +269,7 @@ export default function ProductStock() {
                               </Stack>
                             </TableCell>
 
-                            <TableCell align="left">{vendor}</TableCell>
+                            <TableCell align="left">{vendor.name}</TableCell>
 
                             <TableInput
                               disabled={!areEditable}
@@ -280,7 +280,8 @@ export default function ProductStock() {
                             />
 
                             <TableInput
-                              disabled={!areEditable}
+                              // disabled={!areEditable}
+                              disabled
                               name="available_stock"
                               className={`indicator ${((available_stock ?? 0) <= 0 && 'error') || 'success'}`}
                               value={available_stock ?? 0}
