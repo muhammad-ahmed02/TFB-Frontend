@@ -74,6 +74,7 @@ function ProductStockForm({
                 type="number"
                 value={formik.values.available_stock}
                 onChange={(e) => {
+                  // eslint-disable-next-line
                   formik.setFieldValue('available_stock', parseInt(e.target.value));
                   formik.setFieldValue(
                     'imei_or_serial_number',
