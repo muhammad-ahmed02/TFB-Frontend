@@ -43,12 +43,13 @@ export const updateVendor = (id, vendor) => api.put(`/vendor/${id}/`, vendor).th
 export const deleteVendor = (id) => api.delete(`/vendor/${id}/`).then((res) => res.data);
 
 // Product Stock
-export const getProductStocks = () => api.get('/products-stock/').then((res) => res.data);
+export const getProductStocks = (params) => api.get('/products-stock/', { params }).then((res) => res.data);
 export const getProductStock = (id) => api.get(`/products-stock/${id}/`).then((res) => res.data);
 export const createProductStock = (product) => api.post('/products-stock/', product).then((res) => res.data);
 export const updateProductStock = (id, product) => api.put(`/products-stock/${id}/`, product).then((res) => res.data);
 export const deleteProductStock = (id) => api.delete(`/products-stock/${id}/`).then((res) => res.data);
-export const buklUpdateProductStocks = (products) => api.post(`/products-stock/bulk_update/`, products).then((res) => res.data);
+export const buklUpdateProductStocks = (products) =>
+  api.post(`/products-stock/bulk_update/`, products).then((res) => res.data);
 
 // Sellers
 export const getSellers = () => api.get('/seller-profile/').then((res) => res.data);

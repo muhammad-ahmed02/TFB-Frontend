@@ -6,14 +6,14 @@ import { getProductStocks } from '../../../service/api';
 function ProductSelect({ value, onSelect, error, helperText, ...props }) {
   const { data, isLoading } = useQuery({
     queryKey: 'getProductStocks',
-    queryFn: getProductStocks,
+    queryFn: () => getProductStocks({ available: true }),
   });
 
   const productOptions = useMemo(() => {
     if (data?.results) {
-      return data.results.map(({ id, product }) => ({
+      return data.results.map(({ id, name, vendor }) => ({
         id,
-        label: product.name,
+        label: `${name} (${vendor.name})`,
       }));
     }
     return [];
