@@ -41,6 +41,11 @@ const navConfig = [
     path: '/dashboard/return-cashorder',
     icon: getIcon('mdi:cash-remove'),
   },
+  {
+    title: 'reports',
+    path: '/dashboard/reports',
+    icon: getIcon('eva:bar-chart-fill'),
+  },
   // {
   //   title: 'blog',
   //   path: '/dashboard/blog',

@@ -28,6 +28,7 @@ import ProductEdit from './pages/products/ProductEdit';
 import Vendors from './pages/vendors/Vendors';
 import VendorAdd from './pages/vendors/VendorAdd';
 import VendorEdit from './pages/vendors/VendorEdit';
+import Reports from './pages/reports/Reports';
 
 // ----------------------------------------------------------------------
 
@@ -84,6 +85,14 @@ export default function Router() {
             { path: '/dashboard/return-cashorder', element: <ReturnCashOrders /> },
             { path: 'add', element: <ReturnCashOrderAdd /> },
             { path: 'edit/:id', element: <ReturnCashOrderEdit /> },
+          ],
+        },
+        {
+          path: 'reports',
+          children: [
+            { path: '/dashboard/reports', element: <Reports /> },
+            // { path: 'add', element: <ReturnCashOrderAdd /> },
+            // { path: 'edit/:id', element: <ReturnCashOrderEdit /> },
           ],
         },
         { path: 'settings', element: <Settings /> },

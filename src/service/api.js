@@ -87,3 +87,8 @@ export const updateIMEI = (id, values) => api.patch(`/imei-numbers/${id}`, value
 // Company Profile
 export const getCompanyProfile = (id) => api.get(`/company-profile/${id}/`).then((res) => res.data);
 export const updateCompanyProfile = (id, values) => api.put(`/company-profile/${id}/`, values).then((res) => res.data);
+
+// Reports
+export const getCashOrderReport = (params) => api.get('/export/cashorder/', { params }).then((res) => res.data);
+export const getReturnCashOrderReport = (params) =>
+  api.get('/export/return-cashorder/', { params }).then((res) => res.data);
