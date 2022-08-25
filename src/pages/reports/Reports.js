@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card, Stack, Button, Container, Typography, Autocomplete, TextField, Grid } from '@mui/material';
-import { LocalizationProvider, DateTimePicker } from '@mui/lab';
+import { LocalizationProvider, DateTimePicker } from '@mui/x-date-pickers'
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { useQuery } from '@tanstack/react-query';
 import Iconify from '../../components/Iconify';
