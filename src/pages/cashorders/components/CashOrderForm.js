@@ -3,8 +3,8 @@ import { Card, Grid, InputAdornment, Stack, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import React from 'react';
 import { cashOrderSchema } from './cashOrderSchema';
-import IMEISelect from './ImeiSelect';
-import ProductSelect from './ProductSelect';
+import IMEISelect from '../../../components/selects/ImeiSelect';
+import ProductSelect from '../../../components/selects/ProductSelect';
 import SellerSelect from './SellerSelect';
 
 function CashOrderForm({
@@ -12,7 +12,6 @@ function CashOrderForm({
     customer_name: '',
     product_stock: '',
     sale_by: '',
-    sale_price: '',
     warranty: 0,
     imei_or_serial_number: '',
     quantity: 1,

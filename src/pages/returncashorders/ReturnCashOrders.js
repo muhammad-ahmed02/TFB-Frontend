@@ -27,9 +27,6 @@ import Iconify from '../../components/Iconify';
 import SearchNotFound from '../../components/SearchNotFound';
 import { ListHead, ListToolbar, MoreMenu } from '../../sections/@dashboard/table-components';
 import { convertDateTimeObject } from '../../utils/formatDate';
-// mock
-import USERLIST from '../../_mock/user';
-import ReturnCashOrderExportButton from './components/ReturnCashOrderExportButton';
 
 // ----------------------------------------------------------------------
 
@@ -121,7 +118,7 @@ export default function ReturnCashOrders() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
+      const newSelecteds = data.results.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -170,7 +167,7 @@ export default function ReturnCashOrders() {
             Return Cash Order
           </Typography>
           <div>
-            <ReturnCashOrderExportButton TABLE_HEAD={TABLE_HEAD} data={filteredOrders} />
+            {/* <ReturnCashOrderExportButton TABLE_HEAD={TABLE_HEAD} data={filteredOrders} /> */}
             <Button
               variant="contained"
               component={RouterLink}

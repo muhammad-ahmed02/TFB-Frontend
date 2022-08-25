@@ -2,9 +2,9 @@ import { LoadingButton } from '@mui/lab';
 import { Card, Grid, InputAdornment, Stack, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import React from 'react';
-import ProductSelect from './ProductSelect';
+import ProductSelect from '../../../components/selects/ProductSelect';
+import VendorSelect from '../../../components/selects/VendorSelect';
 import { productStockSchema } from './productStockSchema';
-import VendorSelect from './VendorSelect';
 
 function ProductStockForm({
   initialValues = {
@@ -26,8 +26,6 @@ function ProductStockForm({
     validationSchema: validationSchema ?? productStockSchema,
     onSubmit: (values) => onSubmit(values),
   });
-
-  console.log('formik', formik);
 
   return (
     <form className="entity-form" onSubmit={formik.handleSubmit}>

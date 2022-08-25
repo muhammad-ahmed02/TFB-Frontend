@@ -92,3 +92,17 @@ export const updateCompanyProfile = (id, values) => api.put(`/company-profile/${
 export const getCashOrderReport = (params) => api.get('/export/cashorder/', { params }).then((res) => res.data);
 export const getReturnCashOrderReport = (params) =>
   api.get('/export/return-cashorder/', { params }).then((res) => res.data);
+
+// credit
+export const getCredits = () => api.get('/credit/').then((res) => res.data);
+export const getCredit = (id) => api.get(`/credit/${id}/`).then((res) => res.data);
+export const createCredit = (values) => api.post('/credit/', values).then((res) => res.data);
+export const updateCredit = (id, values) => api.put(`/credit/${id}/`, values).then((res) => res.data);
+export const deleteCredit = (id) => api.delete(`/credit/${id}`).then((res) => res.data);
+
+// claim
+export const getClaims = () => api.get('/claim/').then((res) => res.data);
+export const getClaim = (id) => api.get(`/claim/${id}/`).then((res) => res.data);
+export const createClaim = (values) => api.post('/claim/', values).then((res) => res.data);
+export const updateClaim = (id, values) => api.put(`/claim/${id}/`, values).then((res) => res.data);
+export const deleteClaim = (id) => api.delete(`/claim/${id}`).then((res) => res.data);

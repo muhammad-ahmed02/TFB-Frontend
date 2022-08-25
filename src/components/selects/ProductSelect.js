@@ -1,7 +1,8 @@
 import React, { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Autocomplete, TextField } from '@mui/material';
-import { getProductStocks } from '../../../service/api';
+import { getProductStocks } from '../../service/api';
+
 
 function ProductSelect({ value, onSelect, error, helperText, ...props }) {
   const { data, isLoading } = useQuery({

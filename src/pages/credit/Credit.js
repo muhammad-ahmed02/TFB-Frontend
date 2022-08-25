@@ -17,33 +17,27 @@ import {
   TablePagination,
   CircularProgress,
 } from '@mui/material';
-// components
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { deleteCashOrder, getCashOrders } from '../../service/api';
+import { deleteCredit, getCredits } from '../../service/api';
 import { useToast } from '../../hooks/useToast';
+// components
 import Page from '../../components/Page';
 import Scrollbar from '../../components/Scrollbar';
 import Iconify from '../../components/Iconify';
 import SearchNotFound from '../../components/SearchNotFound';
-import { ListHead, ListToolbar, MoreMenu } from '../../sections/@dashboard/table-components';
+import { ListHead, MoreMenu, ListToolbar } from '../../sections/@dashboard/table-components';
 import { convertDateTimeObject } from '../../utils/formatDate';
-// mock
-import { REACT_APP_BACKEND_URL } from '../../config';
-// import CashOrderExportButton from './components/CashOrderExportButton';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'unique_id', label: 'UniqueID', alignRight: false },
-  { id: 'customer_name', label: 'Customer', alignRight: false },
-  { id: 'product', label: 'Product', alignRight: false },
-  { id: 'seller_name', label: 'Seller', alignRight: false },
-  { id: 'sale_price', label: 'Sale price', alignRight: false },
-  { id: 'cost_price', label: 'Cost price', alignRight: false },
-  { id: 'profit_per_device', label: 'Profit per device', alignRight: false },
-  { id: 'total_profit', label: 'Total Profit', alignRight: false },
+  { id: 'payment_status', label: 'Payment Status', alignRight: false },
   { id: 'quantity', label: 'Quantity', alignRight: false },
-  { id: 'updated_by', label: 'Date', alignRight: false },
+  { id: 'price', label: 'Price', alignRight: false },
+  { id: 'product', label: 'Product', alignRight: false },
+  { id: 'imei_or_serial_number', label: 'IMEI numbers', alignRight: false },
+  { id: 'updated_at', label: 'Updated Date', alignRight: false },
+  { id: 'created_at', label: 'Created Date', alignRight: false },
   { id: '' },
 ];
 
@@ -73,34 +67,32 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.unique_id.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(array, (_user) => _user.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function CashOrders() {
+export default function Credits() {
   const { showToast } = useToast();
   const queryClient = useQueryClient();
 
-  const { data, isLoading } = useQuery({
-    queryKey: 'getCashOrders',
-    queryFn: getCashOrders,
+  const [credits, setCredits] = useState([]);
+
+  const { isLoading } = useQuery({
+    queryKey: 'getCredits',
+    queryFn: getCredits,
+    onSuccess: (data) => setCredits(data?.results),
   });
 
-  const { mutate: deleteCashOrderFn } = useMutation((id) => deleteCashOrder(id), {
+  const { mutate: deleteCreditFn } = useMutation((id) => deleteCredit(id), {
     onSuccess: () => {
-      showToast(`Cash order deleted successfully`);
+      showToast(`Credit deleted successfully`);
     },
-    onSettled: () => queryClient.invalidateQueries('getCashOrders'),
+    onSettled: () => queryClient.invalidateQueries('getCredit'),
     onError: (error) => {
       showToast(error.message);
     },
   });
-
-  const bulkDelete = (ids) => {
-    ids.map((id) => deleteCashOrderFn(id));
-    setSelected([]);
-  };
 
   const [page, setPage] = useState(0);
 
@@ -108,7 +100,7 @@ export default function CashOrders() {
 
   const [selected, setSelected] = useState([]);
 
-  const [orderBy, setOrderBy] = useState('unique_id');
+  const [orderBy, setOrderBy] = useState('name');
 
   const [filterName, setFilterName] = useState('');
 
@@ -122,7 +114,7 @@ export default function CashOrders() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = data.results.map((n) => n.id);
+      const newSelecteds = credits.map((n) => n.id);
       setSelected(newSelecteds);
       return;
     }
@@ -157,36 +149,34 @@ export default function CashOrders() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.results.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - credits.results.length) : 0;
 
-  const filteredUsers = applySortFilter(data?.results ?? [], getComparator(order, orderBy), filterName);
+  const filteredProducts = applySortFilter(credits ?? [], getComparator(order, orderBy), filterName);
 
-  const isUserNotFound = filteredUsers.length === 0;
+  const isProductsNotFound = filteredProducts.length === 0;
 
   return (
-    <Page title="Cash Order">
+    <Page title="Credits">
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Cash Order
+            Credits
           </Typography>
           <div>
-            {/* <CashOrderExportButton TABLE_HEAD={TABLE_HEAD} data={filteredUsers} /> */}
             <Button
               variant="contained"
               component={RouterLink}
-              to="/dashboard/cashorder/add"
+              to="/dashboard/credits/add"
               startIcon={<Iconify icon="eva:plus-fill" />}
             >
-              New cash order
+              New Credit
             </Button>
           </div>
         </Stack>
 
         <Card>
           <ListToolbar
-            text="cash order"
-            onDelete={() => bulkDelete(selected)}
+            text="credits"
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
@@ -205,25 +195,14 @@ export default function CashOrders() {
                       order={order}
                       orderBy={orderBy}
                       headLabel={TABLE_HEAD}
-                      rowCount={data.results.length}
+                      rowCount={credits.length}
                       numSelected={selected.length}
                       onRequestSort={handleRequestSort}
                       onSelectAllClick={handleSelectAllClick}
                     />
                     <TableBody>
-                      {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                        const {
-                          id,
-                          unique_id,
-                          customer_name,
-                          // product_detail,
-                          seller_name,
-                          sale_price,
-                          profit_per_device,
-                          total_profit,
-                          quantity,
-                          updated_at,
-                        } = row;
+                      {filteredProducts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                        const { id, items, payment_status, quantity, updated_at, created_at } = row;
                         const isItemSelected = selected.indexOf(id) !== -1;
 
                         return (
@@ -231,34 +210,56 @@ export default function CashOrders() {
                             hover
                             key={id}
                             tabIndex={-1}
-                            role="checkbox"
+                            id="checkbox"
                             selected={isItemSelected}
                             aria-checked={isItemSelected}
                           >
                             <TableCell padding="checkbox">
                               <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, id)} />
                             </TableCell>
-                            <TableCell component="th" scope="row" padding="none" align="center" noWrap>
-                              <Typography variant="subtitle2" noWrap>
-                                {unique_id}
-                              </Typography>
+                            <TableCell component="th" scope="row" padding="none" align="center">
+                              <Stack direction="row" alignItems="center" spacing={3}>
+                                <Iconify
+                                  icon={`eva:${
+                                    payment_status === 'CLEARED' ? 'shield-outline' : 'shield-off-outline'
+                                  }`}
+                                  width={24}
+                                  height={24}
+                                />
+                                <Typography variant="subtitle2" noWrap>
+                                  {payment_status}
+                                </Typography>
+                              </Stack>
                             </TableCell>
-
-                            <TableCell align="left">{customer_name}</TableCell>
-                            {/* <TableCell align="left">{product_detail[0]?.name}</TableCell> */}
-                            <TableCell align="left">{seller_name}</TableCell>
-                            <TableCell align="left">Rs. {sale_price}</TableCell>
-                            {/* <TableCell align="left">Rs. {product_detail[0]?.purchasing_price}</TableCell> */}
-                            <TableCell align="left">Rs. {profit_per_device}</TableCell>
-                            <TableCell align="left">Rs. {total_profit}</TableCell>
                             <TableCell align="left">{quantity}</TableCell>
+                            <TableCell align="left">
+                              {items.map((item, i) => (
+                                <span key={i}>
+                                  RS. {item.price} <br />
+                                </span>
+                              ))}
+                            </TableCell>
+                            <TableCell align="left">
+                              {items.map((item, i) => (
+                                <span key={i}>
+                                  {item.product_name} <br />
+                                </span>
+                              ))}
+                            </TableCell>
+                            <TableCell align="left">
+                              {items.map((item, i) => (
+                                <span key={i}>
+                                  {item.imei_or_serial_number} <br />
+                                </span>
+                              ))}
+                            </TableCell>
                             <TableCell align="left">{convertDateTimeObject(updated_at)}</TableCell>
+                            <TableCell align="left">{convertDateTimeObject(created_at)}</TableCell>
 
                             <TableCell align="right">
                               <MoreMenu
-                                onDelete={() => deleteCashOrderFn(id)}
-                                pathWithId={`/dashboard/cashorder/edit/${id}`}
-                                invoicePath={`${REACT_APP_BACKEND_URL}/api/v1/export/cashorder/invoice/${unique_id}`}
+                                onDelete={() => deleteCreditFn(id)}
+                                pathWithId={`/dashboard/credit/edit/${id}`}
                               />
                             </TableCell>
                           </TableRow>
@@ -270,7 +271,8 @@ export default function CashOrders() {
                         </TableRow>
                       )}
                     </TableBody>
-                    {isUserNotFound && (
+
+                    {isProductsNotFound && (
                       <TableBody>
                         <TableRow>
                           <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -288,7 +290,7 @@ export default function CashOrders() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={data?.results?.length ?? 0}
+            count={credits?.length ?? 0}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

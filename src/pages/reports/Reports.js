@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Card, Stack, Button, Container, Typography, Autocomplete, TextField } from '@mui/material';
-import { DesktopDatePicker, LocalizationProvider } from '@mui/lab';
+import { Card, Stack, Button, Container, Typography, Autocomplete, TextField, Grid } from '@mui/material';
+import { LocalizationProvider, DateTimePicker } from '@mui/lab';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { useQuery } from '@tanstack/react-query';
 import Iconify from '../../components/Iconify';
@@ -8,13 +8,13 @@ import Page from '../../components/Page';
 import { getCashOrderReport, getReturnCashOrderReport } from '../../service/api';
 
 function Reports() {
-  const [startDate, setStartDate] = useState(new Date('2014-08-18T21:11:54'));
-  const [endDate, setEndDate] = useState(new Date('2014-08-18T21:11:54'));
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
   const [reportType, setReportType] = useState('');
 
   const reportOptions = [
     {
-      label: 'Csh Order Report',
+      label: 'Cash Order Report',
       value: getCashOrderReport,
     },
     {
@@ -24,7 +24,7 @@ function Reports() {
   ];
 
   const { data, isLoading, refetch } = useQuery(
-    [reportType.label, startDate.toISOString + endDate.toISOString],
+    [reportType.label, startDate.toISOString() + endDate.toISOString()],
     () =>
       reportType.value({
         start: startDate,
@@ -49,6 +49,7 @@ function Reports() {
               variant="contained"
               onClick={() => refetch()}
               startIcon={<Iconify icon="eva:plus-fill" />}
+              disabled={!reportType}
             >
               GO
             </Button>
@@ -71,29 +72,35 @@ function Reports() {
 
         <Card>
           <Stack padding={5} spacing={3} direction={{ xs: 'column', sm: 'row' }}>
-            <Autocomplete
-              fullWidth
-              options={reportOptions}
-              value={reportType}
-              isOptionEqualToValue={(vendor, value) => vendor.label === value}
-              renderInput={(params) => <TextField label="Vendor" {...params} />}
-              onChange={(event, newValue) => setReportType(newValue)}
-            />
             <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DesktopDatePicker
-                label="Start Date"
-                inputFormat="MM/dd/yyyy"
-                value={startDate}
-                onChange={(e) => setStartDate(e)}
-                renderInput={(params) => <TextField {...params} />}
-              />
-              <DesktopDatePicker
-                label="End Date"
-                inputFormat="MM/dd/yyyy"
-                value={endDate}
-                onChange={(e) => setEndDate(e)}
-                renderInput={(params) => <TextField {...params} />}
-              />
+              <Grid container spacing={3}>
+                <Grid item xs={12} md={4}>
+                  <Autocomplete
+                    fullWidth
+                    options={reportOptions}
+                    value={reportType}
+                    isOptionEqualToValue={(vendor, value) => vendor.label === value}
+                    renderInput={(params) => <TextField label="Report" {...params} />}
+                    onChange={(event, newValue) => setReportType(newValue)}
+                  />
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <DateTimePicker
+                    label="Start Date"
+                    value={startDate}
+                    onChange={(e) => setStartDate(e)}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </Grid>
+                <Grid item xs={12} md={4}>
+                  <DateTimePicker
+                    label="End Date"
+                    value={endDate}
+                    onChange={(e) => setEndDate(e)}
+                    renderInput={(params) => <TextField {...params} />}
+                  />
+                </Grid>
+              </Grid>
             </LocalizationProvider>
           </Stack>
         </Card>

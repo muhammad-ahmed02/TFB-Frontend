@@ -29,6 +29,12 @@ import Vendors from './pages/vendors/Vendors';
 import VendorAdd from './pages/vendors/VendorAdd';
 import VendorEdit from './pages/vendors/VendorEdit';
 import Reports from './pages/reports/Reports';
+import Credits from './pages/credit/Credit';
+import CreditEdit from './pages/credit/CreditEdit';
+import CreditAdd from './pages/credit/CreditAdd';
+import Claims from './pages/claim/Claim';
+import ClaimEdit from './pages/claim/ClaimEdit';
+import ClaimAdd from './pages/claim/ClaimAdd';
 
 // ----------------------------------------------------------------------
 
@@ -93,6 +99,22 @@ export default function Router() {
             { path: '/dashboard/reports', element: <Reports /> },
             // { path: 'add', element: <ReturnCashOrderAdd /> },
             // { path: 'edit/:id', element: <ReturnCashOrderEdit /> },
+          ],
+        },
+        {
+          path: 'credit',
+          children: [
+            { path: '/dashboard/credit', element: <Credits /> },
+            { path: 'add', element: <CreditAdd /> },
+            { path: 'edit/:id', element: <CreditEdit /> },
+          ],
+        },
+        {
+          path: 'claim',
+          children: [
+            { path: '/dashboard/claim', element: <Claims /> },
+            { path: 'add', element: <ClaimAdd /> },
+            { path: 'edit/:id', element: <ClaimEdit /> },
           ],
         },
         { path: 'settings', element: <Settings /> },

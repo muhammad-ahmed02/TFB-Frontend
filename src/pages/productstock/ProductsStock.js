@@ -39,6 +39,7 @@ const TABLE_HEAD = [
   { id: 'sold', label: 'Sold', alignRight: false },
   { id: 'on_credit', label: 'Credit', alignRight: false },
   { id: 'sold', label: 'Claim', alignRight: false },
+  { id: 'asset', label: 'Asset', alignRight: false },
   { id: 'update_at', label: 'Date', alignRight: false },
   { id: '' },
 ];
@@ -245,6 +246,7 @@ export default function ProductStock() {
                           sold,
                           on_credit,
                           on_claim,
+                          asset,
                           updated_at,
                         } = row;
                         const isItemSelected = selected.indexOf(name) !== -1;
@@ -280,8 +282,8 @@ export default function ProductStock() {
                             />
 
                             <TableInput
-                              // disabled={!areEditable}
-                              disabled
+                              disabled={!areEditable}
+                              // disabled
                               name="available_stock"
                               className={`indicator ${((available_stock ?? 0) <= 0 && 'error') || 'success'}`}
                               value={available_stock ?? 0}
@@ -291,6 +293,7 @@ export default function ProductStock() {
                             <TableCell align="left">{sold ?? 0}</TableCell>
                             <TableCell align="left">{on_credit ?? 0}</TableCell>
                             <TableCell align="left">{on_claim ?? 0}</TableCell>
+                            <TableCell align="left">{asset}</TableCell>
                             <TableCell align="left">{convertDateTimeObject(updated_at)}</TableCell>
 
                             <TableCell align="right">

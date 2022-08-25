@@ -42,6 +42,16 @@ const navConfig = [
     icon: getIcon('mdi:cash-remove'),
   },
   {
+    title: 'credit',
+    path: '/dashboard/credit',
+    icon: getIcon('eva:credit-card-outline'),
+  },
+  {
+    title: 'claim',
+    path: '/dashboard/claim',
+    icon: getIcon('eva:alert-triangle-outline'),
+  },
+  {
     title: 'reports',
     path: '/dashboard/reports',
     icon: getIcon('eva:bar-chart-fill'),

@@ -17,33 +17,25 @@ import {
   TablePagination,
   CircularProgress,
 } from '@mui/material';
-// components
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { deleteCashOrder, getCashOrders } from '../../service/api';
+import { deleteClaim, getClaims } from '../../service/api';
 import { useToast } from '../../hooks/useToast';
+// components
 import Page from '../../components/Page';
 import Scrollbar from '../../components/Scrollbar';
 import Iconify from '../../components/Iconify';
 import SearchNotFound from '../../components/SearchNotFound';
-import { ListHead, ListToolbar, MoreMenu } from '../../sections/@dashboard/table-components';
+import { ListHead, MoreMenu, ListToolbar } from '../../sections/@dashboard/table-components';
 import { convertDateTimeObject } from '../../utils/formatDate';
-// mock
-import { REACT_APP_BACKEND_URL } from '../../config';
-// import CashOrderExportButton from './components/CashOrderExportButton';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'unique_id', label: 'UniqueID', alignRight: false },
-  { id: 'customer_name', label: 'Customer', alignRight: false },
   { id: 'product', label: 'Product', alignRight: false },
-  { id: 'seller_name', label: 'Seller', alignRight: false },
-  { id: 'sale_price', label: 'Sale price', alignRight: false },
-  { id: 'cost_price', label: 'Cost price', alignRight: false },
-  { id: 'profit_per_device', label: 'Profit per device', alignRight: false },
-  { id: 'total_profit', label: 'Total Profit', alignRight: false },
-  { id: 'quantity', label: 'Quantity', alignRight: false },
-  { id: 'updated_by', label: 'Date', alignRight: false },
+  { id: 'vendor', label: 'Vendor', alignRight: false },
+  { id: 'imei_or_serial_number', label: 'IMEI numbers', alignRight: false },
+  { id: 'reason', label: 'Reason', alignRight: false },
+  { id: 'created_at', label: 'Created Date', alignRight: false },
   { id: '' },
 ];
 
@@ -73,34 +65,32 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.unique_id.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(array, (claim) => claim.product_name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function CashOrders() {
+export default function Claims() {
   const { showToast } = useToast();
   const queryClient = useQueryClient();
 
-  const { data, isLoading } = useQuery({
-    queryKey: 'getCashOrders',
-    queryFn: getCashOrders,
+  const [claims, setClaims] = useState([]);
+
+  const { isLoading } = useQuery({
+    queryKey: 'getClaims',
+    queryFn: getClaims,
+    onSuccess: (data) => setClaims(data?.results),
   });
 
-  const { mutate: deleteCashOrderFn } = useMutation((id) => deleteCashOrder(id), {
+  const { mutate: deleteClaimFn } = useMutation((id) => deleteClaim(id), {
     onSuccess: () => {
-      showToast(`Cash order deleted successfully`);
+      showToast(`Claim deleted successfully`);
     },
-    onSettled: () => queryClient.invalidateQueries('getCashOrders'),
+    onSettled: () => queryClient.invalidateQueries('getClaim'),
     onError: (error) => {
       showToast(error.message);
     },
   });
-
-  const bulkDelete = (ids) => {
-    ids.map((id) => deleteCashOrderFn(id));
-    setSelected([]);
-  };
 
   const [page, setPage] = useState(0);
 
@@ -108,7 +98,7 @@ export default function CashOrders() {
 
   const [selected, setSelected] = useState([]);
 
-  const [orderBy, setOrderBy] = useState('unique_id');
+  const [orderBy, setOrderBy] = useState('name');
 
   const [filterName, setFilterName] = useState('');
 
@@ -122,7 +112,7 @@ export default function CashOrders() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = data.results.map((n) => n.id);
+      const newSelecteds = claims.map((n) => n.id);
       setSelected(newSelecteds);
       return;
     }
@@ -157,36 +147,34 @@ export default function CashOrders() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.results.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - claims.results.length) : 0;
 
-  const filteredUsers = applySortFilter(data?.results ?? [], getComparator(order, orderBy), filterName);
+  const filteredProducts = applySortFilter(claims ?? [], getComparator(order, orderBy), filterName);
 
-  const isUserNotFound = filteredUsers.length === 0;
+  const isProductsNotFound = filteredProducts.length === 0;
 
   return (
-    <Page title="Cash Order">
+    <Page title="Claims">
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Cash Order
+            Claims
           </Typography>
           <div>
-            {/* <CashOrderExportButton TABLE_HEAD={TABLE_HEAD} data={filteredUsers} /> */}
             <Button
               variant="contained"
               component={RouterLink}
-              to="/dashboard/cashorder/add"
+              to="/dashboard/claim/add"
               startIcon={<Iconify icon="eva:plus-fill" />}
             >
-              New cash order
+              New Claim
             </Button>
           </div>
         </Stack>
 
         <Card>
           <ListToolbar
-            text="cash order"
-            onDelete={() => bulkDelete(selected)}
+            text="claim"
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
@@ -205,25 +193,14 @@ export default function CashOrders() {
                       order={order}
                       orderBy={orderBy}
                       headLabel={TABLE_HEAD}
-                      rowCount={data.results.length}
+                      rowCount={claims.length}
                       numSelected={selected.length}
                       onRequestSort={handleRequestSort}
                       onSelectAllClick={handleSelectAllClick}
                     />
                     <TableBody>
-                      {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                        const {
-                          id,
-                          unique_id,
-                          customer_name,
-                          // product_detail,
-                          seller_name,
-                          sale_price,
-                          profit_per_device,
-                          total_profit,
-                          quantity,
-                          updated_at,
-                        } = row;
+                      {filteredProducts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                        const { id, product_name, reason, vendor_name, imei_or_serial_number, created_at } = row;
                         const isItemSelected = selected.indexOf(id) !== -1;
 
                         return (
@@ -231,35 +208,27 @@ export default function CashOrders() {
                             hover
                             key={id}
                             tabIndex={-1}
-                            role="checkbox"
+                            id="checkbox"
                             selected={isItemSelected}
                             aria-checked={isItemSelected}
                           >
                             <TableCell padding="checkbox">
                               <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, id)} />
                             </TableCell>
-                            <TableCell component="th" scope="row" padding="none" align="center" noWrap>
-                              <Typography variant="subtitle2" noWrap>
-                                {unique_id}
-                              </Typography>
+                            <TableCell component="th" scope="row" padding="none" align="center">
+                              <Stack direction="row" alignItems="center" spacing={3}>
+                                <Typography variant="subtitle2" noWrap>
+                                  {product_name}
+                                </Typography>
+                              </Stack>
                             </TableCell>
-
-                            <TableCell align="left">{customer_name}</TableCell>
-                            {/* <TableCell align="left">{product_detail[0]?.name}</TableCell> */}
-                            <TableCell align="left">{seller_name}</TableCell>
-                            <TableCell align="left">Rs. {sale_price}</TableCell>
-                            {/* <TableCell align="left">Rs. {product_detail[0]?.purchasing_price}</TableCell> */}
-                            <TableCell align="left">Rs. {profit_per_device}</TableCell>
-                            <TableCell align="left">Rs. {total_profit}</TableCell>
-                            <TableCell align="left">{quantity}</TableCell>
-                            <TableCell align="left">{convertDateTimeObject(updated_at)}</TableCell>
+                            <TableCell align="left">{vendor_name}</TableCell>
+                            <TableCell align="left">{imei_or_serial_number}</TableCell>
+                            <TableCell align="left">{reason}</TableCell>
+                            <TableCell align="left">{convertDateTimeObject(created_at)}</TableCell>
 
                             <TableCell align="right">
-                              <MoreMenu
-                                onDelete={() => deleteCashOrderFn(id)}
-                                pathWithId={`/dashboard/cashorder/edit/${id}`}
-                                invoicePath={`${REACT_APP_BACKEND_URL}/api/v1/export/cashorder/invoice/${unique_id}`}
-                              />
+                              <MoreMenu onDelete={() => deleteClaimFn(id)} pathWithId={`/dashboard/claim/edit/${id}`} />
                             </TableCell>
                           </TableRow>
                         );
@@ -270,7 +239,8 @@ export default function CashOrders() {
                         </TableRow>
                       )}
                     </TableBody>
-                    {isUserNotFound && (
+
+                    {isProductsNotFound && (
                       <TableBody>
                         <TableRow>
                           <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
@@ -288,7 +258,7 @@ export default function CashOrders() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={data?.results?.length ?? 0}
+            count={claims?.length ?? 0}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
