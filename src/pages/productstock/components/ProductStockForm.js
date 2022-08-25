@@ -75,7 +75,10 @@ function ProductStockForm({
                   formik.setFieldValue('available_stock', parseInt(e.target.value));
                   formik.setFieldValue(
                     'imei_or_serial_number',
-                    [...formik.values.imei_or_serial_number, ''].slice(0, e.target.value)
+                    // eslint-disable-next-line
+                    Array(parseInt(e.target.value))
+                      .fill('')
+                      .map((_, i) => formik.values.imei_or_serial_number[i] || '')
                   );
                 }}
                 error={!!formik.errors.available_stock}
