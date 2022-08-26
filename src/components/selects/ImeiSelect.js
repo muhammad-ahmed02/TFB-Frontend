@@ -4,7 +4,6 @@ import { Autocomplete, TextField } from '@mui/material';
 import { getProductStock } from '../../service/api';
 
 function IMEISelect({ productStockId, value, onSelect, error, helperText, ...props }) {
-  // const { data, isLoading } = useQuery(['getProductStock', product], () => product && getProductStock(product));
   const { data, isLoading } = useQuery({
     queryKey: ['getProductStock', productStockId],
     queryFn: () => getProductStock(productStockId),

@@ -1,30 +1,31 @@
 import { LoadingButton } from '@mui/lab';
 import { Card, FormControl, Grid, InputAdornment, InputLabel, MenuItem, Select, Stack, TextField } from '@mui/material';
-import { FieldArray, useFormik } from 'formik';
+import { useFormik } from 'formik';
 import React from 'react';
+import ProductStockSelect from '../../../components/selects/ProductStockSelect';
+import Iconify from '../../../components/Iconify';
 import IMEISelect from '../../../components/selects/ImeiSelect';
-import ProductSelect from '../../../components/selects/ProductSelect';
-import { creditSchema } from './creditSchema';
+// import { creditSchema } from './creditSchema';
 
 function CreditForm({
   initialValues = {
     payment_status: '',
     items: [
       {
-        price: 0,
-        product: '',
+        product_stock: '',
         imei_or_serial_number: '',
+        price: 0,
       },
     ],
   },
   onSubmit,
-  validationSchema,
+  // validationSchema,
 }) {
   // useFormik
   const formik = useFormik({
     initialValues,
     validateOnChange: false,
-    validationSchema: validationSchema ?? creditSchema,
+    // validationSchema: validationSchema ?? creditSchema,
     onSubmit: (values) => onSubmit(values),
   });
 
@@ -51,89 +52,99 @@ function CreditForm({
                 </Select>
               </FormControl>
             </Grid>
-            <Grid item xs={0} md={8} />
-
-            <Grid item xs={12} md={12}>
-              <FieldArray
-                name="items"
-                render={(arrayHelpers) => (
-                  <Grid container>
-                    {formik.values.items.map((item, index) => (
-                      <Grid key={index} container spacing={3}>
-                        {/** both these conventions do the same */}
-                        <Grid item xs={12} md={3}>
-                          <TextField
-                            fullWidth
-                            label="Purchase price"
-                            name={`items[${index}].price`}
-                            type="number"
-                            InputProps={{
-                              startAdornment: <InputAdornment position="start">RS</InputAdornment>,
-                            }}
-                            value={item.price}
-                            onChange={formik.handleChange}
-                            // error={!!formik.errors.purchasing_price}
-                            // helperText={formik.errors.purchasing_price}
-                          />
-                        </Grid>
-                        <Grid item xs={12} md={3}>
-                          <ProductSelect
-                            value={item.product}
-                            name={`items[${index}].product`}
-                            onSelect={(e, { id }) => formik.setFieldValue(`items[${index}].product`, id)}
-                            // error={!!formik.errors.vendor}
-                            // helperText={formik.errors.vendor}
-                          />
-                        </Grid>
-                        {console.log(item)}
-                        <Grid item xs={12} md={3}>
-                          <IMEISelect
-                            product={item.product_name !== '' ? item.product_name : item.product}
-                            value={item.imei_or_serial_number}
-                            name={`items[${index}].imei_or_serial_number`}
-                            onSelect={(e, { label }) =>
-                              formik.setFieldValue(`items[${index}].imei_or_serial_number`, label)
-                            }
-                            // error={!!formik.errors.imei_number}
-                            // helperText={formik.errors.imei_number}
-                          />
-                        </Grid>
-                        <Grid item xs={12} md={3}>
-                          <LoadingButton
-                            fullWidth
-                            type="button"
-                            size="large"
-                            variant="contained"
-                            loading={false}
-                            onClick={() => arrayHelpers.remove(index)}
-                          >
-                            REMOVE
-                          </LoadingButton>
-                        </Grid>
-                      </Grid>
-                    ))}
-                    <Grid item xs={12} md={2}>
-                      <LoadingButton
-                        fullWidth={false}
-                        size="large"
-                        type="button"
-                        variant="contained"
-                        loading={false}
-                        onClick={() => formik.values.items.push({ price: 0, product: '', imei_or_serial_number: '' })}
-                      >
-                        ADD
-                      </LoadingButton>
-                    </Grid>
-                  </Grid>
-                )}
-              />
-            </Grid>
           </Grid>
-
-          <LoadingButton fullWidth={false} size="large" type="submit" variant="contained" loading={false}>
-            Save Credit
-          </LoadingButton>
         </Stack>
+
+        <br />
+        <LoadingButton
+          size="large"
+          type="button"
+          variant="contained"
+          color="primary"
+          onClick={() =>
+            formik.setFieldValue('items', [
+              ...formik.values.items,
+              {
+                product_stock: '',
+                imei_or_serial_number: '',
+                price: 0,
+              },
+            ])
+          }
+        >
+          <Iconify icon="eva:plus-circle-fill" />
+          &nbsp; Add item
+        </LoadingButton>
+
+        {formik.values.items.map(({ product_stock, imei_or_serial_number, price }, index) => (
+          // <Card key={index} className="mt-1">
+          <Stack spacing={3} key={index} className="mt-1">
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={5}>
+                <ProductStockSelect
+                  value={product_stock}
+                  onSelect={(e, { id }) => formik.setFieldValue(`items[${index}].product_stock`, id)}
+                  error={formik.errors?.items && formik.errors?.items[index].product_stock}
+                  helperText={formik.errors?.items && formik.errors?.items[index].product_stock}
+                />
+              </Grid>
+              <Grid item xs={12} md={3}>
+                <IMEISelect
+                  productStockId={product_stock}
+                  value={imei_or_serial_number}
+                  onSelect={(e, { id }) => formik.setFieldValue(`items[${index}].imei_or_serial_number`, id)}
+                  error={formik.errors?.items && formik.errors.items[index].imei_or_serial_number}
+                  helperText={formik.errors?.items && formik.errors.items[index].imei_or_serial_number}
+                />
+              </Grid>
+              <Grid item xs={12} md={2.5}>
+                <TextField
+                  label="Price"
+                  name="price"
+                  type="number"
+                  fullWidth
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start">PKR</InputAdornment>,
+                  }}
+                  value={price}
+                  // eslint-disable-next-line
+                  onChange={(e) => formik.setFieldValue(`items[${index}].price`, parseInt(e.target.value))}
+                  error={formik.errors?.items && formik.errors?.items[index].price}
+                  helperText={formik.errors?.items && formik.errors?.items[index].price}
+                />
+              </Grid>
+              <Grid item xs={12} md={1.5}>
+                <LoadingButton
+                  fullWidth
+                  size="large"
+                  type="button"
+                  variant="contained"
+                  onClick={() =>
+                    formik.setFieldValue(
+                      `items`,
+                      formik.values.items.filter((_, i) => i !== index)
+                    )
+                  }
+                >
+                  <Iconify icon="eva:trash-fill" />
+                </LoadingButton>
+              </Grid>
+            </Grid>
+          </Stack>
+          // </Card>
+        ))}
+      
+      <Card className="mt-3">
+        <LoadingButton
+          fullWidth
+          size="large"
+          type="submit"
+          variant="contained"
+          loading={false}
+        >
+          Save Credit
+        </LoadingButton>
+      </Card>
       </Card>
     </form>
   );

@@ -2,27 +2,25 @@ import { LoadingButton } from '@mui/lab';
 import { Card, Grid, Stack, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import React from 'react';
-import VendorSelect from '../../../components/selects/VendorSelect';
+import ProductStockSelect from '../../../components/selects/ProductStockSelect';
 import IMEISelect from '../../../components/selects/ImeiSelect';
-import ProductSelect from '../../../components/selects/ProductSelect';
-import { claimSchema } from './claimSchema';
+// import { claimSchema } from './claimSchema';
 
 function ClaimForm({
   initialValues = {
-    product: 0,
-    vendor: 0,
+    product_stock: 0,
     imei_or_serial_number: '',
     reason: '',
   },
   onSubmit,
-  validationSchema,
+  // validationSchema,
 }) {
   // useFormik
   const formik = useFormik({
     initialValues,
     validateOnChange: false,
-    validationSchema: validationSchema ?? claimSchema,
-    onSubmit: (values) => console.log(values),
+    // validationSchema: validationSchema ?? claimSchema,
+    onSubmit: (values) => onSubmit(values),
   });
 
   return (
@@ -30,27 +28,17 @@ function ClaimForm({
       <Card className="entity-form-card">
         <Stack spacing={3}>
           <Grid container spacing={3}>
-            <Grid item xs={12} md={4}>
-              <ProductSelect
-                value={formik.values.product}
-                name="product"
-                onSelect={(e, { id }) => formik.setFieldValue(`product`, id)}
-                error={!!formik.errors.product}
-                helperText={formik.errors.product}
+            <Grid item xs={12} md={6}>
+              <ProductStockSelect
+                value={formik.values.product_stock}
+                onSelect={(e, { id }) => formik.setFieldValue(`product_stock`, id)}
+                error={formik.errors?.items && formik.errors?.product_stock}
+                helperText={formik.errors?.items && formik.errors?.product_stock}
               />
             </Grid>
-            <Grid item xs={12} md={4}>
-              <VendorSelect
-                value={formik.values.vendor}
-                name="vendor"
-                onSelect={(e, { id }) => formik.setFieldValue(`vendor`, id)}
-                error={!!formik.errors.vendor}
-                helperText={formik.errors.vendor}
-              />
-            </Grid>
-
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={6}>
               <IMEISelect
+                productStockId={formik.values.product_stock}
                 value={formik.values.imei_or_serial_number}
                 name="imei_or_serial_number"
                 onSelect={(e, { label }) => formik.setFieldValue(`imei_or_serial_number`, label)}
@@ -66,7 +54,7 @@ function ClaimForm({
                 type="text"
                 fullWidth
                 value={formik.values.reason}
-                onChange={formik.handleChange}
+                onChange={(e) => formik.setFieldValue(`reason`, e.target.value)}
                 error={!!formik.errors.reason}
                 helperText={formik.errors.reason}
               />

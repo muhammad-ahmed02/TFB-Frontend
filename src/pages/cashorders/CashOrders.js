@@ -38,11 +38,10 @@ const TABLE_HEAD = [
   { id: 'customer_name', label: 'Customer', alignRight: false },
   { id: 'product', label: 'Product', alignRight: false },
   { id: 'seller_name', label: 'Seller', alignRight: false },
-  { id: 'sale_price', label: 'Sale price', alignRight: false },
-  { id: 'cost_price', label: 'Cost price', alignRight: false },
-  { id: 'profit_per_device', label: 'Profit per device', alignRight: false },
-  { id: 'total_profit', label: 'Total Profit', alignRight: false },
-  { id: 'quantity', label: 'Quantity', alignRight: false },
+  { id: 'sale_price', label: 'Price', alignRight: false },
+  { id: 'imei_number', label: 'IMEI Numbers', alignRight: false },
+  { id: 'warranty', label: 'Warranty', alignRight: false },
+  { id: 'total_amount', label: 'Total Amount', alignRight: false },
   { id: 'updated_by', label: 'Date', alignRight: false },
   { id: '' },
 ];
@@ -212,18 +211,8 @@ export default function CashOrders() {
                     />
                     <TableBody>
                       {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                        const {
-                          id,
-                          unique_id,
-                          customer_name,
-                          // product_detail,
-                          seller_name,
-                          sale_price,
-                          profit_per_device,
-                          total_profit,
-                          quantity,
-                          updated_at,
-                        } = row;
+                        const { id, unique_id, customer_name, seller_name, total_amount, warranty, updated_at, items } =
+                          row;
                         const isItemSelected = selected.indexOf(id) !== -1;
 
                         return (
@@ -245,14 +234,30 @@ export default function CashOrders() {
                             </TableCell>
 
                             <TableCell align="left">{customer_name}</TableCell>
-                            {/* <TableCell align="left">{product_detail[0]?.name}</TableCell> */}
+                            <TableCell align="left">
+                              {items.map((item, i) => (
+                                <span key={i}>
+                                  {item.product_name} <br />
+                                </span>
+                              ))}
+                            </TableCell>
                             <TableCell align="left">{seller_name}</TableCell>
-                            <TableCell align="left">{seller_name}</TableCell>
-                            <TableCell align="left">Rs. {sale_price}</TableCell>
-                            {/* <TableCell align="left">Rs. {product_detail[0]?.purchasing_price}</TableCell> */}
-                            <TableCell align="left">Rs. {profit_per_device}</TableCell>
-                            <TableCell align="left">Rs. {total_profit}</TableCell>
-                            <TableCell align="left">{quantity}</TableCell>
+                            <TableCell align="left">
+                              {items.map((item, i) => (
+                                <span key={i}>
+                                  RS. {item.price} <br />
+                                </span>
+                              ))}
+                            </TableCell>
+                            <TableCell align="left">
+                              {items.map((item, i) => (
+                                <span key={i}>
+                                  {item.imei_or_serial_number} <br />
+                                </span>
+                              ))}
+                            </TableCell>
+                            <TableCell align="left">{warranty} Days</TableCell>
+                            <TableCell align="left">RS. {total_amount}</TableCell>
                             <TableCell align="left">{convertDateTimeObject(updated_at)}</TableCell>
 
                             <TableCell align="right">

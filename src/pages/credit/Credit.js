@@ -166,7 +166,7 @@ export default function Credits() {
             <Button
               variant="contained"
               component={RouterLink}
-              to="/dashboard/credits/add"
+              to="/dashboard/credit/add"
               startIcon={<Iconify icon="eva:plus-fill" />}
             >
               New Credit
