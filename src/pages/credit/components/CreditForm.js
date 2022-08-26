@@ -1,11 +1,22 @@
 import { LoadingButton } from '@mui/lab';
-import { Card, FormControl, Grid, InputAdornment, InputLabel, MenuItem, Select, Stack, TextField } from '@mui/material';
+import {
+  Card,
+  FormControl,
+  FormHelperText,
+  Grid,
+  InputAdornment,
+  InputLabel,
+  MenuItem,
+  Select,
+  Stack,
+  TextField,
+} from '@mui/material';
 import { useFormik } from 'formik';
 import React from 'react';
 import ProductStockSelect from '../../../components/selects/ProductStockSelect';
 import Iconify from '../../../components/Iconify';
 import IMEISelect from '../../../components/selects/ImeiSelect';
-// import { creditSchema } from './creditSchema';
+import { creditSchema } from './creditSchema';
 
 function CreditForm({
   initialValues = {
@@ -14,20 +25,22 @@ function CreditForm({
       {
         product_stock: '',
         imei_or_serial_number: '',
-        price: 0,
+        price: '',
       },
     ],
   },
   onSubmit,
-  // validationSchema,
+  validationSchema,
 }) {
   // useFormik
   const formik = useFormik({
     initialValues,
     validateOnChange: false,
-    // validationSchema: validationSchema ?? creditSchema,
+    validationSchema: validationSchema ?? creditSchema,
     onSubmit: (values) => onSubmit(values),
   });
+
+  console.log(formik.values);
 
   return (
     <form className="entity-form" onSubmit={formik.handleSubmit}>
@@ -45,11 +58,11 @@ function CreditForm({
                   value={formik.values.payment_status}
                   onChange={formik.handleChange}
                   error={!!formik.errors.payment_status}
-                  helperText={formik.errors.payment_status}
                 >
                   <MenuItem value={'PENDING'}>Pending</MenuItem>
                   <MenuItem value={'CLEARED'}>Cleared</MenuItem>
                 </Select>
+                {formik.errors.payment_status && <FormHelperText error>{formik.errors.payment_status}</FormHelperText>}
               </FormControl>
             </Grid>
           </Grid>
@@ -83,6 +96,7 @@ function CreditForm({
               <Grid item xs={12} md={5}>
                 <ProductStockSelect
                   value={product_stock}
+                  onlyAvailble={initialValues.items[index].product_stock === ''}
                   onSelect={(e, { id }) => formik.setFieldValue(`items[${index}].product_stock`, id)}
                   error={formik.errors?.items && formik.errors?.items[index].product_stock}
                   helperText={formik.errors?.items && formik.errors?.items[index].product_stock}
@@ -133,18 +147,12 @@ function CreditForm({
           </Stack>
           // </Card>
         ))}
-      
-      <Card className="mt-3">
-        <LoadingButton
-          fullWidth
-          size="large"
-          type="submit"
-          variant="contained"
-          loading={false}
-        >
-          Save Credit
-        </LoadingButton>
-      </Card>
+
+        <Card className="mt-3">
+          <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={false}>
+            Save Credit
+          </LoadingButton>
+        </Card>
       </Card>
     </form>
   );
