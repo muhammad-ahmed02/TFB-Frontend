@@ -247,6 +247,7 @@ export default function CashOrders() {
                             <TableCell align="left">{customer_name}</TableCell>
                             {/* <TableCell align="left">{product_detail[0]?.name}</TableCell> */}
                             <TableCell align="left">{seller_name}</TableCell>
+                            <TableCell align="left">{seller_name}</TableCell>
                             <TableCell align="left">Rs. {sale_price}</TableCell>
                             {/* <TableCell align="left">Rs. {product_detail[0]?.purchasing_price}</TableCell> */}
                             <TableCell align="left">Rs. {profit_per_device}</TableCell>

@@ -1,23 +1,24 @@
 import React, { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Autocomplete, TextField } from '@mui/material';
-import { getIMEIs, getProductStock } from '../../service/api';
+import { getProductStock } from '../../service/api';
 
-function IMEISelect({ product, value, onSelect, error, helperText, ...props }) {
+function IMEISelect({ productStockId, value, onSelect, error, helperText, ...props }) {
   // const { data, isLoading } = useQuery(['getProductStock', product], () => product && getProductStock(product));
   const { data, isLoading } = useQuery({
-    queryKey: 'getIMEIs',
-    queryFn: () => getIMEIs(),
+    queryKey: ['getProductStock', productStockId],
+    queryFn: () => getProductStock(productStockId),
   });
 
   const imeiOptions = useMemo(() => {
-    if (data?.results) {
-      return data.results.map(({ number }) => ({
-        label: number,
+    if (data) {
+      return data.imei_or_serial_number.map((imei) => ({
+        id: imei,
+        label: imei,
       }));
     }
     return [];
-  }, [data?.results]);
+  }, [data]);
 
   return (
     <Autocomplete

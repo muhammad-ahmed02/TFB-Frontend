@@ -3,7 +3,6 @@ import { useQuery } from '@tanstack/react-query';
 import { Autocomplete, TextField } from '@mui/material';
 import { getProductStocks } from '../../service/api';
 
-
 function ProductSelect({ value, onSelect, error, helperText, ...props }) {
   const { data, isLoading } = useQuery({
     queryKey: 'getProductStocks',
@@ -12,9 +11,9 @@ function ProductSelect({ value, onSelect, error, helperText, ...props }) {
 
   const productOptions = useMemo(() => {
     if (data?.results) {
-      return data.results.map(({ id, name, vendor }) => ({
+      return data.results.map(({ id, name, vendor, purchasing_price }) => ({
         id,
-        label: `${name} (${vendor.name})`,
+        label: `${name} (${vendor.name}) @ PKR ${purchasing_price}`,
       }));
     }
     return [];
