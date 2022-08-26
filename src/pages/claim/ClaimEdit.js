@@ -3,7 +3,7 @@ import { useQuery, useMutation } from '@tanstack/react-query';
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useToast } from '../../hooks/useToast';
-import { getClaim, updateCredit } from '../../service/api';
+import { getClaim, updateClaim } from '../../service/api';
 import ClaimForm from './components/ClaimForm';
 
 function ClaimEdit() {
@@ -13,7 +13,7 @@ function ClaimEdit() {
 
   const { data, isLoading } = useQuery(['claim', id], () => getClaim(id));
 
-  const { mutate } = useMutation((values) => updateCredit(id, values), {
+  const { mutate } = useMutation((values) => updateClaim(id, values), {
     onSuccess: () => {
       showToast(`Claim updated`);
       navigate('/dashboard/claim/');
