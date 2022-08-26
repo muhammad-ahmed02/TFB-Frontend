@@ -16,7 +16,6 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { filter } from 'lodash';
-import { Link as RouterLink } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useToast } from '../../hooks/useToast';
 import { createWeekClosure, getWeekClosureReport, getWeekClosures } from '../../service/api';
@@ -25,7 +24,7 @@ import Page from '../../components/Page';
 import Scrollbar from '../../components/Scrollbar';
 import Iconify from '../../components/Iconify';
 import SearchNotFound from '../../components/SearchNotFound';
-import { ListHead, MoreMenu, ListToolbar } from '../../sections/@dashboard/table-components';
+import { ListHead, ListToolbar } from '../../sections/@dashboard/table-components';
 
 //  ----------------------------------------------------------------------
 const TABLE_HEAD = [
