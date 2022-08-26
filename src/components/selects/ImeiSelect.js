@@ -24,8 +24,8 @@ function IMEISelect({ productStockId, value, onSelect, error, helperText, ...pro
       disablePortal
       disabled={isLoading}
       options={imeiOptions}
-      value={imeiOptions.find((imei) => imei.label === value)}
-      isOptionEqualToValue={(product, value) => product.label === value}
+      value={!isLoading ? imeiOptions.find((imei) => imei.label === value) : ''}
+      isOptionEqualToValue={(product, value) => product.id === value.id}
       renderInput={(params) => <TextField label="IMEI number" {...params} error={error} helperText={helperText} />}
       onChange={onSelect}
       noOptionsText="No IMEI available."
