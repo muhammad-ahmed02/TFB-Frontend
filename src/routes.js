@@ -35,6 +35,7 @@ import CreditAdd from './pages/credit/CreditAdd';
 import Claims from './pages/claim/Claim';
 import ClaimEdit from './pages/claim/ClaimEdit';
 import ClaimAdd from './pages/claim/ClaimAdd';
+import WeekClosures from './pages/weekclosure/WeekClosures';
 
 // ----------------------------------------------------------------------
 
@@ -117,6 +118,7 @@ export default function Router() {
             { path: 'edit/:id', element: <ClaimEdit /> },
           ],
         },
+        { path: 'week-closure', element: <WeekClosures /> },
         { path: 'settings', element: <Settings /> },
         { path: 'business-stats', element: <BusinessStats /> },
       ],

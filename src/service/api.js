@@ -106,3 +106,8 @@ export const getClaim = (id) => api.get(`/claim/${id}/`).then((res) => res.data)
 export const createClaim = (values) => api.post('/claim/', values).then((res) => res.data);
 export const updateClaim = (id, values) => api.put(`/claim/${id}/`, values).then((res) => res.data);
 export const deleteClaim = (id) => api.delete(`/claim/${id}`).then((res) => res.data);
+
+// week closure
+export const getWeekClosures = () => api.get('/week-closure/').then((res) => res.data);
+export const createWeekClosure = () => api.post('/week-closure/').then((res) => res.data);
+export const getWeekClosureReport = () => api.get('/export/week-closure/').then((res) => res.data);
