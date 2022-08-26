@@ -3,8 +3,8 @@ import { Card, Grid, InputAdornment, Stack, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import React from 'react';
 import { cashOrderSchema } from './cashOrderSchema';
+import ProductStockSelect from '../../../components/selects/ProductStockSelect';
 import IMEISelect from '../../../components/selects/ImeiSelect';
-import ProductSelect from '../../../components/selects/ProductSelect';
 import SellerSelect from './SellerSelect';
 import Iconify from '../../../components/Iconify';
 
@@ -117,7 +117,7 @@ function CashOrderForm({
           <Stack spacing={3}>
             <Grid container spacing={3}>
               <Grid item xs={12} md={5}>
-                <ProductSelect
+                <ProductStockSelect
                   value={product_stock}
                   onSelect={(e, { id }) => formik.setFieldValue(`items[${index}].product_stock`, id)}
                   error={formik.errors?.items && formik.errors?.items[index].product_stock}
