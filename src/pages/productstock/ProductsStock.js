@@ -16,6 +16,7 @@ import {
   TableContainer,
   TablePagination,
   CircularProgress,
+  FormLabel,
 } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import TableInput from '../../sections/@dashboard/table-components/TableInput';
@@ -85,7 +86,9 @@ export default function ProductStock() {
   const { isLoading } = useQuery({
     queryKey: 'getProductStocks',
     queryFn: getProductStocks,
-    onSuccess: (data) => setProductStock(data?.results),
+    onSuccess: (data) => {
+      setProductStock(data?.results);
+    },
   });
 
   const { mutate: bulkUpdateFn } = useMutation((products) => buklUpdateProductStocks(products), {
@@ -176,11 +179,19 @@ export default function ProductStock() {
       })
     );
 
+  const calculateTotalAsset = (array) => {
+    const asset = 0;
+    const totalAsset = array.map((item) => asset + item.asset);
+    return totalAsset;
+  };
+
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - productStock.results.length) : 0;
 
   const filteredProducts = applySortFilter(productStock ?? [], getComparator(order, orderBy), filterName);
 
   const isProductsNotFound = filteredProducts.length === 0;
+
+  const total_asset = calculateTotalAsset(productStock ?? []);
 
   return (
     <Page title="Products Stock">
@@ -325,6 +336,12 @@ export default function ProductStock() {
                 )}
               </Table>
             </TableContainer>
+
+            <Container>
+              <Typography variant="subtitle1" component="div">
+                <FormLabel>Total Asset: Rs. {total_asset}</FormLabel>
+              </Typography>
+            </Container>
           </Scrollbar>
 
           <TablePagination

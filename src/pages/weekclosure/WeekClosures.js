@@ -24,14 +24,15 @@ import Page from '../../components/Page';
 import Scrollbar from '../../components/Scrollbar';
 import Iconify from '../../components/Iconify';
 import SearchNotFound from '../../components/SearchNotFound';
-import { ListHead, ListToolbar } from '../../sections/@dashboard/table-components';
+import { ListHead } from '../../sections/@dashboard/table-components';
+import { convertDateTimeObject } from '../../utils/formatDate';
 
 //  ----------------------------------------------------------------------
 const TABLE_HEAD = [
+  { id: 'id', label: 'ID', alignRight: false },
   { id: 'created_at', label: 'Created Date', alignRight: false },
   { id: 'total_profit', label: 'Total Profit', alignRight: false },
   { id: 'business_profit', label: 'Bussiness Profit', alignRight: false },
-  //   { id: '' },
 ];
 
 // ----------------------------------------------------------------------
@@ -60,7 +61,7 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(array, (_user) => _user.id.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
@@ -155,11 +156,11 @@ function WeekClosures() {
   });
 
   return (
-    <Page title="Products">
+    <Page title="Week Closure">
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            Products
+            Week Closure
           </Typography>
           <div>
             <Button
@@ -179,12 +180,12 @@ function WeekClosures() {
         </Stack>
 
         <Card>
-          <ListToolbar
-            text="stock"
+          {/* <ListToolbar
+            text="week"
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
-          />
+          /> */}
 
           <Scrollbar>
             <TableContainer sx={{ minWidth: 800 }}>
@@ -221,9 +222,10 @@ function WeekClosures() {
                             <TableCell padding="checkbox">
                               <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, id)} />
                             </TableCell>
-                            <TableCell align="left">{new Date(created_at).toDateString()}</TableCell>
-                            <TableCell align="left">{total_profit}</TableCell>
-                            <TableCell align="left">{business_profit}</TableCell>
+                            <TableCell align="left">{id}.</TableCell>
+                            <TableCell align="left">{convertDateTimeObject(created_at)}</TableCell>
+                            <TableCell align="left">Rs. {total_profit}</TableCell>
+                            <TableCell align="left">Rs. {business_profit}</TableCell>
 
                             {/* <TableCell align="right">
                               <MoreMenu
