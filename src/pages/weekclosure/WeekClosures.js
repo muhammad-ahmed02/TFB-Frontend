@@ -17,6 +17,7 @@ import {
 } from '@mui/material';
 import { filter } from 'lodash';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { usePagenation } from '../../hooks/usePagenation';
 import { useToast } from '../../hooks/useToast';
 import { createWeekClosure, getWeekClosureReport, getWeekClosures } from '../../service/api';
 // components
@@ -70,12 +71,13 @@ function WeekClosures() {
   const { showToast } = useToast();
   const queryClient = useQueryClient();
 
-  const { isLoading, data } = useQuery({
-    queryKey: 'getWeekClosures',
-    queryFn: getWeekClosures,
-  });
+  const { slice, page, rowsPerPage, apiPageNumber, rowsPerPageOptions, setRowsPerPage, setPage, handleChangePage } =
+    usePagenation();
 
-  const [page, setPage] = useState(0);
+  const { isLoading, data } = useQuery({
+    queryKey: ['getWeekClosures', `${apiPageNumber}`],
+    queryFn: () => getWeekClosures({ page: apiPageNumber }),
+  });
 
   const [order, setOrder] = useState('asc');
 
@@ -83,9 +85,8 @@ function WeekClosures() {
 
   const [orderBy, setOrderBy] = useState('name');
 
+  // eslint-disable-next-line
   const [filterName, setFilterName] = useState('');
-
-  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -117,17 +118,9 @@ function WeekClosures() {
     setSelected(newSelected);
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
-  };
-
-  const handleFilterByName = (event) => {
-    setFilterName(event.target.value);
   };
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data.results.length) : 0;
@@ -206,7 +199,10 @@ function WeekClosures() {
                       onSelectAllClick={handleSelectAllClick}
                     />
                     <TableBody>
-                      {filteredProducts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                      {(slice
+                        ? filteredProducts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        : filteredProducts
+                      ).map((row) => {
                         const { id, business_profit, total_profit, created_at } = row;
                         const isItemSelected = selected.indexOf(id) !== -1;
 
@@ -259,9 +255,9 @@ function WeekClosures() {
           </Scrollbar>
 
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={rowsPerPageOptions}
             component="div"
-            count={data?.length ?? 0}
+            count={data?.count ?? 0}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

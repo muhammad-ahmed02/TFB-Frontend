@@ -18,6 +18,7 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { usePagenation } from '../../hooks/usePagenation';
 import { deleteProduct, getProducts } from '../../service/api';
 import { useToast } from '../../hooks/useToast';
 // components
@@ -73,9 +74,20 @@ export default function Products() {
 
   const [products, setProducts] = useState([]);
 
-  const { isLoading } = useQuery({
-    queryKey: 'getProducts',
-    queryFn: getProducts,
+  const { slice, page, rowsPerPage, apiPageNumber, rowsPerPageOptions, setRowsPerPage, setPage, handleChangePage } =
+    usePagenation();
+
+  const [order, setOrder] = useState('asc');
+
+  const [selected, setSelected] = useState([]);
+
+  const [orderBy, setOrderBy] = useState('name');
+
+  const [filterName, setFilterName] = useState('');
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['getProducts', `${apiPageNumber}`],
+    queryFn: () => getProducts({ page: apiPageNumber }),
     onSuccess: (data) => setProducts(data?.results),
   });
 
@@ -88,18 +100,6 @@ export default function Products() {
       showToast(error.message);
     },
   });
-
-  const [page, setPage] = useState(0);
-
-  const [order, setOrder] = useState('asc');
-
-  const [selected, setSelected] = useState([]);
-
-  const [orderBy, setOrderBy] = useState('name');
-
-  const [filterName, setFilterName] = useState('');
-
-  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -131,10 +131,6 @@ export default function Products() {
     setSelected(newSelected);
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
@@ -144,7 +140,7 @@ export default function Products() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - products.results.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - products.results?.length) : 0;
 
   const filteredProducts = applySortFilter(products ?? [], getComparator(order, orderBy), filterName);
 
@@ -196,13 +192,11 @@ export default function Products() {
                       onSelectAllClick={handleSelectAllClick}
                     />
                     <TableBody>
-                      {filteredProducts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                        const {
-                          id,
-                          name,
-                          updated_at,
-                          created_at,
-                        } = row;
+                      {(slice
+                        ? filteredProducts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        : filteredProducts
+                      ).map((row) => {
+                        const { id, name, updated_at, created_at } = row;
                         const isItemSelected = selected.indexOf(name) !== -1;
 
                         return (
@@ -217,7 +211,7 @@ export default function Products() {
                             <TableCell padding="checkbox">
                               <Checkbox checked={isItemSelected} onChange={(event) => handleClick(event, name)} />
                             </TableCell>
-                            <TableCell component="th" scope="row" padding="none" align='center'>
+                            <TableCell component="th" scope="row" padding="none" align="center">
                               <Stack direction="row" alignItems="center" spacing={3}>
                                 <Typography variant="subtitle2" noWrap>
                                   {name}
@@ -259,9 +253,9 @@ export default function Products() {
           </Scrollbar>
 
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={rowsPerPageOptions}
             component="div"
-            count={products?.length ?? 0}
+            count={data?.count ?? 0}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

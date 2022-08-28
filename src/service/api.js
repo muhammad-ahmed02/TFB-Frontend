@@ -29,7 +29,7 @@ export const getSettings = (id) => api.get(`/settings/${id}/`).then((res) => res
 export const updateSettings = (id, settings) => api.put(`/settings/${id}/`, settings).then((res) => res.data);
 
 // Products
-export const getProducts = () => api.get('/products/').then((res) => res.data);
+export const getProducts = (params) => api.get('/products/', { params }).then((res) => res.data);
 export const getProduct = (id) => api.get(`/products/${id}/`).then((res) => res.data);
 export const createProduct = (product) => api.post('/products/', product).then((res) => res.data);
 export const updateProduct = (id, product) => api.put(`/products/${id}/`, product).then((res) => res.data);
@@ -52,21 +52,21 @@ export const buklUpdateProductStocks = (products) =>
   api.post(`/products-stock/bulk_update/`, products).then((res) => res.data);
 
 // Sellers
-export const getSellers = () => api.get('/seller-profile/').then((res) => res.data);
+export const getSellers = (params) => api.get('/seller-profile/', { params }).then((res) => res.data);
 export const getSeller = (id) => api.get(`/seller-profile/${id}/`).then((res) => res.data);
 export const createSeller = (seller) => api.post('/seller-profile/', seller).then((res) => res.data);
 export const updateSeller = (id, seller) => api.put(`/seller-profile/${id}/`, seller).then((res) => res.data);
 export const deleteSeller = (id) => api.delete(`/seller-profile/${id}/`).then((res) => res.data);
 
 // Cash Orders
-export const getCashOrders = () => api.get('/cashorder/').then((res) => res.data);
+export const getCashOrders = (params) => api.get('/cashorder/', { params }).then((res) => res.data);
 export const getCashOrder = (id) => api.get(`/cashorder/${id}/`).then((res) => res.data);
 export const createCashOrder = (cashorder) => api.post('/cashorder/', cashorder).then((res) => res.data);
 export const updateCashOrder = (id, cashorder) => api.put(`/cashorder/${id}/`, cashorder).then((res) => res.data);
 export const deleteCashOrder = (id) => api.delete(`/cashorder/${id}/`).then((res) => res.data);
 
 // Return cash orders
-export const getReturnCashOrders = () => api.get('/return-cashorder/').then((res) => res.data);
+export const getReturnCashOrders = (params) => api.get('/return-cashorder/', { params }).then((res) => res.data);
 export const getReturnCashOrder = (id) => api.get(`/return-cashorder/${id}/`).then((res) => res.data);
 export const createReturnCashOrder = (returncashorder) =>
   api.post('/return-cashorder/', returncashorder).then((res) => res.data);
@@ -94,20 +94,20 @@ export const getReturnCashOrderReport = (params) =>
   api.get('/export/return-cashorder/', { params }).then((res) => res.data);
 
 // credit
-export const getCredits = () => api.get('/credit/').then((res) => res.data);
+export const getCredits = (params) => api.get('/credit/', { params }).then((res) => res.data);
 export const getCredit = (id) => api.get(`/credit/${id}/`).then((res) => res.data);
 export const createCredit = (values) => api.post('/credit/', values).then((res) => res.data);
 export const updateCredit = (id, values) => api.put(`/credit/${id}/`, values).then((res) => res.data);
 export const deleteCredit = (id) => api.delete(`/credit/${id}`).then((res) => res.data);
 
 // claim
-export const getClaims = () => api.get('/claim/').then((res) => res.data);
+export const getClaims = (params) => api.get('/claim/', { params }).then((res) => res.data);
 export const getClaim = (id) => api.get(`/claim/${id}/`).then((res) => res.data);
 export const createClaim = (values) => api.post('/claim/', values).then((res) => res.data);
 export const updateClaim = (id, values) => api.put(`/claim/${id}/`, values).then((res) => res.data);
 export const deleteClaim = (id) => api.delete(`/claim/${id}`).then((res) => res.data);
 
 // week closure
-export const getWeekClosures = () => api.get('/week-closure/').then((res) => res.data);
+export const getWeekClosures = (params) => api.get('/week-closure/', { params }).then((res) => res.data);
 export const createWeekClosure = () => api.post('/week-closure/').then((res) => res.data);
 export const getWeekClosureReport = () => api.get('/export/week-closure/').then((res) => res.data);

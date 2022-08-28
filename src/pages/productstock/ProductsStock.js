@@ -20,6 +20,7 @@ import {
 } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import TableInput from '../../sections/@dashboard/table-components/TableInput';
+import { usePagenation } from '../../hooks/usePagenation';
 import { buklUpdateProductStocks, deleteProductStock, getProductStocks } from '../../service/api';
 import { useToast } from '../../hooks/useToast';
 // components
@@ -78,17 +79,17 @@ function applySortFilter(array, comparator, query) {
 
 export default function ProductStock() {
   const { showToast } = useToast();
+  const { slice, page, rowsPerPage, apiPageNumber, rowsPerPageOptions, setRowsPerPage, setPage, handleChangePage } =
+    usePagenation();
   const queryClient = useQueryClient();
 
   const [productStock, setProductStock] = useState([]);
   const [areEditable, setAreEditable] = useState(false);
 
-  const { isLoading } = useQuery({
-    queryKey: 'getProductStocks',
-    queryFn: getProductStocks,
-    onSuccess: (data) => {
-      setProductStock(data?.results);
-    },
+  const { isLoading, data } = useQuery({
+    queryKey: ['getProductStocks', `${apiPageNumber}`],
+    queryFn: () => getProductStocks({ page: apiPageNumber }),
+    onSuccess: (data) => setProductStock(data?.results),
   });
 
   const { mutate: bulkUpdateFn } = useMutation((products) => buklUpdateProductStocks(products), {
@@ -111,8 +112,6 @@ export default function ProductStock() {
     },
   });
 
-  const [page, setPage] = useState(0);
-
   const [order, setOrder] = useState('asc');
 
   const [selected, setSelected] = useState([]);
@@ -120,8 +119,6 @@ export default function ProductStock() {
   const [orderBy, setOrderBy] = useState('name');
 
   const [filterName, setFilterName] = useState('');
-
-  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -151,10 +148,6 @@ export default function ProductStock() {
       newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
     }
     setSelected(newSelected);
-  };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -247,7 +240,10 @@ export default function ProductStock() {
                       onSelectAllClick={handleSelectAllClick}
                     />
                     <TableBody>
-                      {filteredProducts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                      {(slice
+                        ? filteredProducts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        : filteredProducts
+                      ).map((row) => {
                         const {
                           id,
                           name,
@@ -345,9 +341,9 @@ export default function ProductStock() {
           </Scrollbar>
 
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={rowsPerPageOptions}
             component="div"
-            count={productStock?.length ?? 0}
+            count={data?.count ?? 0}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
