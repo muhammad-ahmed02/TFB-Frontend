@@ -1,11 +1,11 @@
 import { useState } from 'react';
 
 export function usePagenation() {
-  const numberOfRecordsFromAPI = 10;
-  const rowsPerPageOptions = [5, 10, 25];
+  const numberOfRecordsFromAPI = 100;
+  const rowsPerPageOptions = [10, 25, 50, 100];
   const [page, setPage] = useState(0);
   const [apiPageNumber, setApiPageNumber] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[0]);
+  const [rowsPerPage, setRowsPerPage] = useState(rowsPerPageOptions[1]);
   const [slice, setSlice] = useState(true);
   const [range, setRange] = useState({
     start: 0,
