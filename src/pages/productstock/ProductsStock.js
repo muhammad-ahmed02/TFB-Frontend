@@ -30,6 +30,7 @@ import Iconify from '../../components/Iconify';
 import SearchNotFound from '../../components/SearchNotFound';
 import { ListHead, MoreMenu, ListToolbar } from '../../sections/@dashboard/table-components';
 import { convertDateTimeObject } from '../../utils/formatDate';
+import { fAmount } from '../../utils/formatNumber';
 
 // ----------------------------------------------------------------------
 
@@ -306,7 +307,7 @@ export default function ProductStock() {
                             <TableCell align="left">{sold ?? 0}</TableCell>
                             <TableCell align="left">{on_credit ?? 0}</TableCell>
                             <TableCell align="left">{on_claim ?? 0}</TableCell>
-                            <TableCell align="left">{asset}</TableCell>
+                            <TableCell align="left">{fAmount(asset)}</TableCell>
                             <TableCell align="left">{convertDateTimeObject(updated_at)}</TableCell>
 
                             <TableCell align="right">
@@ -341,7 +342,7 @@ export default function ProductStock() {
 
             <Container>
               <Typography variant="subtitle1" component="div">
-                <FormLabel>Total Asset: Rs. {totalAsset}</FormLabel>
+                <FormLabel>Total Asset: Rs. {fAmount(totalAsset)}</FormLabel>
               </Typography>
             </Container>
           </Scrollbar>

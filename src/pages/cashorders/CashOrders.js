@@ -28,9 +28,9 @@ import Iconify from '../../components/Iconify';
 import SearchNotFound from '../../components/SearchNotFound';
 import { ListHead, ListToolbar, MoreMenu } from '../../sections/@dashboard/table-components';
 import { convertDateTimeObject } from '../../utils/formatDate';
+import { fAmount } from '../../utils/formatNumber';
 // mock
 import { REACT_APP_BACKEND_URL } from '../../config';
-// import CashOrderExportButton from './components/CashOrderExportButton';
 
 // ----------------------------------------------------------------------
 
@@ -244,7 +244,7 @@ export default function CashOrders() {
                             <TableCell align="left">
                               {items.map((item, i) => (
                                 <span key={i}>
-                                  RS. {item.price} <br />
+                                  RS. {fAmount(item.price)} <br />
                                 </span>
                               ))}
                             </TableCell>
@@ -256,7 +256,7 @@ export default function CashOrders() {
                               ))}
                             </TableCell>
                             <TableCell align="left">{warranty} Days</TableCell>
-                            <TableCell align="left">RS. {total_amount}</TableCell>
+                            <TableCell align="left">RS. {fAmount(total_amount)}</TableCell>
                             <TableCell align="left">{convertDateTimeObject(updated_at)}</TableCell>
 
                             <TableCell align="right">
