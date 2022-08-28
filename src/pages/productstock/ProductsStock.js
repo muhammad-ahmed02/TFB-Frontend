@@ -174,7 +174,8 @@ export default function ProductStock() {
 
   const calculateTotalAsset = (array) => {
     const asset = 0;
-    const totalAsset = array.map((item) => asset + item.asset);
+    // eslint-disable-next-line
+    const totalAsset = array.map((item) => asset + parseInt(item.asset));
     return totalAsset;
   };
 
@@ -184,7 +185,7 @@ export default function ProductStock() {
 
   const isProductsNotFound = filteredProducts.length === 0;
 
-  const total_asset = calculateTotalAsset(productStock ?? []);
+  const total_asset = calculateTotalAsset(productStock.results ?? []);
 
   return (
     <Page title="Products Stock">
