@@ -81,15 +81,20 @@ export default function ProductStock() {
   const { showToast } = useToast();
   const { slice, page, rowsPerPage, apiPageNumber, rowsPerPageOptions, setRowsPerPage, setPage, handleChangePage } =
     usePagenation();
+
   const queryClient = useQueryClient();
 
   const [productStock, setProductStock] = useState([]);
   const [areEditable, setAreEditable] = useState(false);
+  const [totalAsset, setTotalAsset] = useState(0);
 
   const { isLoading, data } = useQuery({
     queryKey: ['getProductStocks', `${apiPageNumber}`],
     queryFn: () => getProductStocks({ page: apiPageNumber }),
-    onSuccess: (data) => setProductStock(data?.results),
+    onSuccess: (data) => {
+      setProductStock(data?.results);
+      calculateTotalAsset(data?.results);
+    },
   });
 
   const { mutate: bulkUpdateFn } = useMutation((products) => buklUpdateProductStocks(products), {
@@ -173,10 +178,12 @@ export default function ProductStock() {
     );
 
   const calculateTotalAsset = (array) => {
-    const asset = 0;
+    let asset = 0;
     // eslint-disable-next-line
-    const totalAsset = array.map((item) => asset + parseInt(item.asset));
-    return totalAsset;
+    array.map((item) => {
+      asset += item.asset;
+    });
+    setTotalAsset(asset);
   };
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - productStock.results.length) : 0;
@@ -184,8 +191,6 @@ export default function ProductStock() {
   const filteredProducts = applySortFilter(productStock ?? [], getComparator(order, orderBy), filterName);
 
   const isProductsNotFound = filteredProducts.length === 0;
-
-  const total_asset = calculateTotalAsset(productStock.results ?? []);
 
   return (
     <Page title="Products Stock">
@@ -336,7 +341,7 @@ export default function ProductStock() {
 
             <Container>
               <Typography variant="subtitle1" component="div">
-                <FormLabel>Total Asset: Rs. {total_asset}</FormLabel>
+                <FormLabel>Total Asset: Rs. {totalAsset}</FormLabel>
               </Typography>
             </Container>
           </Scrollbar>
