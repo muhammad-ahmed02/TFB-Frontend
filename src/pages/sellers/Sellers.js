@@ -20,6 +20,7 @@ import {
 } from '@mui/material';
 // components
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { usePagenation } from '../../hooks/usePagenation';
 import { deleteSeller, getSellers } from '../../service/api';
 import { useToast } from '../../hooks/useToast';
 import Page from '../../components/Page';
@@ -78,9 +79,12 @@ export default function Sellers() {
   const { showToast } = useToast();
   const queryClient = useQueryClient();
 
+  const { slice, page, rowsPerPage, apiPageNumber, rowsPerPageOptions, setRowsPerPage, setPage, handleChangePage } =
+    usePagenation();
+
   const { data, isLoading } = useQuery({
-    queryKey: 'getSellers',
-    queryFn: getSellers,
+    queryKey: ['getSellers', `${apiPageNumber}`],
+    queryFn: () => getSellers({ page: apiPageNumber }),
   });
 
   const { mutate: deleteSellerFn } = useMutation((id) => deleteSeller(id), {
@@ -93,8 +97,6 @@ export default function Sellers() {
     },
   });
 
-  const [page, setPage] = useState(0);
-
   const [order, setOrder] = useState('asc');
 
   const [selected, setSelected] = useState([]);
@@ -102,8 +104,6 @@ export default function Sellers() {
   const [orderBy, setOrderBy] = useState('name');
 
   const [filterName, setFilterName] = useState('');
-
-  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -133,10 +133,6 @@ export default function Sellers() {
       newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
     }
     setSelected(newSelected);
-  };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -198,7 +194,10 @@ export default function Sellers() {
                       onSelectAllClick={handleSelectAllClick}
                     />
                     <TableBody>
-                      {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                      {(slice
+                        ? filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        : filteredUsers
+                      ).map((row) => {
                         const { id, username, profit, seller_share, business_share, created_at, updated_at } = row;
                         const isItemSelected = selected.indexOf(username) !== -1;
 
@@ -259,9 +258,9 @@ export default function Sellers() {
           </Scrollbar>
 
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={rowsPerPageOptions}
             component="div"
-            count={USERLIST?.length ?? 0}
+            count={data?.count ?? 0}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
