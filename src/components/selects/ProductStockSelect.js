@@ -3,10 +3,10 @@ import { useQuery } from '@tanstack/react-query';
 import { Autocomplete, TextField } from '@mui/material';
 import { getProductStocks } from '../../service/api';
 
-const ProductStockSelect = ({ value, onSelect, error, helperText, ...props }) => {
+const ProductStockSelect = ({ value, onSelect, error, helperText, onlyAvailble = true, ...props }) => {
   const { data, isLoading } = useQuery({
     queryKey: 'getProductStocks',
-    queryFn: () => getProductStocks({ available: true }),
+    queryFn: () => getProductStocks({ available: onlyAvailble ? true : null }),
   });
 
   const productOptions = useMemo(() => {
@@ -25,7 +25,7 @@ const ProductStockSelect = ({ value, onSelect, error, helperText, ...props }) =>
       disabled={isLoading}
       options={productOptions}
       value={!isLoading ? productOptions.find((product) => product.id === value)?.label : ''}
-      isOptionEqualToValue={(product, value) => product.label === value}
+      isOptionEqualToValue={!isLoading ? (product, value) => product.label === value : null}
       renderInput={(params) => <TextField label="Product" {...params} error={error} helperText={helperText} />}
       onChange={onSelect}
       {...props}

@@ -4,24 +4,26 @@ import { useFormik } from 'formik';
 import React from 'react';
 import ProductStockSelect from '../../../components/selects/ProductStockSelect';
 import IMEISelect from '../../../components/selects/ImeiSelect';
-// import { claimSchema } from './claimSchema';
+import { claimSchema } from './claimSchema';
 
 function ClaimForm({
   initialValues = {
-    product_stock: 0,
+    product_stock: '',
     imei_or_serial_number: '',
     reason: '',
   },
   onSubmit,
-  // validationSchema,
+  validationSchema,
 }) {
   // useFormik
   const formik = useFormik({
     initialValues,
     validateOnChange: false,
-    // validationSchema: validationSchema ?? claimSchema,
+    validationSchema: validationSchema ?? claimSchema,
     onSubmit: (values) => onSubmit(values),
   });
+
+  console.log(formik.errors);
 
   return (
     <form className="entity-form" onSubmit={formik.handleSubmit}>
@@ -32,8 +34,8 @@ function ClaimForm({
               <ProductStockSelect
                 value={formik.values.product_stock}
                 onSelect={(e, { id }) => formik.setFieldValue(`product_stock`, id)}
-                error={formik.errors?.items && formik.errors?.product_stock}
-                helperText={formik.errors?.items && formik.errors?.product_stock}
+                error={formik.errors?.product_stock}
+                helperText={formik.errors?.product_stock}
               />
             </Grid>
             <Grid item xs={12} md={6}>
@@ -42,7 +44,7 @@ function ClaimForm({
                 value={formik.values.imei_or_serial_number}
                 name="imei_or_serial_number"
                 onSelect={(e, { label }) => formik.setFieldValue(`imei_or_serial_number`, label)}
-                error={!!formik.errors.imei_or_serial_number}
+                error={formik.errors.imei_or_serial_number}
                 helperText={formik.errors.imei_or_serial_number}
               />
             </Grid>
@@ -61,7 +63,7 @@ function ClaimForm({
             </Grid>
 
             <Grid item xs={12}>
-              <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={false}>
+              <LoadingButton fullWidth size="large" type="submit" variant="contained">
                 Save Claim
               </LoadingButton>
             </Grid>

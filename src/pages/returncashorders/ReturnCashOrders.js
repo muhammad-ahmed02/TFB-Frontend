@@ -19,6 +19,7 @@ import {
 } from '@mui/material';
 // components
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { usePagenation } from '../../hooks/usePagenation';
 import { deleteReturnCashOrder, getReturnCashOrders } from '../../service/api';
 import { useToast } from '../../hooks/useToast';
 import Page from '../../components/Page';
@@ -83,9 +84,12 @@ export default function ReturnCashOrders() {
   const { showToast } = useToast();
   const queryClient = useQueryClient();
 
+  const { slice, page, rowsPerPage, apiPageNumber, rowsPerPageOptions, setRowsPerPage, setPage, handleChangePage } =
+    usePagenation();
+
   const { data, isLoading } = useQuery({
-    queryKey: 'getReturnCashOrders',
-    queryFn: getReturnCashOrders,
+    queryKey: ['getReturnCashOrders', `${apiPageNumber}`],
+    queryFn: () => getReturnCashOrders({ page: apiPageNumber }),
   });
 
   const { mutate: deleteReturnCashOrderFn } = useMutation((id) => deleteReturnCashOrder(id), {
@@ -98,8 +102,6 @@ export default function ReturnCashOrders() {
     },
   });
 
-  const [page, setPage] = useState(0);
-
   const [order, setOrder] = useState('asc');
 
   const [selected, setSelected] = useState([]);
@@ -107,8 +109,6 @@ export default function ReturnCashOrders() {
   const [orderBy, setOrderBy] = useState('name');
 
   const [filterName, setFilterName] = useState('');
-
-  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -138,10 +138,6 @@ export default function ReturnCashOrders() {
       newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
     }
     setSelected(newSelected);
-  };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -206,7 +202,10 @@ export default function ReturnCashOrders() {
                       onSelectAllClick={handleSelectAllClick}
                     />
                     <TableBody>
-                      {filteredOrders.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                      {(slice
+                        ? filteredOrders.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        : filteredOrders
+                      ).map((row) => {
                         const { id, reason, return_amount, cashorder_detail, created_at } = row;
                         const isItemSelected = selected.indexOf(id) !== -1;
 
@@ -272,9 +271,9 @@ export default function ReturnCashOrders() {
           </Scrollbar>
 
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={rowsPerPageOptions}
             component="div"
-            count={data?.results?.length ?? 0}
+            count={data?.count ?? 0}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

@@ -56,6 +56,11 @@ const navConfig = [
     path: '/dashboard/reports',
     icon: getIcon('eva:bar-chart-fill'),
   },
+  {
+    title: 'week closure',
+    path: '/dashboard/week-closure',
+    icon: getIcon('eva:refresh-fill'),
+  },
   // {
   //   title: 'blog',
   //   path: '/dashboard/blog',

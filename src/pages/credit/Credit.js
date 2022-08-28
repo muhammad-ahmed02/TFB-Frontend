@@ -18,6 +18,7 @@ import {
   CircularProgress,
 } from '@mui/material';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { usePagenation } from '../../hooks/usePagenation';
 import { deleteCredit, getCredits } from '../../service/api';
 import { useToast } from '../../hooks/useToast';
 // components
@@ -78,9 +79,12 @@ export default function Credits() {
 
   const [credits, setCredits] = useState([]);
 
-  const { isLoading } = useQuery({
-    queryKey: 'getCredits',
-    queryFn: getCredits,
+  const { slice, page, rowsPerPage, apiPageNumber, rowsPerPageOptions, setRowsPerPage, setPage, handleChangePage } =
+    usePagenation();
+
+  const { isLoading, data } = useQuery({
+    queryKey: ['getCredits', `${apiPageNumber}`],
+    queryFn: () => getCredits({ page: apiPageNumber }),
     onSuccess: (data) => setCredits(data?.results),
   });
 
@@ -94,8 +98,6 @@ export default function Credits() {
     },
   });
 
-  const [page, setPage] = useState(0);
-
   const [order, setOrder] = useState('asc');
 
   const [selected, setSelected] = useState([]);
@@ -103,8 +105,6 @@ export default function Credits() {
   const [orderBy, setOrderBy] = useState('name');
 
   const [filterName, setFilterName] = useState('');
-
-  const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -136,10 +136,6 @@ export default function Credits() {
     setSelected(newSelected);
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
@@ -149,7 +145,7 @@ export default function Credits() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - credits.results.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - credits.results?.length) : 0;
 
   const filteredProducts = applySortFilter(credits ?? [], getComparator(order, orderBy), filterName);
 
@@ -201,7 +197,10 @@ export default function Credits() {
                       onSelectAllClick={handleSelectAllClick}
                     />
                     <TableBody>
-                      {filteredProducts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                      {(slice
+                        ? filteredProducts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        : filteredProducts
+                      ).map((row) => {
                         const { id, items, payment_status, quantity, updated_at, created_at } = row;
                         const isItemSelected = selected.indexOf(id) !== -1;
 
@@ -220,9 +219,7 @@ export default function Credits() {
                             <TableCell component="th" scope="row" padding="none" align="center">
                               <Stack direction="row" alignItems="center" spacing={3}>
                                 <Iconify
-                                  icon={`eva:${
-                                    payment_status === 'CLEARED' ? 'shield-outline' : 'shield-off-outline'
-                                  }`}
+                                  icon={`eva:${payment_status === 'CLEARED' ? 'shield-outline' : 'shield-off-outline'}`}
                                   width={24}
                                   height={24}
                                 />
@@ -288,9 +285,9 @@ export default function Credits() {
           </Scrollbar>
 
           <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
+            rowsPerPageOptions={rowsPerPageOptions}
             component="div"
-            count={credits?.length ?? 0}
+            count={data?.count ?? 0}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
