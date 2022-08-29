@@ -28,6 +28,7 @@ import Iconify from '../../components/Iconify';
 import SearchNotFound from '../../components/SearchNotFound';
 import { ListHead, MoreMenu, ListToolbar } from '../../sections/@dashboard/table-components';
 import { convertDateTimeObject } from '../../utils/formatDate';
+import { fAmount } from '../../utils/formatNumber';
 
 // ----------------------------------------------------------------------
 
@@ -232,7 +233,7 @@ export default function Credits() {
                             <TableCell align="left">
                               {items.map((item, i) => (
                                 <span key={i}>
-                                  RS. {item.price} <br />
+                                  RS. {fAmount(item.price)} <br />
                                 </span>
                               ))}
                             </TableCell>

@@ -29,8 +29,7 @@ import Iconify from '../../components/Iconify';
 import SearchNotFound from '../../components/SearchNotFound';
 import { ListHead, ListToolbar, MoreMenu } from '../../sections/@dashboard/table-components';
 import { convertDateTimeObject } from '../../utils/formatDate';
-// mock
-import USERLIST from '../../_mock/user';
+import { fAmount } from '../../utils/formatNumber';
 
 // ----------------------------------------------------------------------
 
@@ -113,7 +112,7 @@ export default function Sellers() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
+      const newSelecteds = data?.results.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -144,7 +143,7 @@ export default function Sellers() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - data?.results.length) : 0;
 
   const filteredUsers = applySortFilter(data?.results ?? [], getComparator(order, orderBy), filterName);
 
@@ -188,7 +187,7 @@ export default function Sellers() {
                       order={order}
                       orderBy={orderBy}
                       headLabel={TABLE_HEAD}
-                      rowCount={USERLIST.length}
+                      rowCount={data?.count ?? 0}
                       numSelected={selected.length}
                       onRequestSort={handleRequestSort}
                       onSelectAllClick={handleSelectAllClick}
@@ -221,7 +220,7 @@ export default function Sellers() {
                                 </Typography>
                               </Stack>
                             </TableCell>
-                            <TableCell align="left">Rs. {profit}</TableCell>
+                            <TableCell align="left">Rs. {fAmount(profit)}</TableCell>
                             <TableCell align="right">{seller_share}%</TableCell>
                             <TableCell align="right">{business_share}%</TableCell>
                             <TableCell align="left">{convertDateTimeObject(updated_at)}</TableCell>
