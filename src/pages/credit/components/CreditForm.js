@@ -96,7 +96,7 @@ function CreditForm({
               <Grid item xs={12} md={5}>
                 <ProductStockSelect
                   value={product_stock}
-                  onlyAvailble={initialValues.items[index].product_stock === ''}
+                  onlyAvailble={initialValues.items[index]?.product_stock === ''}
                   onSelect={(e, { id }) => formik.setFieldValue(`items[${index}].product_stock`, id)}
                   error={formik.errors?.items && formik.errors?.items[index].product_stock}
                   helperText={formik.errors?.items && formik.errors?.items[index].product_stock}

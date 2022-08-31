@@ -203,6 +203,7 @@ export default function ProductStock() {
           <div>
             <Button
               className="bulk-edit-btn"
+              color={areEditable ? "success" : "primary"}
               variant="contained"
               onClick={() => (areEditable ? bulkUpdateFn(productStock) : setAreEditable(!areEditable))}
               startIcon={<Iconify icon={areEditable ? 'eva:save-fill' : 'eva:edit-fill'} />}
