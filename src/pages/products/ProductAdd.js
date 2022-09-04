@@ -9,6 +9,11 @@ import ProductForm from './components/ProductForm';
 function ProductAdd() {
   const { showToast } = useToast();
   const navigate = useNavigate();
+  window.addEventListener('beforeunload', (e) => {
+    e.preventDefault();
+    // eslint-disable-next-line
+    alert('tesing');
+  });
   const { mutate } = useMutation((values) => createProduct(values), {
     onSuccess: (data) => {
       showToast(`${data.name} added`);

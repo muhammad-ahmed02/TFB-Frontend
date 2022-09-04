@@ -153,11 +153,11 @@ function CashOrderForm({
             </Stack>
           // </Card>
         ))}
-      </Card>
       <Card className="mt-3">
         <LoadingButton fullWidth size="large" type="submit" variant="contained">
           Save Cash Order
         </LoadingButton>
+      </Card>
       </Card>
     </form>
   );

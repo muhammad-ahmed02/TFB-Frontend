@@ -56,7 +56,7 @@ function SellerForm({
                 InputProps={{
                   startAdornment: <InputAdornment position="start">RS</InputAdornment>,
                 }}
-                value={formik.values.profit === 0 ? '' : formik.values.profit}
+                value={formik.values.profit}
                 onChange={formik.handleChange}
                 error={!!formik.errors.profit}
                 helperText={formik.errors.profit}

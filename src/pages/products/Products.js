@@ -167,7 +167,7 @@ export default function Products() {
 
         <Card>
           <ListToolbar
-            text="stock"
+            text="product"
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
