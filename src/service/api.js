@@ -81,7 +81,7 @@ export const getUser = () => api.get(`/accounts/user/`);
 export const getIMEIs = () => api.get('/imei-numbers/').then((res) => res.data);
 export const getIMEI = (id) => api.get(`/imei-numbers/${id}`).then((res) => res.data);
 export const createIMEI = (values) => api.post('/imei-numbers/', values).then((res) => res.data);
-export const deleteIMEI = (id) => api.delete(`/imei-numbers/${id}`).then((res) => res.data);
+export const deleteIMEI = (id) => api.delete(`/imei-numbers/${id}/`).then((res) => res.data);
 export const updateIMEI = (id, values) => api.patch(`/imei-numbers/${id}`, values).then((res) => res.data);
 
 // Company Profile
@@ -98,16 +98,24 @@ export const getCredits = (params) => api.get('/credit/', { params }).then((res)
 export const getCredit = (id) => api.get(`/credit/${id}/`).then((res) => res.data);
 export const createCredit = (values) => api.post('/credit/', values).then((res) => res.data);
 export const updateCredit = (id, values) => api.put(`/credit/${id}/`, values).then((res) => res.data);
-export const deleteCredit = (id) => api.delete(`/credit/${id}`).then((res) => res.data);
+export const deleteCredit = (id) => api.delete(`/credit/${id}/`).then((res) => res.data);
 
 // claim
 export const getClaims = (params) => api.get('/claim/', { params }).then((res) => res.data);
 export const getClaim = (id) => api.get(`/claim/${id}/`).then((res) => res.data);
 export const createClaim = (values) => api.post('/claim/', values).then((res) => res.data);
 export const updateClaim = (id, values) => api.put(`/claim/${id}/`, values).then((res) => res.data);
-export const deleteClaim = (id) => api.delete(`/claim/${id}`).then((res) => res.data);
+export const deleteClaim = (id) => api.delete(`/claim/${id}/`).then((res) => res.data);
 
 // week closure
 export const getWeekClosures = (params) => api.get('/week-closure/', { params }).then((res) => res.data);
 export const createWeekClosure = () => api.post('/week-closure/').then((res) => res.data);
 export const getWeekClosureReport = () => api.get('/export/week-closure/').then((res) => res.data);
+
+// check valid imei
+export const checkValidIMEI = (imei) =>
+  api
+    .post('/check-valid-imei/', {
+      imei_or_serial_number: imei,
+    })
+    .then((res) => res.data);
