@@ -1,12 +1,14 @@
 import { LoadingButton } from '@mui/lab';
 import { Card, Grid, InputAdornment, Stack, TextField } from '@mui/material';
 import { useFormik } from 'formik';
-import React from 'react';
+import React, { useState } from 'react';
 import { cashOrderSchema } from './cashOrderSchema';
 import ProductStockSelect from '../../../components/selects/ProductStockSelect';
 import IMEISelect from '../../../components/selects/ImeiSelect';
 import SellerSelect from './SellerSelect';
 import Iconify from '../../../components/Iconify';
+import { checkValidIMEI } from '../../../service/api';
+import { useToast } from '../../../hooks/useToast';
 
 function CashOrderForm({
   initialValues = {
@@ -31,6 +33,20 @@ function CashOrderForm({
     validationSchema: validationSchema ?? cashOrderSchema,
     onSubmit: (values) => onSubmit(values),
   });
+
+  const [validImei, setValidImei] = useState(false);
+  const { showToast } = useToast();
+
+  const checkImei = (imei) => {
+    checkValidIMEI(imei).then((res) => {
+      if (res === 'True') {
+        setValidImei(true);
+      } else {
+        setValidImei(false);
+        showToast('IMEI already used, please select another IMEI');
+      }
+    });
+  };
 
   return (
     <form className="entity-form" onSubmit={formik.handleSubmit}>
@@ -99,65 +115,68 @@ function CashOrderForm({
         </LoadingButton>
         {formik.values.items.map(({ product_stock, imei_or_serial_number, price }, index) => (
           // <Card key={index} className="mt-1">
-            <Stack spacing={3} key={index} className="mt-1">
-              <Grid container spacing={3}>
-                <Grid item xs={12} md={5}>
-                  <ProductStockSelect
-                    value={product_stock}
-                    onSelect={(e, { id }) => formik.setFieldValue(`items[${index}].product_stock`, id)}
-                    error={formik.errors?.items && formik.errors?.items[index].product_stock}
-                    helperText={formik.errors?.items && formik.errors?.items[index].product_stock}
-                  />
-                </Grid>
-                <Grid item xs={12} md={3}>
-                  <IMEISelect
-                    productStockId={product_stock}
-                    value={imei_or_serial_number}
-                    onSelect={(e, { id }) => formik.setFieldValue(`items[${index}].imei_or_serial_number`, id)}
-                    error={formik.errors?.items && formik.errors.items[index].imei_or_serial_number}
-                    helperText={formik.errors?.items && formik.errors.items[index].imei_or_serial_number}
-                  />
-                </Grid>
-                <Grid item xs={12} md={2.5}>
-                  <TextField
-                    label="Price"
-                    name="price"
-                    type="number"
-                    fullWidth
-                    InputProps={{
-                      startAdornment: <InputAdornment position="start">PKR</InputAdornment>,
-                    }}
-                    value={price}
-                    onChange={(e) => formik.setFieldValue(`items[${index}].price`, e.target.value)}
-                    error={formik.errors?.items && formik.errors?.items[index].price}
-                    helperText={formik.errors?.items && formik.errors?.items[index].price}
-                  />
-                </Grid>
-                <Grid item xs={12} md={1.5}>
-                  <LoadingButton
-                    fullWidth
-                    size="large"
-                    type="button"
-                    variant="contained"
-                    onClick={() =>
-                      formik.setFieldValue(
-                        `items`,
-                        formik.values.items.filter((_, i) => i !== index)
-                      )
-                    }
-                  >
-                    <Iconify icon="eva:trash-fill" />
-                  </LoadingButton>
-                </Grid>
+          <Stack spacing={3} key={index} className="mt-1">
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={5}>
+                <ProductStockSelect
+                  value={product_stock}
+                  onSelect={(e, { id }) => formik.setFieldValue(`items[${index}].product_stock`, id)}
+                  error={formik.errors?.items && formik.errors?.items[index].product_stock}
+                  helperText={formik.errors?.items && formik.errors?.items[index].product_stock}
+                />
               </Grid>
-            </Stack>
+              <Grid item xs={12} md={3}>
+                <IMEISelect
+                  productStockId={product_stock}
+                  value={imei_or_serial_number}
+                  onSelect={(e, { id }) => {
+                    checkImei(id);
+                    formik.setFieldValue(`items[${index}].imei_or_serial_number`, id);
+                  }}
+                  error={formik.errors?.items && formik.errors.items[index].imei_or_serial_number}
+                  helperText={formik.errors?.items && formik.errors.items[index].imei_or_serial_number}
+                />
+              </Grid>
+              <Grid item xs={12} md={2.5}>
+                <TextField
+                  label="Price"
+                  name="price"
+                  type="number"
+                  fullWidth
+                  InputProps={{
+                    startAdornment: <InputAdornment position="start">PKR</InputAdornment>,
+                  }}
+                  value={price}
+                  onChange={(e) => formik.setFieldValue(`items[${index}].price`, e.target.value)}
+                  error={formik.errors?.items && formik.errors?.items[index].price}
+                  helperText={formik.errors?.items && formik.errors?.items[index].price}
+                />
+              </Grid>
+              <Grid item xs={12} md={1.5}>
+                <LoadingButton
+                  fullWidth
+                  size="large"
+                  type="button"
+                  variant="contained"
+                  onClick={() =>
+                    formik.setFieldValue(
+                      `items`,
+                      formik.values.items.filter((_, i) => i !== index)
+                    )
+                  }
+                >
+                  <Iconify icon="eva:trash-fill" />
+                </LoadingButton>
+              </Grid>
+            </Grid>
+          </Stack>
           // </Card>
         ))}
-      <Card className="mt-3">
-        <LoadingButton fullWidth size="large" type="submit" variant="contained">
-          Save Cash Order
-        </LoadingButton>
-      </Card>
+        <Card className="mt-3">
+          <LoadingButton fullWidth size="large" type="submit" variant="contained" disabled={!validImei}>
+            Save Cash Order
+          </LoadingButton>
+        </Card>
       </Card>
     </form>
   );

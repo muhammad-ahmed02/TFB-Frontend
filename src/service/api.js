@@ -111,3 +111,11 @@ export const deleteClaim = (id) => api.delete(`/claim/${id}/`).then((res) => res
 export const getWeekClosures = (params) => api.get('/week-closure/', { params }).then((res) => res.data);
 export const createWeekClosure = () => api.post('/week-closure/').then((res) => res.data);
 export const getWeekClosureReport = () => api.get('/export/week-closure/').then((res) => res.data);
+
+// check valid imei
+export const checkValidIMEI = (imei) =>
+  api
+    .post('/check-valid-imei/', {
+      imei_or_serial_number: imei,
+    })
+    .then((res) => res.data);
