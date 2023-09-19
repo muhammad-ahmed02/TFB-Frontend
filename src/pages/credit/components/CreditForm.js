@@ -40,7 +40,7 @@ function CreditForm({
     onSubmit: (values) => onSubmit(values),
   });
 
-  console.log(formik.values);
+  // console.log(formik.values);
 
   return (
     <form className="entity-form" onSubmit={formik.handleSubmit}>
@@ -133,6 +133,7 @@ function CreditForm({
                   size="large"
                   type="button"
                   variant="contained"
+                  color="error"
                   onClick={() =>
                     formik.setFieldValue(
                       `items`,

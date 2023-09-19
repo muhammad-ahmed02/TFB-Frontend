@@ -99,6 +99,7 @@ function ProductStockForm({
                 size="large"
                 type="button"
                 variant="contained"
+                color="error"
                 onClick={() =>
                   formik.setFieldValue(
                     `imei_or_serial_number`,

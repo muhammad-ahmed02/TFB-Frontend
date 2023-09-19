@@ -159,6 +159,7 @@ function CashOrderForm({
                   fullWidth
                   size="large"
                   type="button"
+                  color="error"
                   variant="contained"
                   onClick={() =>
                     formik.setFieldValue(
