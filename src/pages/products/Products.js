@@ -140,6 +140,19 @@ export default function Products() {
     setFilterName(event.target.value);
   };
 
+  const getProductFromName = (event, name) => {
+    const prod = products.find((obj) => obj.name === name);
+    return prod;
+  };
+
+  const bulkDelete = (event) => {
+    selected.forEach((name) => {
+      const prod = getProductFromName(event, name);
+      deleteProductFn(prod.id);
+    });
+    setSelected([]);
+  };
+
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - products.results?.length) : 0;
 
   const filteredProducts = applySortFilter(products ?? [], getComparator(order, orderBy), filterName);
@@ -171,6 +184,7 @@ export default function Products() {
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
+            onDelete={bulkDelete}
           />
 
           <Scrollbar>

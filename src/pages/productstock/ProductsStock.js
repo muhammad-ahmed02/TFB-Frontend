@@ -118,11 +118,11 @@ export default function ProductStock() {
     },
   });
 
-  const [order, setOrder] = useState('asc');
+  const [order, setOrder] = useState('desc');
 
   const [selected, setSelected] = useState([]);
 
-  const [orderBy, setOrderBy] = useState('name');
+  const [orderBy, setOrderBy] = useState('date');
 
   const [filterName, setFilterName] = useState('');
 
@@ -187,6 +187,19 @@ export default function ProductStock() {
     setTotalAsset(asset);
   };
 
+  const getProductFromName = (event, name) => {
+    const prod = productStock.find((obj) => obj.name === name);
+    return prod;
+  };
+
+  const bulkDelete = (event) => {
+    selected.forEach((name) => {
+      const prod = getProductFromName(event, name);
+      deleteProductStockFn(prod.id);
+    });
+    setSelected([]);
+  };
+
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - productStock.results.length) : 0;
 
   const filteredProducts = applySortFilter(productStock ?? [], getComparator(order, orderBy), filterName);
@@ -226,6 +239,7 @@ export default function ProductStock() {
             numSelected={selected.length}
             filterName={filterName}
             onFilterName={handleFilterByName}
+            onDelete={bulkDelete}
           />
 
           <Scrollbar>
@@ -280,7 +294,12 @@ export default function ProductStock() {
                             <TableCell component="th" scope="row" padding="none">
                               <Stack direction="row" alignItems="center" spacing={2}>
                                 <Typography variant="subtitle2" noWrap>
+                                <RouterLink
+                                  to={`/dashboard/product-stock/edit/${id}`}
+                                  style={{ color: 'inherit', textDecoration: 'none' }}
+                                >
                                   {name}
+                                </RouterLink>
                                 </Typography>
                               </Stack>
                             </TableCell>

@@ -97,6 +97,7 @@ function CashOrderForm({
           <Iconify icon="eva:plus-circle-fill" />
           &nbsp; Add item
         </LoadingButton>
+        <br />
         {formik.values.items.map(({ product_stock, imei_or_serial_number, price }, index) => (
           // <Card key={index} className="mt-1">
             <Stack spacing={3} key={index} className="mt-1">
@@ -107,6 +108,7 @@ function CashOrderForm({
                     onSelect={(e, { id }) => formik.setFieldValue(`items[${index}].product_stock`, id)}
                     error={formik.errors?.items && formik.errors?.items[index].product_stock}
                     helperText={formik.errors?.items && formik.errors?.items[index].product_stock}
+                    onlyAvailble={false}
                   />
                 </Grid>
                 <Grid item xs={12} md={3}>
@@ -137,6 +139,7 @@ function CashOrderForm({
                   <LoadingButton
                     fullWidth
                     size="large"
+                    color="error"
                     type="button"
                     variant="contained"
                     onClick={() =>
@@ -146,7 +149,7 @@ function CashOrderForm({
                       )
                     }
                   >
-                    <Iconify icon="eva:trash-fill" />
+                    <Iconify icon="eva:trash-fill"/>
                   </LoadingButton>
                 </Grid>
               </Grid>

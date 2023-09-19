@@ -228,7 +228,12 @@ export default function CashOrders() {
                             </TableCell>
                             <TableCell component="th" scope="row" padding="none" align="center" noWrap>
                               <Typography variant="subtitle2" noWrap>
-                                {unique_id}
+                                <RouterLink
+                                  to={`/dashboard/cashorder/edit/${id}`}
+                                  style={{ color: 'inherit', textDecoration: 'none' }}
+                                >
+                                  {unique_id}
+                                </RouterLink>
                               </Typography>
                             </TableCell>
 
