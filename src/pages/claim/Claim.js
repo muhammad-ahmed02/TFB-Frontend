@@ -33,6 +33,7 @@ import { convertDateTimeObject } from '../../utils/formatDate';
 
 const TABLE_HEAD = [
   { id: 'product', label: 'Product', alignRight: false },
+  { id: 'status', label: 'Status', alignRight: false },
   { id: 'vendor', label: 'Vendor', alignRight: false },
   { id: 'imei_or_serial_number', label: 'IMEI numbers', alignRight: false },
   { id: 'reason', label: 'Reason', alignRight: false },
@@ -199,7 +200,8 @@ export default function Claims() {
                         ? filteredProducts.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         : filteredProducts
                       ).map((row) => {
-                        const { id, product_name, reason, vendor_name, imei_or_serial_number, created_at } = row;
+                        const { id, product_name, status, reason, vendor_name, imei_or_serial_number, created_at } =
+                          row;
                         const isItemSelected = selected.indexOf(id) !== -1;
 
                         return (
@@ -221,6 +223,7 @@ export default function Claims() {
                                 </Typography>
                               </Stack>
                             </TableCell>
+                            <TableCell align="left">{status}</TableCell>
                             <TableCell align="left">{vendor_name}</TableCell>
                             <TableCell align="left">{imei_or_serial_number}</TableCell>
                             <TableCell align="left">{reason}</TableCell>

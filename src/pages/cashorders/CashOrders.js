@@ -105,11 +105,11 @@ export default function CashOrders() {
     setSelected([]);
   };
 
-  const [order, setOrder] = useState('asc');
+  const [order, setOrder] = useState('desc');
 
   const [selected, setSelected] = useState([]);
 
-  const [orderBy, setOrderBy] = useState('unique_id');
+  const [orderBy, setOrderBy] = useState('date');
 
   const [filterName, setFilterName] = useState('');
 

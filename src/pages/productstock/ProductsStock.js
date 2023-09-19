@@ -214,8 +214,21 @@ export default function ProductStock() {
             Product Stock
           </Typography>
           <div>
+            
+          {areEditable && (
+              <Button
+                color="error"
+                className="bulk-edit-btn"
+                variant="contained"
+                startIcon={<Iconify icon="eva:alert-circle-fill" />}
+                onClick={() => setAreEditable(false)}
+              >
+                Cancel
+              </Button>
+            )}
             <Button
               className="bulk-edit-btn"
+              color={areEditable ? 'success' : 'primary'}
               variant="contained"
               onClick={() => (areEditable ? bulkUpdateFn(productStock) : setAreEditable(!areEditable))}
               startIcon={<Iconify icon={areEditable ? 'eva:save-fill' : 'eva:edit-fill'} />}
@@ -315,12 +328,12 @@ export default function ProductStock() {
                             />
 
                             <TableInput
-                              disabled={!areEditable}
-                              // disabled
+                              // disabled={!areEditable}
+                              disabled
                               name="available_stock"
                               className={`indicator ${((available_stock ?? 0) <= 0 && 'error') || 'success'}`}
                               value={available_stock ?? 0}
-                              onChange={(event) => handleChange(event, id)}
+                              // onChange={(event) => handleChange(event, id)}
                             />
 
                             <TableCell align="left">{sold ?? 0}</TableCell>

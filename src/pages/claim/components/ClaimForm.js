@@ -1,5 +1,5 @@
 import { LoadingButton } from '@mui/lab';
-import { Card, Grid, Stack, TextField } from '@mui/material';
+import { Card, FormControl, FormHelperText, Grid, InputLabel, MenuItem, Select, Stack, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import React from 'react';
 import ProductStockSelect from '../../../components/selects/ProductStockSelect';
@@ -8,6 +8,7 @@ import { claimSchema } from './claimSchema';
 
 function ClaimForm({
   initialValues = {
+    status: '',
     product_stock: '',
     imei_or_serial_number: '',
     reason: '',
@@ -30,7 +31,26 @@ function ClaimForm({
       <Card className="entity-form-card">
         <Stack spacing={3}>
           <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={3}>
+              <FormControl fullWidth>
+                <InputLabel id="status">Status</InputLabel>
+                <Select
+                  labelId="status"
+                  name="status"
+                  id="status"
+                  label="Status"
+                  value={formik.values.status}
+                  onChange={formik.handleChange}
+                  error={!!formik.errors.status}
+                >
+                  <MenuItem value={'PENDING'}>Pending</MenuItem>
+                  <MenuItem value={'CLEARED'}>Cleared</MenuItem>
+                </Select>
+                {formik.errors.status && <FormHelperText error>{formik.errors.status}</FormHelperText>}
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={12} md={4}>
               <ProductStockSelect
                 value={formik.values.product_stock}
                 onSelect={(e, { id }) => formik.setFieldValue(`product_stock`, id)}
@@ -38,7 +58,7 @@ function ClaimForm({
                 helperText={formik.errors?.product_stock}
               />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={5}>
               <IMEISelect
                 productStockId={formik.values.product_stock}
                 value={formik.values.imei_or_serial_number}
