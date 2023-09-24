@@ -66,7 +66,7 @@ function Reports() {
               </Button>
             )}
             {/* eslint-disable-next-line */}
-            <a id="report" href={`data:text/csv;charset=utf-8,${escape(data)}`} download="report.csv" hidden />
+            <a id="report" href={`data:text/csv;charset=utf-8,${escape(data)}`} download={`${reportType.label}.csv`} hidden />
           </div>
         </Stack>
 

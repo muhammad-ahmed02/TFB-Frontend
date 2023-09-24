@@ -267,7 +267,6 @@ export default function CashOrders() {
                             <TableCell align="right">
                               <MoreMenu
                                 onDelete={() => deleteCashOrderFn(id)}
-                                pathWithId={`/dashboard/cashorder/edit/${id}`}
                                 invoicePath={`${REACT_APP_BACKEND_URL}/api/v1/export/cashorder/invoice/${unique_id}`}
                               />
                             </TableCell>

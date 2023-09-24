@@ -78,15 +78,16 @@ export default function MoreMenu({ pathWithId, onDelete, invoicePath }) {
             </Button>
           </DialogActions>
         </Dialog>
-
-        <RouterLink to={pathWithId}>
-          <MenuItem sx={{ color: 'text.secondary' }}>
-            <ListItemIcon>
-              <Iconify icon="eva:edit-fill" width={24} height={24} />
-            </ListItemIcon>
-            <ListItemText primary="Edit" primaryTypographyProps={{ variant: 'body2' }} />
-          </MenuItem>
-        </RouterLink>
+        {pathWithId && (
+          <RouterLink to={pathWithId}>
+            <MenuItem sx={{ color: 'text.secondary' }}>
+              <ListItemIcon>
+                <Iconify icon="eva:edit-fill" width={24} height={24} />
+              </ListItemIcon>
+              <ListItemText primary="Edit" primaryTypographyProps={{ variant: 'body2' }} />
+            </MenuItem>
+          </RouterLink>
+        )}
         {invoicePath && (
           <a href={invoicePath} target="_blank" rel="noreferrer">
             <MenuItem sx={{ color: 'text.secondary' }}>

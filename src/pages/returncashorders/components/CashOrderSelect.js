@@ -11,9 +11,9 @@ function CashOrderSelect({ value, onSelect, error, helperText, ...props }) {
 
   const cashOrderOptions = useMemo(() => {
     if (data?.results) {
-      return data.results.map(({ id, unique_id }) => ({
+      return data.results.map(({ id, unique_id, total_amount }) => ({
         id,
-        label: unique_id,
+        label: `${unique_id} @ PKR ${total_amount}`,
       }));
     }
     return [];

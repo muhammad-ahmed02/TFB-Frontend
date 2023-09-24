@@ -10,6 +10,7 @@ function ReturnCashOrderForm({
     reason: '',
     return_amount: 0,
     cash_order: '',
+    reason_description: '',
   },
   onSubmit,
   validationSchema,
@@ -65,8 +66,24 @@ function ReturnCashOrderForm({
                 error={formik.errors.return_amount}
                 helperText={formik.errors.return_amount}
                 disabled={formik.values.reason !== 'CUSTOM'}
+                fullWidth
               />
             </Grid>
+            {formik.values.reason === 'CUSTOM' && (
+              <Grid item xs={12} md={12}>
+                <TextField
+                  label="Reason Description"
+                  name="reason_description"
+                  type="text"
+                  value={formik.values.reason_description}
+                  onChange={formik.handleChange}
+                  error={formik.errors.reason_description}
+                  helperText={formik.errors.reason_description}
+                  disabled={formik.values.reason !== 'CUSTOM'}
+                  fullWidth
+                />
+              </Grid>
+            )}
           </Grid>
 
           <LoadingButton fullWidth={false} size="large" type="submit" variant="contained" loading={false}>

@@ -27,10 +27,10 @@ function CashOrderEdit() {
   return isLoading ? (
     <CircularProgress />
   ) : (
-    <Page title="Update Cash Order">
+    <Page title="Cash Order Detail">
       <Container>
-        <h1>Update Cash Order</h1>
-        <CashOrderForm initialValues={data} onSubmit={mutate} />
+        <h1>Cash Order Detail</h1>
+        <CashOrderForm initialValues={data} onSubmit={mutate} update />
       </Container>
     </Page>
   );

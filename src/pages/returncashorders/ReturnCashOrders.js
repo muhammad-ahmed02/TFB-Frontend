@@ -34,15 +34,15 @@ import { convertDateTimeObject } from '../../utils/formatDate';
 const TABLE_HEAD = [
   { id: 'unique_id', label: 'Unique id', alignRight: false },
   { id: 'reason', label: 'Reason', alignRight: false },
-  { id: 'product_name', label: 'Product', alignRight: false },
+  // { id: 'product_name', label: 'Product', alignRight: false },
   { id: 'seller_name', label: 'Seller', alignRight: false },
-  { id: 'sale_price', label: 'Sale price', alignRight: false },
-  { id: 'cost_price', label: 'Cost price', alignRight: false },
-  { id: 'profit', label: 'Profit', alignRight: false },
+  { id: 'sale_price', label: 'Price', alignRight: false },
+  // { id: 'cost_price', label: 'Cost price', alignRight: false },
+  // { id: 'profit', label: 'Profit', alignRight: false },
   { id: 'return_amount', label: 'Return amount', alignRight: false },
   { id: 'warranty', label: 'Warranty', alignRight: false },
   { id: 'buy_date', label: 'Buying Date', alignRight: false },
-  { id: 'return_date', label: 'Returning Date', alignRight: false },
+  { id: 'date', label: 'Returning Date', alignRight: false },
   { id: '' },
 ];
 
@@ -102,11 +102,11 @@ export default function ReturnCashOrders() {
     },
   });
 
-  const [order, setOrder] = useState('asc');
+  const [order, setOrder] = useState('desc');
 
   const [selected, setSelected] = useState([]);
 
-  const [orderBy, setOrderBy] = useState('name');
+  const [orderBy, setOrderBy] = useState('date');
 
   const [filterName, setFilterName] = useState('');
 
@@ -206,7 +206,7 @@ export default function ReturnCashOrders() {
                         ? filteredOrders.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         : filteredOrders
                       ).map((row) => {
-                        const { id, reason, return_amount, cashorder_detail, created_at } = row;
+                        const { id, reason, return_amount, cashorder_detail, updated_at } = row;
                         const isItemSelected = selected.indexOf(id) !== -1;
 
                         return (
@@ -228,22 +228,22 @@ export default function ReturnCashOrders() {
                             </TableCell>
 
                             <TableCell align="left">{reason}</TableCell>
-                            <TableCell align="left">{cashorder_detail[0].product_detail[0].name}</TableCell>
+                            {/* <TableCell align="left">{cashorder_detail[0].product_detail[0].name}</TableCell> */}
                             <TableCell align="left">{cashorder_detail[0].seller_name}</TableCell>
-                            <TableCell align="left">Rs. {cashorder_detail[0].sale_price}</TableCell>
-                            <TableCell align="left">
+                            <TableCell align="left">Rs. {cashorder_detail[0].total_amount}</TableCell>
+                            {/* <TableCell align="left">
                               Rs. {cashorder_detail[0].product_detail[0].purchasing_price}
-                            </TableCell>
-                            <TableCell align="left">Rs. {cashorder_detail[0].profit}</TableCell>
+                            </TableCell> */}
+                            {/* <TableCell align="left">Rs. {cashorder_detail[0].profit}</TableCell> */}
                             <TableCell align="left">Rs. {return_amount}</TableCell>
                             <TableCell align="left">{cashorder_detail[0].warranty} Days</TableCell>
-                            <TableCell align="left">{convertDateTimeObject(cashorder_detail[0].created_at)}</TableCell>
-                            <TableCell align="left">{convertDateTimeObject(created_at)}</TableCell>
+                            <TableCell align="left">{convertDateTimeObject(cashorder_detail[0].updated_at)}</TableCell>
+                            <TableCell align="left">{convertDateTimeObject(updated_at)}</TableCell>
 
                             <TableCell align="right">
                               <MoreMenu
                                 onDelete={() => deleteReturnCashOrderFn(id)}
-                                pathWithId={`/dashboard/return-cashorder/edit/${id}`}
+                                // pathWithId={`/dashboard/return-cashorder/edit/${id}`}
                               />
                             </TableCell>
                           </TableRow>
